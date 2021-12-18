@@ -12,11 +12,13 @@ function AuthProviderWrapper(props) {
 
     const logInUser = user => {
         localStorage.setItem("isLoggedIn", true)
+        setUser(user)
         setIsLoggedIn(true)
     }
 
     const logOutUser = () => {
         localStorage.setItem("isLoggedIn", false)
+        setUser(null)
         setIsLoggedIn(false)
     }
 

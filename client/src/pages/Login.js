@@ -32,8 +32,9 @@ function Login() {
 
         axios
             .post(`${API_URL}/auth/login`, requestBody)
-            .then(() => {
-                logInUser()
+            .then(res => {
+                console.log(res.data)
+                logInUser(res.data)
                 navigate("/my-account")
             })
             .catch(err => {
