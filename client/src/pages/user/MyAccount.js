@@ -32,7 +32,7 @@ function MyAccount() {
                 setLoading(false)
             })
             .catch(err => console.log(err))
-    }, [])
+    }, [user._id])
 
     return (
         <Page title={user.fullName} description="" keywords="">

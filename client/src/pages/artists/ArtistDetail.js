@@ -70,7 +70,7 @@ function ArtistDetail(props) {
                 })
             })
             .catch(err => console.log(err))
-    }, [])
+    }, [user._id, props.artist._id, isLoggedIn])
 
     const handleSend = e => {
         const requestBody = {
