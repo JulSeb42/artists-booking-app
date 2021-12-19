@@ -16,6 +16,8 @@ import SignUpArtist from "../pages/login/SignUpArtist"
 
 // Account
 import MyAccount from "../pages/user/MyAccount"
+import EditAccount from "../pages/user/EditAccount"
+import EditPassword from "../pages/user/EditPassword"
 
 // Artists
 import ArtistList from "../pages/artists/ArtistList"
@@ -60,7 +62,19 @@ function Switch() {
             />
             <Route
                 path="/my-account/edit"
-                element={<ProtectedRoute redirectTo="/login"></ProtectedRoute>}
+                element={
+                    <ProtectedRoute redirectTo="/login">
+                        <EditAccount />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/my-account/edit/edit-password"
+                element={
+                    <ProtectedRoute redirectTo="/login">
+                        <EditPassword />
+                    </ProtectedRoute>
+                }
             />
 
             {/* Artists */}

@@ -3,6 +3,8 @@ import axios from "axios"
 import React, { useState, useEffect } from "react"
 // import axios from "axios"
 
+import localStorageExpires from "../components/utils/localStorageExpires"
+
 const AuthContext = React.createContext()
 
 const API_URL = "http://localhost:5005"
@@ -13,29 +15,38 @@ function AuthProviderWrapper(props) {
     const [isLoading, setIsLoading] = useState(true)
 
     const logInUser = user => {
-        localStorage.setItem("isLoggedIn", true)
+        localStorageExpires("isLoggedIn", true, 864000000)
+        localStorage.setItem("user", JSON.stringify(user))
+        setUser(JSON.parse(localStorage.getItem("user")))
         setIsLoggedIn(true)
-        console.log(user)
-        setUser(user)
         verify()
     }
 
     const logOutUser = () => {
         localStorage.removeItem("isLoggedIn")
+        localStorage.removeItem("user")
         setIsLoggedIn(false)
         setUser(null)
     }
 
     const verify = () => {
         if (localStorage.getItem("isLoggedIn")) {
-            axios.get(`${API_URL}/auth/loggedin`).then(res => {
-                // setUser(res.data)
-                setIsLoggedIn(true)
-                setIsLoading(false)
-            }).catch(err => console.log(err))
+            axios
+                .get(`${API_URL}/auth/loggedin`)
+                .then(res => {
+                    setUser(JSON.parse(localStorage.getItem("user")))
+                    setIsLoggedIn(true)
+                    setIsLoading(false)
+                })
+                .catch(err => console.log(err))
         } else {
             setIsLoading(false)
         }
+    }
+
+    const updateUser = updatedUser => {
+        localStorage.setItem("user", JSON.stringify(updatedUser))
+        setUser(JSON.parse(localStorage.getItem("user")))
     }
 
     useEffect(() => {
@@ -52,6 +63,7 @@ function AuthProviderWrapper(props) {
                 logInUser,
                 logOutUser,
                 isLoading,
+                updateUser
             }}
         >
             {props.children}

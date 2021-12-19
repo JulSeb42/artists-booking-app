@@ -21,7 +21,7 @@ function Page(props) {
             <Header />
 
             {location !== "/" ? (
-                <Container>{props.children}</Container>
+                <Container as={props.form && "form"} {...props}>{props.children}</Container>
             ) : (
                 props.children
             )}

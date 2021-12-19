@@ -47,6 +47,8 @@ const userSchema = new Schema(
                 ref: "User",
             },
         ],
+
+        visible: Boolean,
     },
     {
         // this second object adds extra properties: `createdAt` and `updatedAt`

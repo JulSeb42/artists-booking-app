@@ -15,6 +15,7 @@ const isLoggedOut = require("../middleware/isLoggedOut")
 const isLoggedIn = require("../middleware/isLoggedIn")
 
 router.get("/loggedin", (req, res) => {
+    console.log(req.user)
     res.json(req.user)
 })
 
@@ -135,7 +136,6 @@ router.post("/login", isLoggedOut, (req, res, next) => {
                 }
                 req.session.user = user
                 // req.session.user = user._id; // ! better and safer but in this case we saving the entire user object
-                console.log(user)
                 return res.json(user)
             })
         })

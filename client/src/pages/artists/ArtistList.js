@@ -1,14 +1,12 @@
 // Imports
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-// import styled from "styled-components"
 import axios from "axios"
 
 // Components
 import Page from "../../components/layouts/Page"
 import * as Font from "../../components/styles/Font"
 import { Content, Aside } from "../../components/layouts/Container"
-// import * as Variables from "../../components/styles/Variables"
 
 const API_URL = "http://localhost:5005"
 
@@ -27,7 +25,9 @@ function ArtistList() {
             .catch(err => console.log(err))
     }, [])
 
-    let allArtists = allUsers.filter(artist => artist.role === "artist")
+    let allArtists = allUsers
+        .filter(artist => artist.role === "artist")
+        .filter(artist => artist.visible === true)
 
     return (
         <Page title="ArtistList" description="" keywords="">
@@ -37,14 +37,17 @@ function ArtistList() {
 
             <Content>
                 <Font.H1 hidden>All artists</Font.H1>
+
                 {isLoading ? (
-                    <p>Loading...</p>
-                ) : (
+                    <Font.P>Loading</Font.P>
+                ) : allArtists.length > 0 ? (
                     allArtists.map(artist => (
                         <Link to={`/artists/${artist._id}`}>
                             {artist.fullName}
                         </Link>
                     ))
+                ) : (
+                    <Font.P>Nothing to show!</Font.P>
                 )}
             </Content>
         </Page>
