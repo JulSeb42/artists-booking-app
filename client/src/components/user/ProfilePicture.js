@@ -3,8 +3,8 @@ import React from "react"
 import styled from "styled-components"
 
 // Components
-import * as Variables from "../styles/Variables"
-import Icon from "../ui/Icon"
+// import * as Variables from "../styles/Variables"
+// import Icon from "../ui/Icon"
 // import * as Font from "../styles/Font"
 
 // Styles
@@ -14,6 +14,7 @@ const Picture = styled.img`
     width: 100%;
     aspect-ratio: 1;
     border-radius: 50%;
+    object-fit: cover;
 `
 
 function ProfilePicture(props) {

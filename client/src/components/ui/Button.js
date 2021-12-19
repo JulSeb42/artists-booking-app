@@ -10,6 +10,7 @@ import * as Variables from "../styles/Variables"
 const Container = styled.button`
     border: none;
     padding: ${Variables.Margins.XS} ${Variables.Margins.S};
+    text-align: center;
     background: ${props =>
         props.primary
             ? Variables.Colors.Primary

@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom"
 import HelmetMeta from "./Helmet"
 import Header from "./Header"
 import { Container } from "./Container"
+import Footer from "./Footer"
 
 function Page(props) {
     const location = useLocation().pathname
@@ -18,13 +19,15 @@ function Page(props) {
                 keywords={props.keywords}
             />
 
-            <Header />
+            {location !== "/" && <Header />}
 
             {location !== "/" ? (
                 <Container as={props.form && "form"} {...props}>{props.children}</Container>
             ) : (
                 props.children
             )}
+
+            {location !== "/" && <Footer />}
         </>
     )
 }

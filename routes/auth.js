@@ -15,7 +15,6 @@ const isLoggedOut = require("../middleware/isLoggedOut")
 const isLoggedIn = require("../middleware/isLoggedIn")
 
 router.get("/loggedin", (req, res) => {
-    console.log(req.user)
     res.json(req.user)
 })
 

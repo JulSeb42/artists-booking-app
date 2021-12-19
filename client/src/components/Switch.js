@@ -23,6 +23,9 @@ import EditPassword from "../pages/user/EditPassword"
 import ArtistList from "../pages/artists/ArtistList"
 import ArtistDetail from "../pages/artists/ArtistDetail"
 
+// Utils
+import scrollToTop from "./utils/scrollToTop"
+
 const API_URL = "http://localhost:5005"
 
 function Switch() {
@@ -44,12 +47,16 @@ function Switch() {
 
     return (
         <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home />} preload={scrollToTop()} />
 
             {/* Login */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/signup/artist" element={<SignUpArtist />} />
+            <Route path="/login" element={<Login />} preload={scrollToTop()} />
+            <Route path="/signup" element={<Signup />} preload={scrollToTop()} />
+            <Route
+                path="/signup/artist"
+                element={<SignUpArtist />}
+                preload={scrollToTop()}
+            />
 
             {/* Account */}
             <Route
@@ -59,14 +66,16 @@ function Switch() {
                         <MyAccount />
                     </ProtectedRoute>
                 }
+                preload={scrollToTop()}
             />
             <Route
                 path="/my-account/edit"
                 element={
                     <ProtectedRoute redirectTo="/login">
-                        <EditAccount />
+                        <EditAccount edited={edited} setEdited={setEdited} />
                     </ProtectedRoute>
                 }
+                preload={scrollToTop()}
             />
             <Route
                 path="/my-account/edit/edit-password"
@@ -75,10 +84,15 @@ function Switch() {
                         <EditPassword />
                     </ProtectedRoute>
                 }
+                preload={scrollToTop()}
             />
 
             {/* Artists */}
-            <Route path="/artists" element={<ArtistList />} />
+            <Route
+                path="/artists"
+                element={<ArtistList />}
+                preload={scrollToTop()}
+            />
 
             {allUsers.map(artist => (
                 <Route
@@ -86,6 +100,7 @@ function Switch() {
                     element={<ArtistDetail artist={artist} />}
                     artist={artist}
                     key={artist._id}
+                    preload={scrollToTop()}
                 />
             ))}
         </Routes>
