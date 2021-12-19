@@ -135,6 +135,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
                 }
                 req.session.user = user
                 // req.session.user = user._id; // ! better and safer but in this case we saving the entire user object
+                console.log(user)
                 return res.json(user)
             })
         })
