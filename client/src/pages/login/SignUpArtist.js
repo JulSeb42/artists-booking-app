@@ -38,7 +38,7 @@ function SignUpArtist() {
 
     const handleSubmit = e => {
         e.preventDefault()
-        
+
         const requestBody = {
             fullName,
             email,

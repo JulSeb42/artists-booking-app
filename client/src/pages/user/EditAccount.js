@@ -4,12 +4,12 @@ import { v4 as uuid } from "uuid"
 import { useNavigate } from "react-router-dom"
 import { LinkScroll as Link } from "../../components/utils/LinkScroll"
 import axios from "axios"
-// import styled from "styled-components"
+import styled from "styled-components"
 
 // Components
 import Page from "../../components/layouts/Page"
 import * as Font from "../../components/styles/Font"
-// import * as Variables from "../../components/styles/Variables"
+import * as Variables from "../../components/styles/Variables"
 import {
     Aside,
     Content,
@@ -24,13 +24,28 @@ import SiteData from "../../components/data/SiteData"
 import DangerZone from "../../components/forms/DangerZone"
 import Textarea from "../../components/forms/Textarea"
 import Button from "../../components/ui/Button"
+import { IconMixin } from "../../components/ui/Icon"
+import Toggle from "../../components/forms/Toggle"
 
 // Utils
-import convertDate from "../../components/utils/convertDate"
+// import convertDate from "../../components/utils/convertDate"
 import getToday from "../../components/utils/getToday"
 // import convertYoutube from "../../components/utils/convertYoutube"
 
 const API_URL = "http://localhost:5005"
+
+const Date = styled.li`
+    grid-template-columns: auto 1fr auto !important;
+
+    &:after {
+        ${IconMixin({
+            icon: "close",
+            size: 24,
+            color: Variables.Colors.Danger,
+        })}
+        cursor: pointer;
+    }
+`
 
 function EditAccount({ edited, setEdited }) {
     const { user, updateUser } = useContext(AuthContext)
@@ -67,6 +82,10 @@ function EditAccount({ edited, setEdited }) {
     const handleFacebookLink = e => setFacebookLink(e.target.value)
     const handleInstagramLink = e => setInstagramLink(e.target.value)
     const handleVisible = e => setVisible(e.target.checked ? true : false)
+
+    const deleteAvailable = e => {
+        setAvailable(available.filter(item => item !== e.target.innerText))
+    }
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -111,14 +130,12 @@ function EditAccount({ edited, setEdited }) {
             <Aside center>
                 <ProfilePicture src={user.imageUrl} alt={user.fullName} />
                 {user.role === "artist" && (
-                    <p>
-                        <input
-                            type="checkbox"
-                            onChange={handleVisible}
-                            defaultChecked={visible}
-                        />{" "}
-                        Visible
-                    </p>
+                    <Toggle
+                        id="visible"
+                        label={visible ? "Visible" : "Hidden"}
+                        onChange={handleVisible}
+                        defaultChecked={visible}
+                    />
                 )}
 
                 <Button primary type="submit">
@@ -147,6 +164,7 @@ function EditAccount({ edited, setEdited }) {
 
                     <Select
                         label="Your city"
+                        id="city"
                         value={city}
                         onChange={handleCity}
                     >
@@ -160,6 +178,7 @@ function EditAccount({ edited, setEdited }) {
                     {user.role === "artist" && (
                         <Select
                             label="Genre"
+                            id="genre"
                             onChange={handleGenre}
                             value={genre}
                         >
@@ -175,15 +194,18 @@ function EditAccount({ edited, setEdited }) {
                         <Input
                             type="number"
                             label="Your price"
+                            id="price"
                             defaultValue={price}
                             value={price}
                             onChange={handlePrice}
                             min="0"
+                            step="10"
                         />
                     )}
 
                     {user.role === "artist" && (
                         <Textarea
+                            id="bio"
                             value={bio}
                             label="Your bio"
                             onChange={handleBio}
@@ -196,6 +218,7 @@ function EditAccount({ edited, setEdited }) {
 
                     {user.role === "artist" && (
                         <Input
+                            id="youtubeLink"
                             label="Link to your YouTube page"
                             onChange={handleYoutubeLink}
                             value={youtubeLink}
@@ -204,6 +227,7 @@ function EditAccount({ edited, setEdited }) {
 
                     {user.role === "artist" && (
                         <Input
+                            id="facebookLink"
                             label="Link to your Facebook page"
                             onChange={handleFacebookLink}
                             value={facebookLink}
@@ -212,6 +236,7 @@ function EditAccount({ edited, setEdited }) {
 
                     {user.role === "artist" && (
                         <Input
+                            id="instagramLink"
                             label="Link to your Instagram page"
                             onChange={handleInstagramLink}
                             value={instagramLink}
@@ -238,7 +263,18 @@ function EditAccount({ edited, setEdited }) {
                         {available.length !== 0 && (
                             <Font.List>
                                 {available.map(date => (
-                                    <li key={uuid()}>{convertDate(date)}</li>
+                                    <Date
+                                        key={uuid()}
+                                        onClick={deleteAvailable}
+                                    >
+                                        {date}
+
+                                        {/* <Icon
+                                            name="close"
+                                            size={24}
+                                            color={Variables.Colors.Danger}
+                                        /> */}
+                                    </Date>
                                 ))}
                             </Font.List>
                         )}
@@ -248,7 +284,6 @@ function EditAccount({ edited, setEdited }) {
                             type="date"
                             onChange={handleAvailable}
                             min={getToday()}
-                            value={available[0]}
                         />
                     </ItemContainer>
                 </Aside>

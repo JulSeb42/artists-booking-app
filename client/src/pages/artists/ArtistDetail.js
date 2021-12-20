@@ -9,7 +9,11 @@ import axios from "axios"
 import Page from "../../components/layouts/Page"
 import * as Font from "../../components/styles/Font"
 import * as Variables from "../../components/styles/Variables"
-import { Aside, Content, ItemContainer } from "../../components/layouts/Container"
+import {
+    Aside,
+    Content,
+    ItemContainer,
+} from "../../components/layouts/Container"
 import ProfilePicture from "../../components/user/ProfilePicture"
 import Button from "../../components/ui/Button"
 import { AuthContext } from "../../context/auth"
@@ -30,7 +34,7 @@ const API_URL = "http://localhost:5005"
 
 function ArtistDetail(props) {
     const { isLoggedIn, user } = useContext(AuthContext)
-    
+
     const conditionBtn =
         isLoggedIn &&
         props.artist.role === "artist" &&
@@ -86,6 +90,15 @@ function ArtistDetail(props) {
             .then(() => navigate("/my-account"))
             .catch(err => setErrorMessage(err.response))
     }
+
+    // Hide past dates
+    const [available] = useState(props.artist.available)
+
+    let filteredDates = available.filter(date => {
+        return new Date(date) > new Date(getToday())
+    })
+
+    console.log(filteredDates)
 
     return (
         <Page title={props.artist.fullName} description="" keywords="">
@@ -177,9 +190,9 @@ function ArtistDetail(props) {
                 <ItemContainer>
                     <Font.H4>Availabilities</Font.H4>
 
-                    {props.artist.available.length > 0 ? (
+                    {filteredDates.length > 0 ? (
                         <Font.List>
-                            {props.artist.available.sort().map(item => (
+                            {filteredDates.sort().map(item => (
                                 <li key={uuid()}>{convertDate(item)}</li>
                             ))}
                         </Font.List>

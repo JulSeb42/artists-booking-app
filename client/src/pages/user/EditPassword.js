@@ -57,6 +57,7 @@ function EditPassword() {
 
                 <Form btnPrimary="Save" container>
                     <Password
+                        id="password"
                         label="New password"
                         onChange={handlePassword}
                         value={password}

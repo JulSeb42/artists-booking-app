@@ -15,6 +15,7 @@ import ProfilePicture from "../../components/user/ProfilePicture"
 import Button from "../../components/ui/Button"
 import TextIcon from "../../components/ui/TextIcon"
 import CardSmall, { List } from "../../components/artists/CardSmall"
+import getToday from "../../components/utils/getToday"
 
 const API_URL = "http://localhost:5005"
 
@@ -23,6 +24,8 @@ function MyAccount() {
 
     const [contacted, setContacted] = useState([])
     const [loading, setLoading] = useState(true)
+
+    console.log(`Today: ${getToday()}`)
 
     useEffect(() => {
         axios
