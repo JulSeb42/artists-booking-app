@@ -12,6 +12,7 @@ import ProfilePicture from "../user/ProfilePicture"
 
 // Utils
 import convertDate from "../utils/convertDate"
+import getToday from "../utils/getToday"
 
 // Styles
 const Container = styled.div`
@@ -115,20 +116,28 @@ function Card({ artist }) {
                 <Info>
                     <TextInfo>
                         <Font.P>
-                            <Font.Strong>Genre:</Font.Strong> {artist.genre !== "" ? artist.genre : "-"}
+                            <Font.Strong>Genre:</Font.Strong>{" "}
+                            {artist.genre !== "" ? artist.genre : "-"}
                         </Font.P>
 
                         <Font.P>
                             <Font.Strong>Next availability:</Font.Strong>{" "}
-                            {convertDate(artist.available[0])}
+                            {new Date(artist.available[0]) >
+                            new Date(getToday())
+                                ? convertDate(artist.available[0])
+                                : "-"}
                         </Font.P>
 
                         <Font.P>
-                            <Font.Strong>Price:</Font.Strong> {artist.price !== null ? artist.price : "-"} €
+                            <Font.Strong>Price:</Font.Strong>{" "}
+                            {artist.price !== null ? artist.price : "-"} €
                         </Font.P>
                     </TextInfo>
 
-                    <ButtonStyled to={`/artists/${artist._id}`} btncolor="primary">
+                    <ButtonStyled
+                        to={`/artists/${artist._id}`}
+                        btncolor="primary"
+                    >
                         See their page
                     </ButtonStyled>
                 </Info>
