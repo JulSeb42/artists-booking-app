@@ -1,7 +1,8 @@
 // Packages
-import React from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { v4 as uuid } from "uuid"
+import axios from "axios"
 
 // Components
 import * as Variables from "../styles/Variables"
@@ -18,6 +19,8 @@ import Button from "../ui/Button"
 // Data
 import SiteData from "../data/SiteData"
 
+const API_URL = "http://localhost:5005"
+
 // Styles
 const SortContainer = styled.div`
     display: flex;
@@ -30,6 +33,29 @@ const SortContainer = styled.div`
 `
 
 function SearchArtists(props) {
+    const [cities, setCities] = useState([])
+
+    useEffect(() => {
+        axios
+            .get(`${API_URL}/users/user`)
+            .then(res => {
+                setCities(
+                    res.data
+                        .filter(user => user.role === "artist")
+                        .filter(artist => artist.visible === true)
+                        .map(artist => artist.city)
+                )
+            })
+            .catch(err => console.log(err))
+    }, [])
+
+    // useEffect(() => {
+    //     setCities(artists.map(artist => artist.city))
+    //     console.log(cities)
+    // }, [])
+
+    let uniqCities = [...new Set(cities)].sort()
+
     return (
         <Aside>
             <Input
@@ -81,7 +107,7 @@ function SearchArtists(props) {
                         value={props.valueSelectLocation}
                     >
                         <option value="All">All</option>
-                        {SiteData.Cities.sort().map(city => (
+                        {uniqCities.map(city => (
                             <option value={city} key={uuid()}>
                                 {city}
                             </option>
