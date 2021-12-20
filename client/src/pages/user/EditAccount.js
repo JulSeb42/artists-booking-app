@@ -217,10 +217,6 @@ function EditAccount({ edited, setEdited }) {
                         />
                     )}
 
-                    {/* {user.role === "artist" && (
-                        <Input label="Link to youtube video" onChange={handleYoutube} value={youtube} />
-                    )} */}
-
                     {user.role === "artist" && (
                         <Input
                             id="youtubeLink"
