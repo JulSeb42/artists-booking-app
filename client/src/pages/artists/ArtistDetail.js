@@ -1,6 +1,5 @@
 // Imports
 import React, { useContext, useState, useEffect } from "react"
-// import styled from "styled-components"
 import { v4 as uuid } from "uuid"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"

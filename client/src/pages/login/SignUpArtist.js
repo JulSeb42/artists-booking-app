@@ -12,8 +12,6 @@ import NavLogin from "../../components/forms/NavLogin"
 import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 import Password from "../../components/forms/Password"
-
-// import SiteData from "../../components/data/SiteData"
 import allCities from "../../components/data/citiesGermany.json"
 
 const API_URL = "http://localhost:5005"

@@ -1,7 +1,6 @@
 // Packages
 import React, { useState, useEffect } from "react"
 import { Routes, Route } from "react-router-dom"
-// import { v4 as uuid } from "uuid"
 import axios from "axios"
 
 import ProtectedRoute from "./utils/ProtectedRoute"
@@ -41,10 +40,6 @@ function Switch() {
             })
             .catch(err => console.log(err))
     }, [edited])
-
-    // let artists = allUsers.filter(artist => artist.role === artist)
-
-    // if (artists === []) return <></>
 
     return (
         <Routes>

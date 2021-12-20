@@ -1,21 +1,17 @@
 // Imports
 import React, { useContext, useState, useEffect } from "react"
-// import styled from "styled-components"
-// import { Navigate } from "react-router-dom"
 import axios from "axios"
 import { v4 as uuid } from "uuid"
 
 // Components
 import Page from "../../components/layouts/Page"
 import * as Font from "../../components/styles/Font"
-// import * as Variables from "../components/styles/Variables"
 import { Aside, Content } from "../../components/layouts/Container"
 import { AuthContext } from "../../context/auth"
 import ProfilePicture from "../../components/user/ProfilePicture"
 import Button from "../../components/ui/Button"
 import TextIcon from "../../components/ui/TextIcon"
 import CardSmall, { List } from "../../components/artists/CardSmall"
-// import getToday from "../../components/utils/getToday"
 
 const API_URL = "http://localhost:5005"
 

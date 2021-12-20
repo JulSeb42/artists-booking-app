@@ -5,7 +5,6 @@ import { NavLink, useLocation } from "react-router-dom"
 
 // Components
 import * as Variables from "../styles/Variables"
-// import * as Font from "../styles/Font"
 import LogoLink from "../ui/LogoLink"
 import { AuthContext } from "../../context/auth"
 

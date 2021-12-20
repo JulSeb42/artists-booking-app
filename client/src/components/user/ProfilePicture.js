@@ -6,7 +6,6 @@ import { LinkScroll as Link } from "../utils/LinkScroll"
 // Components
 import * as Variables from "../styles/Variables"
 import Icon from "../ui/Icon"
-// import * as Font from "../styles/Font"
 
 // Styles
 const Container = styled(Link)`

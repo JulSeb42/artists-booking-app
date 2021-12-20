@@ -1,13 +1,11 @@
 // Imports
 import React, { useState, useContext, useEffect } from "react"
-// import styled from "styled-components"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 
 // Components
 import Page from "../../components/layouts/Page"
 import * as Font from "../../components/styles/Font"
-// import * as Variables from "../../components/styles/Variables"
 import { Aside, Content } from "../../components/layouts/Container"
 import Input from "../../components/forms/Input"
 import Form from "../../components/forms/Form"

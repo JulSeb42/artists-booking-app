@@ -27,13 +27,11 @@ function Signup() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [city, setCity] = useState("")
-    // const [imageUrl, setImageUrl] = useState("")
     const [errorMessage, setErrorMessage] = useState(undefined)
 
     const handleFullName = e => setFullName(e.target.value)
     const handleEmail = e => setEmail(e.target.value)
     const handlePassword = e => setPassword(e.target.value)
-    // const handleCity = e => setCity(e.target.value)
 
     const handleSubmit = e => {
         e.preventDefault()

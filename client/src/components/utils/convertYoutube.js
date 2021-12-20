@@ -3,6 +3,3 @@ const convertYoutube = link => {
 }
 
 export default convertYoutube
-
-// https://www.youtube.com/watch?v=EMQuNczjUo0
-// https://www.youtube.com/embed/EMQuNczjUo0
