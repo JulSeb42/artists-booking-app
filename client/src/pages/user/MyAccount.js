@@ -2,6 +2,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import axios from "axios"
 import { v4 as uuid } from "uuid"
+import { Navigate } from "react-router-dom"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -16,7 +17,7 @@ import CardSmall, { List } from "../../components/artists/CardSmall"
 const API_URL = "http://localhost:5005"
 
 function MyAccount() {
-    const { user } = useContext(AuthContext)
+    const { user, isLoggedIn } = useContext(AuthContext)
 
     const [contacted, setContacted] = useState([])
     const [loading, setLoading] = useState(true)
@@ -31,7 +32,9 @@ function MyAccount() {
             .catch(err => console.log(err))
     }, [user._id])
 
-    return (
+    return !isLoggedIn ? (
+        <Navigate to="/login" />
+    ) : (
         <Page title={user.fullName} description="" keywords="">
             <Aside center>
                 <ProfilePicture

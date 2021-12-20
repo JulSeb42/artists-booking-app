@@ -1,6 +1,6 @@
 // Imports
 import React, { useState, useContext, useEffect } from "react"
-import { useNavigate, Link, Navigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import { AuthContext } from "../../context/auth"
 
@@ -19,9 +19,8 @@ import allCities from "../../components/data/citiesGermany.json"
 const API_URL = "http://localhost:5005"
 
 function Signup() {
+    const { logInUser } = useContext(AuthContext)
     const navigate = useNavigate()
-
-    const { logInUser, isLoggedIn } = useContext(AuthContext)
 
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
@@ -42,7 +41,7 @@ function Signup() {
             .post(`${API_URL}/auth/signup`, requestBody)
             .then(res => {
                 logInUser(res.data)
-                navigate("/my-account")
+                navigate("/thank-you")
             })
             .catch(err => {
                 const errorDescription = err.response.data.errorMessage
@@ -71,9 +70,7 @@ function Signup() {
         setCity(e.target.innerText)
     }
 
-    return isLoggedIn ? (
-        <Navigate to="/my-account" />
-    ) : (
+    return (
         <Page title="Signup" description="" keywords="">
             <Aside />
 

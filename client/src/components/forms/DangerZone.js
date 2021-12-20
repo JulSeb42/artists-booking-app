@@ -56,7 +56,7 @@ function DangerZone() {
             .delete(`${API_URL}/users/delete-user/${user._id}`)
             .then(() => {
                 logOutUser()
-                navigate("/")
+                navigate("/goodbye")
             })
             .catch(err => console.log(err))
     }
@@ -71,7 +71,7 @@ function DangerZone() {
                 <Font.P>Are you sure you want to delete your account?</Font.P>
 
                 <ButtonsContainer>
-                    <Button btncolor="danger" onClick={handleDelete}>
+                    <Button btncolor="danger" onClick={handleDelete} to="/goodbye">
                         Yes delete my account
                     </Button>
 

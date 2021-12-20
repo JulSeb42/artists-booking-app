@@ -12,6 +12,8 @@ import Home from "../pages/Home"
 import Login from "../pages/login/Login"
 import Signup from "../pages/login/Signup"
 import SignUpArtist from "../pages/login/SignUpArtist"
+import ThankYou from "../pages/login/ThankYou"
+import Goodbye from "../pages/login/Goodbye"
 
 // Account
 import MyAccount from "../pages/user/MyAccount"
@@ -55,6 +57,20 @@ function Switch() {
             <Route
                 path="/signup/artist"
                 element={<SignUpArtist />}
+                preload={scrollToTop()}
+            />
+            <Route
+                path="/thank-you"
+                element={
+                    <ProtectedRoute redirectTo="/login">
+                        <ThankYou />
+                    </ProtectedRoute>
+                }
+                preload={scrollToTop()}
+            />
+            <Route
+                path="/goodbye"
+                element={<Goodbye />}
                 preload={scrollToTop()}
             />
 
