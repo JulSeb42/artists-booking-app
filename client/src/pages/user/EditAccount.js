@@ -17,16 +17,13 @@ import {
 } from "../../components/layouts/Container"
 import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
-import Select from "../../components/forms/Select"
 import ProfilePicture from "../../components/user/ProfilePicture"
 import { AuthContext } from "../../context/auth"
-import SiteData from "../../components/data/SiteData"
 import DangerZone from "../../components/forms/DangerZone"
 import Textarea from "../../components/forms/Textarea"
 import Button from "../../components/ui/Button"
 import { IconMixin } from "../../components/ui/Icon"
 import Toggle from "../../components/forms/Toggle"
-// import ListSuggestions from "../../components/forms/ListSuggestions"
 
 // Utils
 import getToday from "../../components/utils/getToday"
@@ -193,18 +190,12 @@ function EditAccount({ edited, setEdited }) {
                     />
 
                     {user.role === "artist" && (
-                        <Select
+                        <Input
                             label="Genre"
                             id="genre"
                             onChange={handleGenre}
                             value={genre}
-                        >
-                            {SiteData.Genres.map(genre => (
-                                <option value={genre} key={uuid()}>
-                                    {genre}
-                                </option>
-                            ))}
-                        </Select>
+                        />
                     )}
 
                     {user.role === "artist" && (

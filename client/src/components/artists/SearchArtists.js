@@ -16,9 +16,6 @@ import Range from "../forms/Range"
 import Select from "../forms/Select"
 import Button from "../ui/Button"
 
-// Data
-import SiteData from "../data/SiteData"
-
 const API_URL = "http://localhost:5005"
 
 // Styles
@@ -34,6 +31,7 @@ const SortContainer = styled.div`
 
 function SearchArtists(props) {
     const [cities, setCities] = useState([])
+    const [genres, setGenres] = useState([])
 
     useEffect(() => {
         axios
@@ -45,16 +43,20 @@ function SearchArtists(props) {
                         .filter(artist => artist.visible === true)
                         .map(artist => artist.city)
                 )
+                setGenres(
+                    res.data
+                        .filter(user => user.role === "artist")
+                        .filter(artist => artist.visible === true)
+                        .map(artist => artist.genre)
+                )
             })
             .catch(err => console.log(err))
     }, [])
 
-    // useEffect(() => {
-    //     setCities(artists.map(artist => artist.city))
-    //     console.log(cities)
-    // }, [])
-
-    let uniqCities = [...new Set(cities)].sort()
+    let uniqCities = [...new Set(cities)]
+    let sortedCities = uniqCities.sort()
+    let uniqGenres = [...new Set(genres)]
+    let sortedGenres = uniqGenres.sort()
 
     return (
         <Aside>
@@ -107,7 +109,7 @@ function SearchArtists(props) {
                         value={props.valueSelectLocation}
                     >
                         <option value="All">All</option>
-                        {uniqCities.map(city => (
+                        {sortedCities.map(city => (
                             <option value={city} key={uuid()}>
                                 {city}
                             </option>
@@ -122,11 +124,14 @@ function SearchArtists(props) {
                         value={props.valueSelectGenre}
                     >
                         <option value="All">All</option>
-                        {SiteData.Genres.sort((a, b) => a - b).map(genre => (
-                            <option value={genre} key={uuid()}>
-                                {genre}
-                            </option>
-                        ))}
+                        {sortedGenres.map(
+                            genre =>
+                                genre !== "" && (
+                                    <option value={genre} key={uuid()}>
+                                        {genre}
+                                    </option>
+                                )
+                        )}
                     </Select>
                 </Form>
             </ItemContainer>
