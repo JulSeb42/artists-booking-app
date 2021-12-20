@@ -12,13 +12,6 @@ const errorHandler = err => {
     throw err
 }
 
-// const getItems = () => {
-//     return axios
-//         .get(`${API_URL}/users/user`)
-//         .then(res => res.data)
-//         .catch(errorHandler)
-// }
-
 const uploadImage = file => {
     return axios
         .put(`${API_URL}/users/upload-picture`, file)
@@ -26,18 +19,9 @@ const uploadImage = file => {
         .catch(errorHandler)
 }
 
-// const createItem = newItem => {
-//     return axios
-//         .post("/api/items", newItem)
-//         .then(res => res.data)
-//         .catch(errorHandler)
-// }
-
 const cloudinaryService = {
     service,
-    // getItems,
     uploadImage,
-    // createItem,
 }
 
 export default cloudinaryService

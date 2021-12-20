@@ -88,6 +88,12 @@ const TextInfo = styled.span`
 `
 
 function Card({ artist }) {
+    const sortDates = arr => {
+        return arr.sort((a, b) => {
+            return new Date(a) - new Date(b)
+        })[0]
+    }
+
     return (
         <Container>
             <Link to={`/artists/${artist._id}`}>
@@ -122,9 +128,14 @@ function Card({ artist }) {
 
                         <Font.P>
                             <Font.Strong>Next availability:</Font.Strong>{" "}
-                            {new Date(artist.available[0]) >
+                            {/* {new Date(artist.available[0]) >
                             new Date(getToday())
                                 ? convertDate(artist.available[0])
+                                : "-"} */}
+                            {new Date(
+                                convertDate(sortDates(artist.available))
+                            ) > new Date(getToday())
+                                ? convertDate(sortDates(artist.available))
                                 : "-"}
                         </Font.P>
 

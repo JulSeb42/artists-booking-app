@@ -20,6 +20,11 @@ const Container = styled.div`
         css`
             display: none;
         `}
+    
+    ${props => props.cities && css`
+        position: relative;
+        z-index: 10;
+    `}
 `
 
 const InputStyled = styled.input`
@@ -60,7 +65,7 @@ function Input(props) {
     const handleClose = () => setTimeout(setIsOpen(false), 500)
 
     return (
-        <Container hidden={props.hidden} style={props.style}>
+        <Container hidden={props.hidden} style={props.style} cities={props.cities}>
             {props.label && (
                 <Font.Label
                     htmlFor={props.id}

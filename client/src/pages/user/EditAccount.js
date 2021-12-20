@@ -57,8 +57,7 @@ function EditAccount({ edited, setEdited }) {
     const [price, setPrice] = useState(user.price || "")
     const [bio, setBio] = useState(user.bio || "")
     const [available, setAvailable] = useState(user.available || [])
-
-    // , youtube, youtubeLink, facebookLink, instagramLink
+    
     const [youtube] = useState(user.youtube || "")
     const [youtubeLink, setYoutubeLink] = useState(user.youtubeLink || "")
     const [facebookLink, setFacebookLink] = useState(user.facebookLink || "")
@@ -67,14 +66,12 @@ function EditAccount({ edited, setEdited }) {
 
     const handleFullName = e => setFullName(e.target.value)
     const handleEmail = e => setEmail(e.target.value)
-    // const handleCity = e => setCity(e.target.value)
 
     const handleGenre = e => setGenre(e.target.value)
     const handlePrice = e =>
         setPrice(e.target.value === null ? 0 : e.target.value)
     const handleBio = e => setBio(e.target.value)
     const handleAvailable = e => setAvailable([...available, e.target.value])
-    // const handleYoutube = e => setYoutube([...youtube, e.target.value])
     const handleYoutubeLink = e => setYoutubeLink(e.target.value)
     const handleFacebookLink = e => setFacebookLink(e.target.value)
     const handleInstagramLink = e => setInstagramLink(e.target.value)
@@ -219,10 +216,6 @@ function EditAccount({ edited, setEdited }) {
                             onChange={handleBio}
                         />
                     )}
-
-                    {/* {user.role === "artist" && (
-                        <Input label="Link to youtube video" onChange={handleYoutube} value={youtube} />
-                    )} */}
 
                     {user.role === "artist" && (
                         <Input

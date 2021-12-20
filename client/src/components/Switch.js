@@ -1,7 +1,6 @@
 // Packages
 import React, { useState, useEffect } from "react"
 import { Routes, Route } from "react-router-dom"
-// import { v4 as uuid } from "uuid"
 import axios from "axios"
 
 import ProtectedRoute from "./utils/ProtectedRoute"
@@ -13,6 +12,8 @@ import Home from "../pages/Home"
 import Login from "../pages/login/Login"
 import Signup from "../pages/login/Signup"
 import SignUpArtist from "../pages/login/SignUpArtist"
+import ThankYou from "../pages/login/ThankYou"
+import Goodbye from "../pages/login/Goodbye"
 
 // Account
 import MyAccount from "../pages/user/MyAccount"
@@ -42,10 +43,6 @@ function Switch() {
             .catch(err => console.log(err))
     }, [edited])
 
-    // let artists = allUsers.filter(artist => artist.role === artist)
-
-    // if (artists === []) return <></>
-
     return (
         <Routes>
             <Route path="/" element={<Home />} preload={scrollToTop()} />
@@ -60,6 +57,20 @@ function Switch() {
             <Route
                 path="/signup/artist"
                 element={<SignUpArtist />}
+                preload={scrollToTop()}
+            />
+            <Route
+                path="/thank-you"
+                element={
+                    <ProtectedRoute redirectTo="/login">
+                        <ThankYou />
+                    </ProtectedRoute>
+                }
+                preload={scrollToTop()}
+            />
+            <Route
+                path="/goodbye"
+                element={<Goodbye />}
                 preload={scrollToTop()}
             />
 

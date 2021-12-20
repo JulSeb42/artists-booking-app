@@ -1,7 +1,8 @@
 // Imports
-import React, { useContext, useState, useEffect} from "react"
-import { Navigate, Link, useNavigate } from "react-router-dom"
+import React, { useContext, useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -12,14 +13,12 @@ import NavLogin from "../../components/forms/NavLogin"
 import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 import Password from "../../components/forms/Password"
-
-// import SiteData from "../../components/data/SiteData"
 import allCities from "../../components/data/citiesGermany.json"
 
 const API_URL = "http://localhost:5005"
 
 function SignUpArtist() {
-    const { isLoggedIn, logInUser } = useContext(AuthContext)
+    const { logInUser } = useContext(AuthContext)
     const navigate = useNavigate()
 
     const [fullName, setFullName] = useState("")
@@ -55,7 +54,7 @@ function SignUpArtist() {
             .post(`${API_URL}/auth/signup`, requestBody)
             .then(res => {
                 logInUser(res.data)
-                navigate("/login")
+                navigate("/thank-you")
             })
             .catch(err => {
                 const errorDescription = err.response.data.errorMessage
@@ -84,9 +83,7 @@ function SignUpArtist() {
         setCity(e.target.innerText)
     }
 
-    return isLoggedIn ? (
-        <Navigate to="/my-account" />
-    ) : (
+    return (
         <Page title="SignUpArtist" description="" keywords="">
             <Aside />
 

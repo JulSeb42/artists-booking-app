@@ -20,27 +20,6 @@ const SiteData = {
         "Düsseldorf",
     ],
 
-    Genres: [
-        "Alt Rock",
-        "Blues",
-        "Country",
-        "Folk",
-        "Acoustic",
-        "Funk",
-        "Heavy Metal",
-        "Hip-Hop",
-        "Indie",
-        "Jazz",
-        "Latin",
-        "Pop",
-        "Punk Rock",
-        "Reggae",
-        "Rock",
-        "R&B",
-        "Soul",
-        "Electronic",
-    ],
-
     // Metadata
     Cover: "",
     Type: "",

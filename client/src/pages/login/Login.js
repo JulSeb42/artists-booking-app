@@ -2,7 +2,6 @@
 import React, { useState, useContext } from "react"
 import axios from "axios"
 import { AuthContext } from "../../context/auth"
-// import styled from "styled-components"
 import { Navigate, useNavigate } from "react-router-dom"
 
 // Components
@@ -13,7 +12,6 @@ import NavLogin from "../../components/forms/NavLogin"
 import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 import Password from "../../components/forms/Password"
-// import * as Variables from "../components/styles/Variables"
 
 const API_URL = "http://localhost:5005"
 

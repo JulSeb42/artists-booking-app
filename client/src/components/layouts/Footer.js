@@ -65,33 +65,6 @@ function Footer(props) {
             </Col>
 
             <Col>
-                {/* Contact form */}
-                {/* <Form action="" method="POST" btnPrimary="Send" id="contact">
-                    <Input
-                        label="Your name"
-                        name="name"
-                        id="nameContactFooter"
-                        footer
-                    />
-                    <Input
-                        label="Your email"
-                        name="email"
-                        id="emailContactFooter"
-                        footer
-                    />
-                    <Input
-                        label="Title of your message"
-                        name="title"
-                        id="title"
-                        footer
-                    />
-                    <Textarea
-                        label="Your message"
-                        name="message"
-                        id="message"
-                        footer
-                    />
-                </Form> */}
                 <Font.P>
                     <Font.Strong>Disclaimer:</Font.Strong> this is a student
                     project, and all data here is fake. If you want to see more
