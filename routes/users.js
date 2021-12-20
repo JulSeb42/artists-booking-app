@@ -2,6 +2,8 @@ const router = require("express").Router()
 const User = require("../models/User.model")
 const bcrypt = require("bcrypt")
 
+const fileUploader = require("../config/cloudinary.config")
+
 const saltRounds = 10
 
 router.get("/user", (req, res, next) => {
@@ -84,6 +86,32 @@ router.put("/edit-password", (req, res, next) => {
                 })
                 .catch(err => next(err))
         })
+})
+
+router.put(
+    "/upload-picture",
+    fileUploader.single("imageUrl"),
+    (req, res, next) => {
+        if (!req.file) {
+            next(new Error("No file uploaded"))
+            return
+        }
+
+        res.json({ secure_url: req.file.path })
+    }
+)
+
+router.put("/edit-picture/:id", (req, res, next) => {
+    const { imageUrl } = req.body
+    const id = req.params.id
+
+    console.log(id)
+
+    User.findByIdAndUpdate(id, { imageUrl }, { new: true })
+        .then(updatedUser => {
+            res.status(200).json(updatedUser)
+        })
+        .catch(err => next(err))
 })
 
 router.delete("/delete-user/:id", (req, res, next) => {

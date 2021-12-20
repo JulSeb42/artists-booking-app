@@ -18,6 +18,7 @@ import SignUpArtist from "../pages/login/SignUpArtist"
 import MyAccount from "../pages/user/MyAccount"
 import EditAccount from "../pages/user/EditAccount"
 import EditPassword from "../pages/user/EditPassword"
+import EditProfilePicture from "../pages/user/EditProfilePicture"
 
 // Artists
 import ArtistList from "../pages/artists/ArtistList"
@@ -51,7 +52,11 @@ function Switch() {
 
             {/* Login */}
             <Route path="/login" element={<Login />} preload={scrollToTop()} />
-            <Route path="/signup" element={<Signup />} preload={scrollToTop()} />
+            <Route
+                path="/signup"
+                element={<Signup />}
+                preload={scrollToTop()}
+            />
             <Route
                 path="/signup/artist"
                 element={<SignUpArtist />}
@@ -81,7 +86,19 @@ function Switch() {
                 path="/my-account/edit/edit-password"
                 element={
                     <ProtectedRoute redirectTo="/login">
-                        <EditPassword />
+                        <EditPassword edited={edited} setEdited={setEdited} />
+                    </ProtectedRoute>
+                }
+                preload={scrollToTop()}
+            />
+            <Route
+                path="/my-account/edit/edit-picture"
+                element={
+                    <ProtectedRoute redirectTo="/login">
+                        <EditProfilePicture
+                            edited={edited}
+                            setEdited={setEdited}
+                        />
                     </ProtectedRoute>
                 }
                 preload={scrollToTop()}

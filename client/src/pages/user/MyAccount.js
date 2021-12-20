@@ -15,7 +15,7 @@ import ProfilePicture from "../../components/user/ProfilePicture"
 import Button from "../../components/ui/Button"
 import TextIcon from "../../components/ui/TextIcon"
 import CardSmall, { List } from "../../components/artists/CardSmall"
-import getToday from "../../components/utils/getToday"
+// import getToday from "../../components/utils/getToday"
 
 const API_URL = "http://localhost:5005"
 
@@ -24,8 +24,6 @@ function MyAccount() {
 
     const [contacted, setContacted] = useState([])
     const [loading, setLoading] = useState(true)
-
-    console.log(`Today: ${getToday()}`)
 
     useEffect(() => {
         axios
@@ -40,7 +38,11 @@ function MyAccount() {
     return (
         <Page title={user.fullName} description="" keywords="">
             <Aside center>
-                <ProfilePicture src={user.imageUrl} alt={user.fullName} />
+                <ProfilePicture
+                    src={user.imageUrl}
+                    alt={user.fullName}
+                    to="/my-account/edit/edit-picture"
+                />
 
                 <Button to="/my-account/edit" primary>
                     Edit your account

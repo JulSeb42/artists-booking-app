@@ -128,7 +128,11 @@ function EditAccount({ edited, setEdited }) {
             onSubmit={handleSubmit}
         >
             <Aside center>
-                <ProfilePicture src={user.imageUrl} alt={user.fullName} />
+                <ProfilePicture
+                    src={user.imageUrl}
+                    alt={user.fullName}
+                    
+                />
                 {user.role === "artist" && (
                     <Toggle
                         id="visible"

@@ -67,14 +67,15 @@ function ArtistDetail(props) {
                 }`
             )
             .then(res => {
-                res.data.contacted.find(artist => {
-                    return artist._id === props.artist._id
-                        ? setContacted(true)
-                        : ""
-                })
+                isLoggedIn &&
+                    res.data.contacted.find(artist => {
+                        return artist._id === props.artist._id
+                            ? setContacted(true)
+                            : setContacted(false)
+                    })
             })
             .catch(err => console.log(err))
-    }, [user._id, props.artist._id, isLoggedIn])
+    }, [])
 
     const handleSend = e => {
         const requestBody = {
@@ -97,8 +98,6 @@ function ArtistDetail(props) {
     let filteredDates = available.filter(date => {
         return new Date(date) > new Date(getToday())
     })
-
-    console.log(filteredDates)
 
     return (
         <Page title={props.artist.fullName} description="" keywords="">

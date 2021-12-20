@@ -77,7 +77,7 @@ function Header() {
 
     return (
         <Container>
-            <LogoLink />
+            <LogoLink colorLogo="false" />
 
             <Nav>
                 <Link to="/artists">Artists</Link>
