@@ -62,7 +62,7 @@ function AuthProviderWrapper(props) {
                 logInUser,
                 logOutUser,
                 isLoading,
-                updateUser
+                updateUser,
             }}
         >
             {props.children}

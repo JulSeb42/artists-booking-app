@@ -16,11 +16,21 @@ import ProfilePicture from "../../components/user/ProfilePicture"
 const API_URL = "http://localhost:5005"
 
 function EditProfilePicture({ edited, setEdited }) {
-    const { user } = useContext(AuthContext)
+    const { user, updateUser } = useContext(AuthContext)
     const [imageUrl, setImageUrl] = useState("")
     const [picture, setPicture] = useState(user.imageUrl)
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        axios
+            .get(`${API_URL}/users/user/${user._id}`)
+            .then(response => {
+                const { imageUrl } = response.data
+                setImageUrl(imageUrl)
+            })
+            .catch(err => console.log(err))
+    }, [user._id])
 
     const handleFileUpload = e => {
         e.preventDefault()
@@ -39,7 +49,7 @@ function EditProfilePicture({ edited, setEdited }) {
             setPicture(e.target.files[0])
             const reader = new FileReader()
             reader.addEventListener("load", () => {
-                setImageUrl(reader.result)
+                setPicture(reader.result)
             })
             reader.readAsDataURL(e.target.files[0])
         }
@@ -57,26 +67,17 @@ function EditProfilePicture({ edited, setEdited }) {
         axios
             .put(`${API_URL}/users/edit-picture/${user._id}`, requestBody)
             .then(res => {
+                updateUser(res.data)
                 setEdited(!edited)
                 navigate("/my-account")
             })
             .catch(err => console.log(err))
     }
 
-    useEffect(() => {
-        axios
-            .get(`${API_URL}/users/user/${user._id}`)
-            .then(response => {
-                const { imageUrl } = response.data
-                setImageUrl(imageUrl)
-            })
-            .catch(err => console.log(err))
-    }, [user._id])
-
     return (
         <Page title="Edit profile picture" description="" keywords="">
             <Aside>
-                <ProfilePicture src={imageUrl} alt={user.fullName} />
+                <ProfilePicture src={picture} alt={user.fullName} />
             </Aside>
 
             <Content>

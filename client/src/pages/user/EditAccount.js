@@ -57,7 +57,7 @@ function EditAccount({ edited, setEdited }) {
     const [price, setPrice] = useState(user.price || "")
     const [bio, setBio] = useState(user.bio || "")
     const [available, setAvailable] = useState(user.available || [])
-    
+
     const [youtube] = useState(user.youtube || "")
     const [youtubeLink, setYoutubeLink] = useState(user.youtubeLink || "")
     const [facebookLink, setFacebookLink] = useState(user.facebookLink || "")
