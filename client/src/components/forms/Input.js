@@ -1,10 +1,11 @@
 // Packages
-import React from "react"
+import React, { useState } from "react"
 import styled, { css } from "styled-components"
 
 // Components
 import * as Variables from "../styles/Variables"
 import * as Font from "../styles/Font"
+import ListSuggestions from "./ListSuggestions"
 
 // Styles
 const Container = styled.div`
@@ -12,6 +13,7 @@ const Container = styled.div`
     grid-template-columns: 1fr;
     width: 100%;
     gap: ${Variables.Margins.XXS};
+    position: relative;
 
     ${props =>
         props.hidden &&
@@ -29,6 +31,8 @@ const InputStyled = styled.input`
     color: ${Variables.Colors.FontColor};
     background-color: ${Variables.Colors.BackgroundColor};
     outline: none;
+    position: relative;
+    z-index: 1;
 
     &:focus {
         border-color: ${Variables.Colors.Primary};
@@ -49,6 +53,12 @@ const InputStyled = styled.input`
 `
 
 function Input(props) {
+    const [isOpen, setIsOpen] = useState(false)
+    const open = isOpen ? "" : "closed"
+
+    const handleOpen = () => setIsOpen(true)
+    const handleClose = () => setTimeout(setIsOpen(false), 500)
+
     return (
         <Container hidden={props.hidden} style={props.style}>
             {props.label && (
@@ -65,8 +75,18 @@ function Input(props) {
             <InputStyled
                 id={props.id}
                 name={props.name ? props.name : props.id}
+                onFocus={props.cities && handleOpen}
+                onBlur={props.cities && handleClose}
                 {...props}
             />
+
+            {props.cities && (
+                <ListSuggestions
+                    items={props.cities}
+                    className={open}
+                    onMouseDown={props.onMouseDown}
+                />
+            )}
         </Container>
     )
 }

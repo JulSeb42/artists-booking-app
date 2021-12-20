@@ -71,7 +71,7 @@ function DangerZone() {
                 <Font.P>Are you sure you want to delete your account?</Font.P>
 
                 <ButtonsContainer>
-                    <Button danger onClick={handleDelete}>
+                    <Button btncolor="danger" onClick={handleDelete}>
                         Yes delete my account
                     </Button>
 

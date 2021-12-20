@@ -20,7 +20,7 @@ function Home() {
             >
                 {/* Form */}
 
-                <Button to="/artists" primary large>
+                <Button to="/artists" btncolor="primary" large>
                     Browse artists
                 </Button>
             </Cover>

@@ -128,7 +128,7 @@ function Card({ artist }) {
                         </Font.P>
                     </TextInfo>
 
-                    <ButtonStyled to={`/artists/${artist._id}`} primary>
+                    <ButtonStyled to={`/artists/${artist._id}`} btncolor="primary">
                         See their page
                     </ButtonStyled>
                 </Info>

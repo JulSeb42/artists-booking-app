@@ -12,13 +12,13 @@ const Container = styled.button`
     padding: ${Variables.Margins.XS} ${Variables.Margins.S};
     text-align: center;
     background: ${props =>
-        props.primary
+        props.btncolor === "primary"
             ? Variables.Colors.Primary
-            : props.danger
+            : props.btncolor === "danger"
             ? Variables.Colors.Danger
             : "none"};
     color: ${props =>
-        props.primary || props.danger
+        props.btncolor === "primary" || props.btncolor === "danger"
             ? Variables.Colors.White
             : Variables.Colors.Primary};
     text-decoration: none;
@@ -29,15 +29,15 @@ const Container = styled.button`
 
     &:hover {
         background-color: ${props =>
-            props.primary
+            props.btncolor === "primary"
                 ? Variables.Colors.Primary70
-                : props.danger
+                : props.btncolor === "danger"
                 ? Variables.Colors.Danger70
                 : "none"};
         color: ${props =>
-            props.primary
+            props.btncolor === "primary"
                 ? Variables.Colors.White
-                : props.danger
+                : props.btncolor === "danger"
                 ? Variables.Colors.BackgroundColor
                 : Variables.Colors.Primary70};
     }

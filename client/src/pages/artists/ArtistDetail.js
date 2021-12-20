@@ -108,7 +108,7 @@ function ArtistDetail(props) {
                 />
 
                 {conditionBtn && (
-                    <Button to="/my-account" primary>
+                    <Button to="/my-account" btncolor="primary">
                         Check your account
                     </Button>
                 )}

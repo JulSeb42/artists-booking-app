@@ -1,5 +1,5 @@
 // Imports
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { v4 as uuid } from "uuid"
 import { useNavigate } from "react-router-dom"
 import { LinkScroll as Link } from "../../components/utils/LinkScroll"
@@ -26,11 +26,11 @@ import Textarea from "../../components/forms/Textarea"
 import Button from "../../components/ui/Button"
 import { IconMixin } from "../../components/ui/Icon"
 import Toggle from "../../components/forms/Toggle"
+// import ListSuggestions from "../../components/forms/ListSuggestions"
 
 // Utils
-// import convertDate from "../../components/utils/convertDate"
 import getToday from "../../components/utils/getToday"
-// import convertYoutube from "../../components/utils/convertYoutube"
+import allCities from "../../components/data/citiesGermany.json"
 
 const API_URL = "http://localhost:5005"
 
@@ -70,7 +70,7 @@ function EditAccount({ edited, setEdited }) {
 
     const handleFullName = e => setFullName(e.target.value)
     const handleEmail = e => setEmail(e.target.value)
-    const handleCity = e => setCity(e.target.value)
+    // const handleCity = e => setCity(e.target.value)
 
     const handleGenre = e => setGenre(e.target.value)
     const handlePrice = e =>
@@ -119,6 +119,27 @@ function EditAccount({ edited, setEdited }) {
             })
     }
 
+    const [cities, setCities] = useState([])
+
+    useEffect(() => {
+        setCities(allCities.map(city => city.name))
+    }, [])
+
+    const [filteredCities, setFilteredCities] = useState(city)
+
+    const handleFilterCities = e => {
+        setCity(e.target.value)
+        setFilteredCities(e.target.value)
+    }
+
+    let resultsCities = cities.filter(city => {
+        return city.toLowerCase().includes(filteredCities)
+    })
+
+    const handleClickSuggestion = e => {
+        setCity(e.target.innerText)
+    }
+
     return (
         <Page
             title="Edit your account"
@@ -128,11 +149,7 @@ function EditAccount({ edited, setEdited }) {
             onSubmit={handleSubmit}
         >
             <Aside center>
-                <ProfilePicture
-                    src={user.imageUrl}
-                    alt={user.fullName}
-                    
-                />
+                <ProfilePicture src={user.imageUrl} alt={user.fullName} />
                 {user.role === "artist" && (
                     <Toggle
                         id="visible"
@@ -142,7 +159,7 @@ function EditAccount({ edited, setEdited }) {
                     />
                 )}
 
-                <Button primary type="submit">
+                <Button btncolor="primary" type="submit">
                     Save
                 </Button>
             </Aside>
@@ -166,18 +183,14 @@ function EditAccount({ edited, setEdited }) {
                         disabled
                     />
 
-                    <Select
+                    <Input
                         label="Your city"
                         id="city"
                         value={city}
-                        onChange={handleCity}
-                    >
-                        {SiteData.Cities.map(city => (
-                            <option value={city} key={uuid()}>
-                                {city}
-                            </option>
-                        ))}
-                    </Select>
+                        onChange={handleFilterCities}
+                        cities={resultsCities}
+                        onMouseDown={handleClickSuggestion}
+                    />
 
                     {user.role === "artist" && (
                         <Select
@@ -272,12 +285,6 @@ function EditAccount({ edited, setEdited }) {
                                         onClick={deleteAvailable}
                                     >
                                         {date}
-
-                                        {/* <Icon
-                                            name="close"
-                                            size={24}
-                                            color={Variables.Colors.Danger}
-                                        /> */}
                                     </Date>
                                 ))}
                             </Font.List>

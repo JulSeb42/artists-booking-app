@@ -1,9 +1,7 @@
 // Imports
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect} from "react"
 import { Navigate, Link, useNavigate } from "react-router-dom"
-import { v4 as uuid } from "uuid"
 import axios from "axios"
-// import styled from "styled-components"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -14,10 +12,9 @@ import NavLogin from "../../components/forms/NavLogin"
 import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 import Password from "../../components/forms/Password"
-import Select from "../../components/forms/Select"
-// import * as Variables from "../../components/styles/Variables"
 
-import SiteData from "../../components/data/SiteData"
+// import SiteData from "../../components/data/SiteData"
+import allCities from "../../components/data/citiesGermany.json"
 
 const API_URL = "http://localhost:5005"
 
@@ -28,13 +25,12 @@ function SignUpArtist() {
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [city, setCity] = useState(SiteData.Cities[0])
+    const [city, setCity] = useState("")
     const [errorMessage, setErrorMessage] = useState(undefined)
 
     const handleFullName = e => setFullName(e.target.value)
     const handleEmail = e => setEmail(e.target.value)
     const handlePassword = e => setPassword(e.target.value)
-    const handleCity = e => setCity(e.target.value)
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -65,6 +61,27 @@ function SignUpArtist() {
                 const errorDescription = err.response.data.errorMessage
                 setErrorMessage(errorDescription)
             })
+    }
+
+    const [cities, setCities] = useState([])
+
+    useEffect(() => {
+        setCities(allCities.map(city => city.name))
+    }, [])
+
+    const [filteredCities, setFilteredCities] = useState(city)
+
+    const handleFilterCities = e => {
+        setCity(e.target.value)
+        setFilteredCities(e.target.value)
+    }
+
+    let resultsCities = cities.filter(city => {
+        return city.toLowerCase().includes(filteredCities)
+    })
+
+    const handleClickSuggestion = e => {
+        setCity(e.target.innerText)
     }
 
     return isLoggedIn ? (
@@ -107,17 +124,14 @@ function SignUpArtist() {
                         onChange={handlePassword}
                     />
 
-                    <Select
-                        label="Select your city"
+                    <Input
+                        label="Your city"
+                        id="city"
                         value={city}
-                        onChange={handleCity}
-                    >
-                        {SiteData.Cities.map(city => (
-                            <option value={city} key={uuid()}>
-                                {city}
-                            </option>
-                        ))}
-                    </Select>
+                        onChange={handleFilterCities}
+                        cities={resultsCities}
+                        onMouseDown={handleClickSuggestion}
+                    />
                 </Form>
 
                 {errorMessage && <Font.P>{errorMessage}</Font.P>}

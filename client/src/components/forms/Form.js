@@ -34,18 +34,18 @@ function Form(props) {
 
             {props.btnPrimary && (
                 <ButtonsContainer>
-                    <Button type="submit" primary>
+                    <Button type="submit" btncolor="primary">
                         {props.btnPrimary}
                     </Button>
 
                     {props.cancel && (
-                        <Button type="reset" secondary>
+                        <Button type="reset">
                             {props.btnSecondary}
                         </Button>
                     )}
 
                     {props.backLink && (
-                        <Button as={Link} to={props.backLink} secondary>
+                        <Button as={Link} to={props.backLink}>
                             {props.btnSecondary}
                         </Button>
                     )}

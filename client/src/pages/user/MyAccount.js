@@ -44,12 +44,12 @@ function MyAccount() {
                     to="/my-account/edit/edit-picture"
                 />
 
-                <Button to="/my-account/edit" primary>
+                <Button to="/my-account/edit" btncolor="primary">
                     Edit your account
                 </Button>
 
                 {user.role === "artist" && (
-                    <Button to={`/artists/${user._id}`} primary>
+                    <Button to={`/artists/${user._id}`} btncolor="primary">
                         Check your page
                     </Button>
                 )}

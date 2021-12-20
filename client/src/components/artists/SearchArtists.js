@@ -109,7 +109,7 @@ function SearchArtists(props) {
                 <Button
                     onClick={() => window.location.reload(false)}
                     justify="start"
-                    primary
+                    btncolor="primary"
                 >
                     Reset filters
                 </Button>
