@@ -48,7 +48,13 @@ function EditProfilePicture({ edited, setEdited }) {
 
     const handleSubmit = e => {
         e.preventDefault()
+        
         const requestBody = { imageUrl }
+
+        if (imageUrl === "") {
+            return
+        }
+
         axios
             .put(`${API_URL}/users/edit-picture/${user._id}`, requestBody)
             .then(res => {
