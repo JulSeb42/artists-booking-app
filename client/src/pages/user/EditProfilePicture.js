@@ -11,24 +11,16 @@ import Input from "../../components/forms/Input"
 import Form from "../../components/forms/Form"
 import service from "../../services/cloudinary"
 import { AuthContext } from "../../context/auth"
+import ProfilePicture from "../../components/user/ProfilePicture"
 
 const API_URL = "http://localhost:5005"
 
 function EditProfilePicture({ edited, setEdited }) {
     const { user } = useContext(AuthContext)
     const [imageUrl, setImageUrl] = useState("")
+    const [picture, setPicture] = useState(user.imageUrl)
 
     const navigate = useNavigate()
-
-    useEffect(() => {
-        axios
-            .get(`${API_URL}/users/user/${user._id}`)
-            .then(response => {
-                const { imageUrl } = response.data
-                setImageUrl(imageUrl)
-            })
-            .catch(err => console.log(err))
-    }, [user._id])
 
     const handleFileUpload = e => {
         e.preventDefault()
@@ -42,11 +34,20 @@ function EditProfilePicture({ edited, setEdited }) {
                 setImageUrl(res.secure_url)
             })
             .catch(err => console.log(err))
+
+        if (e.target.files[0]) {
+            setPicture(e.target.files[0])
+            const reader = new FileReader()
+            reader.addEventListener("load", () => {
+                setImageUrl(reader.result)
+            })
+            reader.readAsDataURL(e.target.files[0])
+        }
     }
 
     const handleSubmit = e => {
         e.preventDefault()
-        
+
         const requestBody = { imageUrl }
 
         if (imageUrl === "") {
@@ -62,9 +63,21 @@ function EditProfilePicture({ edited, setEdited }) {
             .catch(err => console.log(err))
     }
 
+    useEffect(() => {
+        axios
+            .get(`${API_URL}/users/user/${user._id}`)
+            .then(response => {
+                const { imageUrl } = response.data
+                setImageUrl(imageUrl)
+            })
+            .catch(err => console.log(err))
+    }, [user._id])
+
     return (
-        <Page title="EditProfilePicture" description="" keywords="">
-            <Aside />
+        <Page title="Edit profile picture" description="" keywords="">
+            <Aside>
+                <ProfilePicture src={imageUrl} alt={user.fullName} />
+            </Aside>
 
             <Content>
                 <Font.H1>Upload a new profile picture</Font.H1>

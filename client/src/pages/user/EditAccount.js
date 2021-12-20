@@ -143,7 +143,11 @@ function EditAccount({ edited, setEdited }) {
             onSubmit={handleSubmit}
         >
             <Aside center>
-                <ProfilePicture src={user.imageUrl} alt={user.fullName} />
+                <ProfilePicture
+                    src={user.imageUrl}
+                    alt={user.fullName}
+                    to="/my-account/edit/edit-picture"
+                />
                 {user.role === "artist" && (
                     <Toggle
                         id="visible"

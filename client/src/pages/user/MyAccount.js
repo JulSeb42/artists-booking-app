@@ -40,7 +40,6 @@ function MyAccount() {
                 <ProfilePicture
                     src={user.imageUrl}
                     alt={user.fullName}
-                    to="/my-account/edit/edit-picture"
                 />
 
                 <Button to="/my-account/edit" btncolor="primary">
