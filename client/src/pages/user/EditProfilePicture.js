@@ -7,21 +7,24 @@ import Page from "../../components/layouts/Page"
 import * as Font from "../../components/styles/Font"
 import { Aside, Content } from "../../components/layouts/Container"
 import Input from "../../components/forms/Input"
-import Form from "../../components/forms/Form"
+import Form, { ButtonsContainer } from "../../components/forms/Form"
 import service from "../../services/cloudinary"
 import { AuthContext } from "../../context/auth"
 import ProfilePicture from "../../components/user/ProfilePicture"
+import Button from "../../components/ui/Button"
 
 function EditProfilePicture({ edited, setEdited }) {
     const { user, updateUser } = useContext(AuthContext)
     const [imageUrl, setImageUrl] = useState("")
     const [picture, setPicture] = useState(user.imageUrl)
+    const [isLoading, setIsLoading] = useState(false)
 
     const navigate = useNavigate()
 
     const handleFileUpload = e => {
         e.preventDefault()
         const uploadData = new FormData()
+        setIsLoading(true)
 
         uploadData.append("imageUrl", e.target.files[0])
 
@@ -29,6 +32,7 @@ function EditProfilePicture({ edited, setEdited }) {
             .uploadImage(uploadData)
             .then(res => {
                 setImageUrl(res.secure_url)
+                setIsLoading(false)
             })
             .catch(err => console.log(err))
 
@@ -69,17 +73,24 @@ function EditProfilePicture({ edited, setEdited }) {
             <Content>
                 <Font.H1>Upload a new profile picture</Font.H1>
 
-                <Form
-                    btnPrimary="Send"
-                    btnSecondary="Cancel"
-                    backLink="/my-account"
-                    onSubmit={handleSubmit}
-                >
+                <Form onSubmit={handleSubmit}>
                     <Input
                         type="file"
                         id="imageUrl"
                         onChange={e => handleFileUpload(e)}
                     />
+
+                    <ButtonsContainer>
+                        <Button
+                            type="submit"
+                            btncolor="primary"
+                            loader={isLoading && "loading"}
+                            disabled={isLoading && "disabled"}
+                        >
+                            Send
+                        </Button>
+                        <Button to="/my-account/edit">Cancel</Button>
+                    </ButtonsContainer>
                 </Form>
             </Content>
         </Page>

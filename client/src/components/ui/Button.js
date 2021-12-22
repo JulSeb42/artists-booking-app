@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 
 // Components
 import * as Variables from "../styles/Variables"
+import Loader from "./Loader"
 
 // Styles
 const Container = styled.button`
@@ -53,6 +54,23 @@ const Container = styled.button`
         css`
             font-size: ${Variables.FontSizes.TitleMedium};
         `}
+    
+    &:disabled {
+        background-color: ${Variables.Colors.LightGray};
+        color: ${Variables.Colors.DarkGray};
+        cursor: not-allowed;
+    }
+
+    ${props => props.loader && css`
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+            margin-left: ${Variables.Margins.XXS};
+            border-top-color: ${Variables.Colors.DarkGray}
+        }
+    `}
 `
 
 function Button(props) {
@@ -61,7 +79,9 @@ function Button(props) {
             {props.children}
         </Container>
     ) : (
-        <Container {...props}>{props.children}</Container>
+        <Container {...props}>
+            {props.children} {props.loader && <Loader />}
+        </Container>
     )
 }
 

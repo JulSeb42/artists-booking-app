@@ -16,7 +16,7 @@ const Container = styled.form`
     max-width: 60ch;
 `
 
-const ButtonsContainer = styled.div`
+export const ButtonsContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-start;
