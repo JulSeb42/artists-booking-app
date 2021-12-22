@@ -1,6 +1,5 @@
 // Imports
-import React, { useState, useContext, useEffect } from "react"
-import axios from "axios"
+import React, { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 
 // Components
@@ -13,24 +12,12 @@ import service from "../../services/cloudinary"
 import { AuthContext } from "../../context/auth"
 import ProfilePicture from "../../components/user/ProfilePicture"
 
-const API_URL = "http://localhost:5005"
-
 function EditProfilePicture({ edited, setEdited }) {
     const { user, updateUser } = useContext(AuthContext)
     const [imageUrl, setImageUrl] = useState("")
     const [picture, setPicture] = useState(user.imageUrl)
 
     const navigate = useNavigate()
-
-    useEffect(() => {
-        axios
-            .get(`${API_URL}/users/user/${user._id}`)
-            .then(response => {
-                const { imageUrl } = response.data
-                setImageUrl(imageUrl)
-            })
-            .catch(err => console.log(err))
-    }, [user._id])
 
     const handleFileUpload = e => {
         e.preventDefault()
@@ -58,17 +45,16 @@ function EditProfilePicture({ edited, setEdited }) {
     const handleSubmit = e => {
         e.preventDefault()
 
-        const requestBody = { imageUrl }
-
         if (imageUrl === "") {
             return
         }
 
-        axios
-            .put(`${API_URL}/users/edit-picture/${user._id}`, requestBody)
+        service
+            .createImage({ imageUrl, id: user._id })
             .then(res => {
-                updateUser(res.data)
                 setEdited(!edited)
+                updateUser(res)
+
                 navigate("/my-account")
             })
             .catch(err => console.log(err))
@@ -92,7 +78,7 @@ function EditProfilePicture({ edited, setEdited }) {
                     <Input
                         type="file"
                         id="imageUrl"
-                        onChange={handleFileUpload}
+                        onChange={e => handleFileUpload(e)}
                     />
                 </Form>
             </Content>

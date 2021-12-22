@@ -101,14 +101,12 @@ router.put(
     }
 )
 
-router.put("/edit-picture/:id", (req, res, next) => {
-    const { imageUrl } = req.body
-    const id = req.params.id
-
-    console.log(id)
+router.post("/edit-picture", (req, res, next) => {
+    const { imageUrl, id } = req.body
 
     User.findByIdAndUpdate(id, { imageUrl }, { new: true })
         .then(updatedUser => {
+            console.log(updatedUser)
             res.status(200).json(updatedUser)
         })
         .catch(err => next(err))

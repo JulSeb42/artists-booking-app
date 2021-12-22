@@ -109,6 +109,7 @@ function SignUpArtist() {
                         label="Your email"
                         id="email"
                         name="email"
+                        type="email"
                         value={email}
                         onChange={handleEmail}
                     />

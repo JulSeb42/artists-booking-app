@@ -59,6 +59,7 @@ function Login() {
                     <Input
                         id="email"
                         label="Email"
+                        type="email"
                         value={email}
                         onChange={handleEmail}
                     />
