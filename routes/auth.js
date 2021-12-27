@@ -148,12 +148,8 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 })
 
 router.get("/logout", isLoggedIn, (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            return res.status(500).json({ errorMessage: err.message })
-        }
-        res.json({ message: "Done" })
-    })
+    req.session.destroy()
+    res.status(200).json({ message: "success" })
 })
 
 module.exports = router
