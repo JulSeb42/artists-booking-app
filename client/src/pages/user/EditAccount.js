@@ -29,7 +29,7 @@ import Toggle from "../../components/forms/Toggle"
 import getToday from "../../components/utils/getToday"
 import allCities from "../../components/data/citiesGermany.json"
 
-const API_URL = "http://localhost:5005"
+// const API_URL = "http://localhost:5005"
 
 const Date = styled.li`
     grid-template-columns: auto 1fr auto !important;
@@ -100,7 +100,7 @@ function EditAccount({ edited, setEdited }) {
         }
 
         axios
-            .put(`${API_URL}/users/edit`, requestBody)
+            .put(`/users/edit`, requestBody)
             .then(res => {
                 const { user } = res.data
                 updateUser(user)

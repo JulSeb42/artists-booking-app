@@ -28,7 +28,7 @@ import ArtistDetail from "../pages/artists/ArtistDetail"
 // Utils
 import scrollToTop from "./utils/scrollToTop"
 
-const API_URL = "http://localhost:5005"
+// const API_URL = "http://localhost:5005"
 
 function Switch() {
     const [allUsers, setAllUsers] = useState([])
@@ -36,7 +36,7 @@ function Switch() {
 
     useEffect(() => {
         axios
-            .get(`${API_URL}/users/user`)
+            .get(`/users/user`)
             .then(res => {
                 setAllUsers(res.data)
             })

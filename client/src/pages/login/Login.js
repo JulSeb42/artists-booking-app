@@ -13,7 +13,7 @@ import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 import Password from "../../components/forms/Password"
 
-const API_URL = "http://localhost:5005"
+// const API_URL = "http://localhost:5005"
 
 function Login() {
     // Check if logged in
@@ -34,7 +34,7 @@ function Login() {
         const requestBody = { email, password }
 
         axios
-            .post(`${API_URL}/auth/login`, requestBody)
+            .post(`/auth/login`, requestBody)
             .then(res => {
                 logInUser(res.data)
                 navigate("/my-account")

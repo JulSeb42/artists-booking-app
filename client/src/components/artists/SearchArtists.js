@@ -16,7 +16,7 @@ import Range from "../forms/Range"
 import Select from "../forms/Select"
 import Button from "../ui/Button"
 
-const API_URL = "http://localhost:5005"
+// const API_URL = "http://localhost:5005"
 
 // Styles
 const SortContainer = styled.div`
@@ -35,7 +35,7 @@ function SearchArtists(props) {
 
     useEffect(() => {
         axios
-            .get(`${API_URL}/users/user`)
+            .get(`/users/user`)
             .then(res => {
                 setCities(
                     res.data

@@ -29,7 +29,7 @@ import ButtonSocial from "../../components/ui/ButtonSocial"
 import getToday from "../../components/utils/getToday"
 import convertDate from "../../components/utils/convertDate"
 
-const API_URL = "http://localhost:5005"
+// const API_URL = "http://localhost:5005"
 
 function ArtistDetail(props) {
     const { isLoggedIn, user } = useContext(AuthContext)
@@ -61,7 +61,7 @@ function ArtistDetail(props) {
     useEffect(() => {
         axios
             .get(
-                `${API_URL}/users/user/${
+                `/users/user/${
                     isLoggedIn ? user._id : props.artist._id
                 }`
             )
@@ -86,7 +86,7 @@ function ArtistDetail(props) {
             artistId: props.artist._id,
         }
         axios
-            .put(`${API_URL}/messages/contact`, requestBody)
+            .put(`/messages/contact`, requestBody)
             .then(() => navigate("/my-account"))
             .catch(err => setErrorMessage(err.response))
     }

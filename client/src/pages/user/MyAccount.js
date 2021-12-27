@@ -14,7 +14,7 @@ import Button from "../../components/ui/Button"
 import TextIcon from "../../components/ui/TextIcon"
 import CardSmall, { List } from "../../components/artists/CardSmall"
 
-const API_URL = "http://localhost:5005"
+// const API_URL = "http://localhost:5005"
 
 function MyAccount() {
     const { user, isLoggedIn } = useContext(AuthContext)
@@ -24,7 +24,7 @@ function MyAccount() {
 
     useEffect(() => {
         axios
-            .get(`${API_URL}/users/user/${user._id}`)
+            .get(`/users/user/${user._id}`)
             .then(res => {
                 setContacted(res.data.contacted)
                 setLoading(false)

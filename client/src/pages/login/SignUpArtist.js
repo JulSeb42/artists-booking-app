@@ -15,7 +15,7 @@ import Input from "../../components/forms/Input"
 import Password from "../../components/forms/Password"
 import allCities from "../../components/data/citiesGermany.json"
 
-const API_URL = "http://localhost:5005"
+// const API_URL = "http://localhost:5005"
 
 function SignUpArtist() {
     const { logInUser } = useContext(AuthContext)
@@ -51,7 +51,7 @@ function SignUpArtist() {
         }
 
         axios
-            .post(`${API_URL}/auth/signup`, requestBody)
+            .post(`/auth/signup`, requestBody)
             .then(res => {
                 logInUser(res.data)
                 navigate("/thank-you")

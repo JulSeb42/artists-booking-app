@@ -10,7 +10,7 @@ import * as Font from "../styles/Font"
 import Button from "../ui/Button"
 import { AuthContext } from "../../context/auth"
 
-const API_URL = "http://localhost:5005"
+// const API_URL = "http://localhost:5005"
 
 // Styles
 const OpenButton = styled(Font.P)`
@@ -53,7 +53,7 @@ function DangerZone() {
 
     const handleDelete = () => {
         axios
-            .delete(`${API_URL}/users/delete-user/${user._id}`)
+            .delete(`/users/delete-user/${user._id}`)
             .then(() => {
                 logOutUser()
                 navigate("/goodbye")

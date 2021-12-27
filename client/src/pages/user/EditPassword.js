@@ -11,7 +11,7 @@ import Form from "../../components/forms/Form"
 import { Aside, Content } from "../../components/layouts/Container"
 import { AuthContext } from "../../context/auth"
 
-const API_URL = "http://localhost:5005"
+// const API_URL = "http://localhost:5005"
 
 function EditPassword() {
     const { user, updateUser } = useContext(AuthContext)
@@ -28,7 +28,7 @@ function EditPassword() {
         const requestBody = { password, id: user._id }
 
         axios
-            .put(`${API_URL}/users/edit-password`, requestBody)
+            .put(`/users/edit-password`, requestBody)
             .then(res => {
                 const { user } = res.data
                 updateUser(user)

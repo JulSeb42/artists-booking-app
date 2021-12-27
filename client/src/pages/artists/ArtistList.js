@@ -13,7 +13,7 @@ import SearchArtists from "../../components/artists/SearchArtists"
 
 import { getMinPrice, getMaxPrice } from "../../components/utils/minMaxPrice"
 
-const API_URL = "http://localhost:5005"
+// const API_URL = "http://localhost:5005"
 
 function ArtistList() {
     const [allUsers, setAllUsers] = useState([])
@@ -24,7 +24,7 @@ function ArtistList() {
 
     useEffect(() => {
         axios
-            .get(`${API_URL}/users/user`)
+            .get(`/users/user`)
             .then(res => {
                 setAllUsers(
                     res.data
