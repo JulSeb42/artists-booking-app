@@ -139,7 +139,7 @@ const Burger = styled.button`
 `
 
 function Header(props) {
-    const { isLoggedIn, logoutUser } = useContext(AuthContext)
+    const { isLoggedIn, logOutUser } = useContext(AuthContext)
     const location = useLocation()
 
     const [navOpen, setNavOpen] = useState(false)
@@ -177,7 +177,7 @@ function Header(props) {
                         <LinkStyled to="/my-account" onClick={scrollToTop}>
                             My account
                         </LinkStyled>
-                        <LinkStyled as="button" onClick={logoutUser}>
+                        <LinkStyled as="button" onClick={logOutUser}>
                             Log out
                         </LinkStyled>
                     </>
