@@ -1,12 +1,15 @@
 // Packages
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
+import { NavLink as Link, useLocation } from "react-router-dom"
 import styled from "styled-components"
-import { NavLink, useLocation } from "react-router-dom"
 
 // Components
+import Logo from "../ui/LogoLink"
 import * as Variables from "../styles/Variables"
-import LogoLink from "../ui/LogoLink"
 import { AuthContext } from "../../context/auth"
+
+// Utils
+import scrollToTop from "../utils/scrollToTop"
 
 // Styles
 const Container = styled.header`
@@ -26,9 +29,25 @@ const Nav = styled.nav`
     display: flex;
     align-items: center;
     justify-content: flex-start;
+
+    @media ${Variables.Breakpoints.MobileL} {
+        position: absolute;
+        width: 100%;
+        background-color: ${Variables.Colors.Primary};
+        left: 0;
+        top: -200px;
+        padding: 0 5vw ${Variables.Margins.S} 5vw;
+        flex-direction: column;
+        align-items: flex-start;
+        transition: ${Variables.Transitions.Short};
+
+        &.open {
+            top: 88px;
+        }
+    }
 `
 
-const Link = styled(NavLink)`
+const LinkStyled = styled(Link)`
     color: ${Variables.Colors.White};
     font-weight: ${Variables.FontWeights.Regular};
     text-decoration: none;
@@ -68,30 +87,111 @@ const Link = styled(NavLink)`
     }
 `
 
-function Header() {
-    const { isLoggedIn, logOutUser } = useContext(AuthContext)
-    const location = useLocation().pathname
-    const conditionClass =
-        location === "/signup" || location === "/signup/artist"
+const Burger = styled.button`
+    display: none;
+
+    @media ${Variables.Breakpoints.MobileL} {
+        display: inline;
+        position: relative;
+        background: none;
+        border: none;
+        padding: 0;
+        width: 30px;
+        height: 20px;
+
+        span {
+            width: 100%;
+            background-color: ${Variables.Colors.White};
+            height: 2px;
+            position: absolute;
+            left: 0;
+            transition: ${Variables.Transitions.Short};
+
+            &:first-child {
+                top: 0;
+            }
+
+            &:nth-child(2) {
+                top: calc(50% - 2px / 2);
+            }
+
+            &:last-child {
+                bottom: 0;
+            }
+        }
+
+        &.open span {
+            &:first-child {
+                transform: rotate(45deg);
+                top: 45%;
+            }
+
+            &:nth-child(2) {
+                width: 0;
+            }
+
+            &:last-child {
+                transform: rotate(-45deg);
+                bottom: 45%;
+            }
+        }
+    }
+`
+
+function Header(props) {
+    const { isLoggedIn, logoutUser } = useContext(AuthContext)
+    const location = useLocation()
+
+    const [navOpen, setNavOpen] = useState(false)
+    const [burgerOpen, setBurgerOpen] = useState(false)
+
+    const isOpen = navOpen ? "open" : ""
+    const isBurgerOpen = burgerOpen ? "open" : ""
+
+    const handleOpen = e => {
+        setNavOpen(!navOpen)
+        setBurgerOpen(!burgerOpen)
+    }
 
     return (
         <Container>
-            <LogoLink colorLogo="false" />
+            <Logo />
 
-            <Nav>
-                <Link to="/artists">Artists</Link>
+            <Burger
+                aria-label="Menu button"
+                onClick={handleOpen}
+                className={isBurgerOpen}
+            >
+                <span />
+                <span />
+                <span />
+            </Burger>
+
+            <Nav className={isOpen} onClick={handleOpen}>
+                <LinkStyled to="/artists" onClick={scrollToTop}>
+                    Artists
+                </LinkStyled>
 
                 {isLoggedIn ? (
                     <>
-                        <Link to="/my-account">My account</Link>
-                        <Link as="button" onClick={logOutUser}>
+                        <LinkStyled to="/my-account" onClick={scrollToTop}>
+                            My account
+                        </LinkStyled>
+                        <LinkStyled as="button" onClick={logoutUser}>
                             Log out
-                        </Link>
+                        </LinkStyled>
                     </>
                 ) : (
-                    <Link to="/login" className={conditionClass && "active"}>
-                        Login
-                    </Link>
+                    <LinkStyled
+                        to="/login"
+                        onClick={scrollToTop}
+                        className={
+                            location.pathname === "/signup" ||
+                            (location.pathname === "/signup/artist" && "active")
+                        }
+                    >
+                        Log in
+                    </LinkStyled>
                 )}
             </Nav>
         </Container>

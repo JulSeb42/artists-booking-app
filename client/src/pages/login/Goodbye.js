@@ -11,7 +11,7 @@ import { Aside, Content } from "../../components/layouts/Container"
 function Goodbye() {
     return (
         <Page title="Goodbye!" description="" keywords="">
-            <Aside />
+            <Aside empty />
 
             <Content>
                 <Font.H1>We're sorry to see you go!</Font.H1>

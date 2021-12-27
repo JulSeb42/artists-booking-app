@@ -85,7 +85,7 @@ function SignUpArtist() {
 
     return (
         <Page title="SignUpArtist" description="" keywords="">
-            <Aside />
+            <Aside empty />
 
             <Content>
                 <NavLogin />

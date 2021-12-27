@@ -20,7 +20,7 @@ const Container = styled.div`
     grid-template-columns: 150px 1fr;
     gap: ${Variables.Margins.M};
 
-    @media ${Variables.Breakpoints.MobileL} {
+    @media ${Variables.Breakpoints.Tablet} {
         display: flex;
         align-items: center;
         justify-content: center;

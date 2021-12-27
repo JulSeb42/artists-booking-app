@@ -72,7 +72,7 @@ function Signup() {
 
     return (
         <Page title="Signup" description="" keywords="">
-            <Aside />
+            <Aside empty />
 
             <Content>
                 <NavLogin />

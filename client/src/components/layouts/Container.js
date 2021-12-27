@@ -33,6 +33,12 @@ export const Aside = styled.aside`
     @media ${Variables.Breakpoints.MobileL} {
         grid-column: span 4;
     }
+
+    ${props => props.empty && css`
+        @media ${Variables.Breakpoints.MobileL}{
+            display: none;
+        }
+    `}
 `
 
 export const ItemContainer = styled.div`

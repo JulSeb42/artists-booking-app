@@ -14,7 +14,7 @@ function ThankYou() {
     const { user } = useContext(AuthContext)
     return (
         <Page title="Thank You!" description="" keywords="">
-            <Aside />
+            <Aside empty />
 
             <Content>
                 <Font.H1>Thank you for creating your account!</Font.H1>

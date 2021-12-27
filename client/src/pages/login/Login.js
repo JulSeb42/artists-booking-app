@@ -49,7 +49,7 @@ function Login() {
         <Navigate to="/my-account" />
     ) : (
         <Page title="Login" description="" keywords="">
-            <Aside />
+            <Aside empty />
 
             <Content>
                 <NavLogin />

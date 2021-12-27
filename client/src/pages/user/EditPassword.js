@@ -48,7 +48,7 @@ function EditPassword() {
             form
             onSubmit={handleSubmit}
         >
-            <Aside />
+            <Aside empty />
 
             <Content>
                 <Font.H1>Change your password</Font.H1>
