@@ -184,11 +184,13 @@ function ArtistDetail(props) {
                     ) : (
                         isLoggedIn &&
                         props.artist._id !== user._id &&
-                        user.verified === false && (
+                        user.verified === false ? (
                             <Font.P>
                                 You must verify your email to contact{" "}
                                 {props.artist.fullName}.
                             </Font.P>
+                                    ) : (
+                                            <Font.P>You can not contact yourself!</Font.P>
                         )
                     )}
                 </ItemContainer>
