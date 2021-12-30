@@ -46,22 +46,18 @@ router.post("/signup", isLoggedOut, (req, res) => {
                 "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter.",
         })
     }
-
-    // Search the database for a user with the username submitted in the form
+    
     User.findOne({ email }).then(found => {
-        // If the user is found, send the message username is taken
         if (found) {
             return res
                 .status(400)
                 .json({ errorMessage: "Email already taken." })
         }
 
-        // if user is not found, create a new user - start with hashing the password
         return bcrypt
             .genSalt(saltRounds)
             .then(salt => bcrypt.hash(password, salt))
             .then(hashedPassword => {
-                // Create a user and save it in the database
                 return User.create({
                     fullName,
                     email,
@@ -78,7 +74,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
                     from: process.env.EMAIL,
                     to: email,
                     subject: "Verify your account on Book a Band",
-                    html: `Hello, <br />Thank you for creating your account on Book a Band! <a href="http://localhost:3000/verify/${verifyToken}/${user._id}">Click here to verify your account</a>.`,
+                    html: `Hello,<br /><br />Thank you for creating your account on Book a Band! <a href="https://artist-booking-app.herokuapp.com/verify/${verifyToken}/${user._id}">Click here to verify your account</a>.`,
                 }
 
                 transporter.sendMail(mailDetails, (err, data) => {
@@ -115,27 +111,22 @@ router.post("/login", isLoggedOut, (req, res, next) => {
             .status(400)
             .json({ errorMessage: "Please provide your email." })
     }
-
-    // Here we use the same logic as above
-    // - either length based parameters or we check the strength of a password
+    
     if (password.length < 6) {
         return res.status(400).json({
             errorMessage:
                 "Your password needs to be at least 6 characters long.",
         })
     }
-
-    // Search the database for a user with the username submitted in the form
+    
     User.findOne({ email })
         .then(user => {
-            // If the user isn't found, send the message that user provided wrong credentials
             if (!user) {
                 return res
                     .status(400)
                     .json({ errorMessage: "Wrong credentials." })
             }
-
-            // If user is found based on the username, check if the in putted password matches the one saved in the database
+            
             bcrypt.compare(password, user.password).then(isSamePassword => {
                 if (!isSamePassword) {
                     return res
@@ -143,16 +134,12 @@ router.post("/login", isLoggedOut, (req, res, next) => {
                         .json({ errorMessage: "Wrong credentials." })
                 }
                 req.session.user = user
-                // req.session.user = user._id; // ! better and safer but in this case we saving the entire user object
                 return res.json(user)
             })
         })
 
         .catch(err => {
-            // in this case we are sending the error handling to the error handling middleware that is defined in the error handling file
-            // you can just as easily run the res.status that is commented out below
             next(err)
-            // return res.status(500).render("login", { errorMessage: err.message });
         })
 })
 
@@ -174,48 +161,5 @@ router.put("/verify", (req, res, next) => {
         })
         .catch(err => next(err))
 })
-
-// router.put("/verify", (req, res, next) => {
-//     const { id, verifyToken } = req.body
-
-//     User.findById(id).then()
-// })
-
-// Verification
-
-// router.put("/send-verify-email", (req, res, next) => {
-//     const { receiver, id, verifyToken } = req.body
-// })
-
-// router.put("/contact", (req, res, next) => {
-//     const { sender, receiver, date, message, id, artistId } = req.body
-
-//     // User.findByIdAndUpdate(id, { $push: { contacted: artistId } })
-//     User.findOneAndUpdate({ _id: id }, { $push: { contacted: artistId } }).then(
-//         () => {
-//             User.findOneAndUpdate(
-//                 { _id: artistId },
-//                 { $push: { contactedBy: id } }
-//             ).then(updatedUser => {
-//                 let mailDetails = {
-//                     from: process.env.EMAIL,
-//                     to: receiver,
-//                     subject: "New enquiry on Book a Band",
-//                     text: `Hi, you have a new enquiry from ${sender} for the ${date}. This is the message: ${message}`,
-//                 }
-
-//                 transporter.sendMail(mailDetails, function (err, data) {
-//                     if (err) {
-//                         console.log(err)
-//                     } else {
-//                         console.log("Email sent successfully")
-//                     }
-//                 })
-
-//                 res.status(200).json({ user: updatedUser })
-//             })
-//         }
-//     )
-// })
 
 module.exports = router
