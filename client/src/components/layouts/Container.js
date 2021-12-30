@@ -28,6 +28,7 @@ export const Aside = styled.aside`
         props.center &&
         css`
             justify-items: center;
+            text-align: center;
         `}
 
     @media ${Variables.Breakpoints.MobileL} {

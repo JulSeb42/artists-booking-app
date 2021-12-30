@@ -28,7 +28,7 @@ const randomAvatar = () => {
 }
 
 router.post("/signup", isLoggedOut, (req, res) => {
-    const { fullName, email, password, role, city, imageUrl } = req.body
+    const { fullName, email, password, role, city, imageUrl, verified } = req.body
 
     if (!fullName) {
         return res
@@ -76,6 +76,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
                     role,
                     city,
                     imageUrl: randomAvatar(),
+                    verified,
                 })
             })
             .then(user => {

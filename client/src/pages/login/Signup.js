@@ -35,7 +35,14 @@ function Signup() {
     const handleSubmit = e => {
         e.preventDefault()
 
-        const requestBody = { fullName, email, password, role: "user", city }
+        const requestBody = {
+            fullName,
+            email,
+            password,
+            role: "user",
+            city,
+            verified: true,
+        }
 
         axios
             .post(`/auth/signup`, requestBody)
@@ -63,7 +70,7 @@ function Signup() {
     }
 
     let resultsCities = cities.filter(city => {
-        return city.toLowerCase().includes(filteredCities)
+        return city.toLowerCase().includes(filteredCities.toLowerCase())
     })
 
     const handleClickSuggestion = e => {

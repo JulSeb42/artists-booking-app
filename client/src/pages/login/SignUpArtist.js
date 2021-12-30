@@ -48,6 +48,7 @@ function SignUpArtist() {
             youtubeLink: "",
             facebookLink: "",
             instagramLink: "",
+            verified: true,
         }
 
         axios
@@ -76,7 +77,7 @@ function SignUpArtist() {
     }
 
     let resultsCities = cities.filter(city => {
-        return city.toLowerCase().includes(filteredCities)
+        return city.toLowerCase().includes(filteredCities.toLowerCase())
     })
 
     const handleClickSuggestion = e => {

@@ -14,12 +14,11 @@ router.put("/contact", (req, res, next) => {
     const { sender, receiver, date, message, id, artistId } = req.body
 
     // User.findByIdAndUpdate(id, { $push: { contacted: artistId } })
-    User.findOneAndUpdate({ _id: id }, { $push: { contacted: artistId } }).then(
-        () => {
+    User.findOneAndUpdate({ _id: id }, { $push: { contacted: artistId } }).then(() => {
             User.findOneAndUpdate(
                 { _id: artistId },
                 { $push: { contactedBy: id } }
-            ).then(() => {
+            ).then(updatedUser => {
                 let mailDetails = {
                     from: process.env.EMAIL,
                     to: receiver,
@@ -34,6 +33,8 @@ router.put("/contact", (req, res, next) => {
                         console.log("Email sent successfully")
                     }
                 })
+
+                res.status(200).json({ user: updatedUser })
             })
         }
     )

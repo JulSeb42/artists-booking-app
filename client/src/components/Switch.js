@@ -19,7 +19,6 @@ import Goodbye from "../pages/login/Goodbye"
 import MyAccount from "../pages/user/MyAccount"
 import EditAccount from "../pages/user/EditAccount"
 import EditPassword from "../pages/user/EditPassword"
-import EditProfilePicture from "../pages/user/EditProfilePicture"
 
 // Artists
 import ArtistList from "../pages/artists/ArtistList"
@@ -98,18 +97,6 @@ function Switch() {
                 element={
                     <ProtectedRoute redirectTo="/login">
                         <EditPassword edited={edited} setEdited={setEdited} />
-                    </ProtectedRoute>
-                }
-                preload={scrollToTop()}
-            />
-            <Route
-                path="/my-account/edit/edit-picture"
-                element={
-                    <ProtectedRoute redirectTo="/login">
-                        <EditProfilePicture
-                            edited={edited}
-                            setEdited={setEdited}
-                        />
                     </ProtectedRoute>
                 }
                 preload={scrollToTop()}

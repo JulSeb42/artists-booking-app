@@ -207,6 +207,7 @@ for (let i = 0; i < artists.length; i++) {
             randomDate(),
         ],
         visible: true,
+        verified: true,
     })
 }
 
@@ -248,6 +249,7 @@ const realArtists = [
         facebookLink: "https://www.facebook.com/roneofficial",
         instagramLink: "https://www.instagram.com/roneofficial/",
         visible: true,
+        verified: true,
     },
     {
         fullName: "Justice",
@@ -285,6 +287,7 @@ const realArtists = [
         facebookLink: "https://www.facebook.com/etjusticepourtous",
         instagramLink: "https://www.instagram.com/etjusticepourtous/",
         visible: true,
+        verified: true,
     },
     {
         fullName: "Rolling Stones",
@@ -317,6 +320,7 @@ const realArtists = [
         youtube: ["https://www.youtube.com/embed/O4irXQhgMqg"],
         youtubeLink: "https://www.youtube.com/channel/UCB_Z6rBg3WW3NL4-QimhC2A",
         visible: true,
+        verified: true,
     },
     {
         fullName: "Polo and Pan",
@@ -353,6 +357,7 @@ const realArtists = [
         youtubeLink: "https://www.youtube.com/channel/UCQUFWrwQshjbq3VN0yfm_5Q",
         facebookLink: "https://www.facebook.com/polopan.music",
         visible: true,
+        verified: true,
     },
 ]
 

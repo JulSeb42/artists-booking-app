@@ -37,10 +37,7 @@ function MyAccount() {
     ) : (
         <Page title={user.fullName} description="" keywords="">
             <Aside center>
-                <ProfilePicture
-                    src={user.imageUrl}
-                    alt={user.fullName}
-                />
+                <ProfilePicture src={user.imageUrl} alt={user.fullName} />
 
                 <Button to="/my-account/edit" btncolor="primary">
                     Edit your account
@@ -60,6 +57,10 @@ function MyAccount() {
                     <Font.Strong>Location: </Font.Strong>
                     {user.city}
                 </TextIcon>
+
+                {user.verified === false && (
+                    <Font.P>Your account is not verified!</Font.P>
+                )}
 
                 {user.role === "artist" && (
                     <Font.P>

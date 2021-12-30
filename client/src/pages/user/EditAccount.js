@@ -17,13 +17,15 @@ import {
 } from "../../components/layouts/Container"
 import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
-import ProfilePicture from "../../components/user/ProfilePicture"
+// import ProfilePicture from "../../components/user/ProfilePicture"
+import EditPicture from "../../components/forms/EditPicture"
 import { AuthContext } from "../../context/auth"
 import DangerZone from "../../components/forms/DangerZone"
 import Textarea from "../../components/forms/Textarea"
 import Button from "../../components/ui/Button"
 import { IconMixin } from "../../components/ui/Icon"
 import Toggle from "../../components/forms/Toggle"
+import service from "../../services/cloudinary"
 
 // Utils
 import getToday from "../../components/utils/getToday"
@@ -44,6 +46,12 @@ const Date = styled.li`
     }
 `
 
+const ButtonsContainer = styled.div`
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: ${Variables.Margins.XXS};
+`
+
 function EditAccount({ edited, setEdited }) {
     const { user, updateUser } = useContext(AuthContext)
     const navigate = useNavigate()
@@ -54,7 +62,7 @@ function EditAccount({ edited, setEdited }) {
     const [errorMessage, setErrorMessage] = useState(undefined)
 
     const [genre, setGenre] = useState(user.genre || "")
-    const [price, setPrice] = useState(user.price || "")
+    const [price, setPrice] = useState(user.price || 0)
     const [bio, setBio] = useState(user.bio || "")
     const [available, setAvailable] = useState(user.available || [])
 
@@ -81,6 +89,36 @@ function EditAccount({ edited, setEdited }) {
         setAvailable(available.filter(item => item !== e.target.innerText))
     }
 
+    // Profile picture
+    const [imageUrl, setImageUrl] = useState(user.imageUrl)
+    const [picture, setPicture] = useState(user.imageUrl)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const handleFileUpload = e => {
+        e.preventDefault()
+        const uploadData = new FormData()
+        setIsLoading(true)
+
+        uploadData.append("imageUrl", e.target.files[0])
+
+        service
+            .uploadImage(uploadData)
+            .then(res => {
+                setImageUrl(res.secure_url)
+                setIsLoading(false)
+            })
+            .catch(err => console.log(err))
+
+        if (e.target.files[0]) {
+            setPicture(e.target.files[0])
+            const reader = new FileReader()
+            reader.addEventListener("load", () => {
+                setPicture(reader.result)
+            })
+            reader.readAsDataURL(e.target.files[0])
+        }
+    }
+
     const handleSubmit = e => {
         e.preventDefault()
         const requestBody = {
@@ -97,6 +135,7 @@ function EditAccount({ edited, setEdited }) {
             facebookLink,
             instagramLink,
             visible,
+            imageUrl,
         }
 
         axios
@@ -127,7 +166,7 @@ function EditAccount({ edited, setEdited }) {
     }
 
     let resultsCities = cities.filter(city => {
-        return city.toLowerCase().includes(filteredCities)
+        return city.toLowerCase().includes(filteredCities.toLowerCase())
     })
 
     const handleClickSuggestion = e => {
@@ -143,23 +182,41 @@ function EditAccount({ edited, setEdited }) {
             onSubmit={handleSubmit}
         >
             <Aside center>
-                <ProfilePicture
-                    src={user.imageUrl}
+                <EditPicture
+                    src={picture}
                     alt={user.fullName}
-                    to="/my-account/edit/edit-picture"
+                    onChange={e => handleFileUpload(e)}
+                    id="imageUrl"
                 />
-                {user.role === "artist" && (
-                    <Toggle
-                        id="visible"
-                        label={visible ? "Visible" : "Hidden"}
-                        onChange={handleVisible}
-                        defaultChecked={visible}
-                    />
-                )}
 
-                <Button btncolor="primary" type="submit">
-                    Save
-                </Button>
+                {user.role === "artist" &&
+                    (user.verified === true ? (
+                        <Toggle
+                            id="visible"
+                            label={visible ? "Visible" : "Hidden"}
+                            onChange={handleVisible}
+                            defaultChecked={visible}
+                        />
+                    ) : (
+                        <Font.P>
+                            Please verify your account to change the visibility
+                        </Font.P>
+                    ))}
+
+                <ButtonsContainer>
+                    <Button
+                        btncolor="primary"
+                        type="submit"
+                        loader={isLoading && "loading"}
+                        disabled={isLoading && "disabled"}
+                    >
+                        Save
+                    </Button>
+
+                    <Button btncolor="secondary" to="/my-account">
+                        Cancel
+                    </Button>
+                </ButtonsContainer>
             </Aside>
 
             <Content>
@@ -204,7 +261,6 @@ function EditAccount({ edited, setEdited }) {
                             type="number"
                             label="Your price"
                             id="price"
-                            defaultValue={price}
                             value={price}
                             onChange={handlePrice}
                             min="0"

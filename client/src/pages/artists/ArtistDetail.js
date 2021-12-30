@@ -32,7 +32,7 @@ import convertDate from "../../components/utils/convertDate"
 // const API_URL = "http://localhost:5005"
 
 function ArtistDetail(props) {
-    const { isLoggedIn, user } = useContext(AuthContext)
+    const { isLoggedIn, user, updateUser } = useContext(AuthContext)
 
     const conditionBtn =
         isLoggedIn &&
@@ -59,24 +59,18 @@ function ArtistDetail(props) {
     const [contacted, setContacted] = useState(false)
 
     useEffect(() => {
-        axios
-            .get(
-                `/users/user/${
-                    isLoggedIn ? user._id : props.artist._id
-                }`
-            )
-            .then(res => {
-                isLoggedIn &&
-                    res.data.contacted.find(artist => {
-                        return artist._id === props.artist._id
-                            ? setContacted(true)
-                            : setContacted(false)
-                    })
-            })
-            .catch(err => console.log(err))
+        if (isLoggedIn === true) {
+            const hasContacted = props.artist.contactedBy.find(foundUser => foundUser === user._id)
+
+            if (hasContacted !== undefined) {
+                setContacted(true)
+            }
+        }
     }, [])
 
     const handleSend = e => {
+        e.preventDefault()
+
         const requestBody = {
             sender: user.email,
             receiver: props.artist.email,
@@ -85,9 +79,14 @@ function ArtistDetail(props) {
             id: user._id,
             artistId: props.artist._id,
         }
+
         axios
             .put(`/messages/contact`, requestBody)
-            .then(() => navigate("/my-account"))
+            .then(() => {
+                updateUser(user)
+                navigate("/my-account")
+                window.location.reload(false)
+            })
             .catch(err => setErrorMessage(err.response))
     }
 
@@ -149,37 +148,50 @@ function ArtistDetail(props) {
                     </>
                 )}
 
-                {!isLoggedIn ? (
-                    <Font.P>
-                        Please <Link to="/login">log in</Link> to contact{" "}
-                        {props.artist.fullName}
-                    </Font.P>
-                ) : isLoggedIn && contacted ? (
-                    <Font.H5 style={{ color: Variables.Colors.Success }}>
-                        You already contacted {props.artist.fullName}!
-                    </Font.H5>
-                ) : isLoggedIn && props.artist._id !== user._id ? (
-                    <Form btnPrimary="Send" onSubmit={handleSend}>
-                        <Input
-                            label="Enquiry for"
-                            type="date"
-                            name="date"
-                            id="date"
-                            min={getToday()}
-                            value={date}
-                            onChange={handleDate}
-                        />
+                <ItemContainer>
+                    <Font.H3>Contact {props.artist.fullName}</Font.H3>
 
-                        <Textarea
-                            label="Your message"
-                            name="message"
-                            id="message"
-                            onChange={handleMessage}
-                        />
-                    </Form>
-                ) : (
-                    ""
-                )}
+                    {!isLoggedIn ? (
+                        <Font.P>
+                            Please <Link to="/login">log in</Link> to contact{" "}
+                            {props.artist.fullName}
+                        </Font.P>
+                    ) : isLoggedIn && contacted ? (
+                        <Font.H5 style={{ color: Variables.Colors.Success }}>
+                            You already contacted {props.artist.fullName}!
+                        </Font.H5>
+                    ) : isLoggedIn &&
+                      props.artist._id !== user._id &&
+                      user.verified === true ? (
+                        <Form btnPrimary="Send" onSubmit={handleSend}>
+                            <Input
+                                label="Enquiry for"
+                                type="date"
+                                name="date"
+                                id="date"
+                                min={getToday()}
+                                value={date}
+                                onChange={handleDate}
+                            />
+
+                            <Textarea
+                                label="Your message"
+                                name="message"
+                                id="message"
+                                onChange={handleMessage}
+                            />
+                        </Form>
+                    ) : (
+                        isLoggedIn &&
+                        props.artist._id !== user._id &&
+                        user.verified === false && (
+                            <Font.P>
+                                You must verify your email to contact{" "}
+                                {props.artist.fullName}.
+                            </Font.P>
+                        )
+                    )}
+                </ItemContainer>
 
                 {errorMessage && <Font.P>{errorMessage}</Font.P>}
             </Content>

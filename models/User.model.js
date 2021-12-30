@@ -33,6 +33,9 @@ const userSchema = new Schema(
         facebookLink: String,
         instagramLink: String,
 
+        // Verification
+        verified: Boolean,
+
         // Messages
         contacted: [
             {

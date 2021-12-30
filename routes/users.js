@@ -37,6 +37,7 @@ router.put("/edit", (req, res, next) => {
         facebookLink,
         instagramLink,
         visible,
+        imageUrl,
     } = req.body
 
     User.findByIdAndUpdate(
@@ -54,6 +55,7 @@ router.put("/edit", (req, res, next) => {
             facebookLink,
             instagramLink,
             visible,
+            imageUrl,
         },
         { new: true }
     )
