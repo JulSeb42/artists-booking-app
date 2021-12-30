@@ -138,7 +138,7 @@ const Burger = styled.button`
     }
 `
 
-function Header(props) {
+function Header() {
     const { isLoggedIn, logOutUser } = useContext(AuthContext)
     const location = useLocation()
 
