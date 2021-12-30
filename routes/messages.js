@@ -1,14 +1,7 @@
-const nodemailer = require("nodemailer")
 const router = require("express").Router()
 const User = require("../models/User.model")
 
-let transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.EMAIL,
-        pass: process.env.WORD,
-    },
-})
+let transporter = require("../utils/transporter")
 
 router.put("/contact", (req, res, next) => {
     const { sender, receiver, date, message, id, artistId } = req.body

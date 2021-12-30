@@ -12,6 +12,7 @@ import NavLogin from "../../components/forms/NavLogin"
 import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 import Password from "../../components/forms/Password"
+import getRandomString from "../../components/utils/getRandomString"
 
 // Data
 import allCities from "../../components/data/citiesGermany.json"
@@ -41,7 +42,8 @@ function Signup() {
             password,
             role: "user",
             city,
-            verified: true,
+            verified: false,
+            verifyToken: getRandomString(20),
         }
 
         axios

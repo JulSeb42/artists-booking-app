@@ -3,6 +3,7 @@ const router = require("express").Router()
 // ℹ️ Handles password encryption
 const bcrypt = require("bcryptjs")
 const mongoose = require("mongoose")
+let transporter = require("../utils/transporter")
 
 // How many rounds should bcrypt run the salt (default [10 - 12 rounds])
 const saltRounds = 10
@@ -28,22 +29,14 @@ const randomAvatar = () => {
 }
 
 router.post("/signup", isLoggedOut, (req, res) => {
-    const { fullName, email, password, role, city, imageUrl, verified } = req.body
+    const { fullName, email, password, role, city, verified, verifyToken } =
+        req.body
 
     if (!fullName) {
         return res
             .status(400)
             .json({ errorMessage: "Please provide your full name." })
     }
-
-    // if (password.length < 6) {
-    //     return res.status(400).json({
-    //         errorMessage:
-    //             "Your password needs to be at least 6 characters long.",
-    //     })
-    // }
-
-    //   ! This use case is using a regular expression to control for special characters and min length
 
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/
 
@@ -77,10 +70,25 @@ router.post("/signup", isLoggedOut, (req, res) => {
                     city,
                     imageUrl: randomAvatar(),
                     verified,
+                    verifyToken,
                 })
             })
             .then(user => {
-                // Bind the user to the session object
+                let mailDetails = {
+                    from: process.env.EMAIL,
+                    to: email,
+                    subject: "Verify your account on Book a Band",
+                    html: `Hello, <br />Thank you for creating your account on Book a Band! <a href="http://localhost:3000/verify/${verifyToken}/${user._id}">Click here to verify your account</a>.`,
+                }
+
+                transporter.sendMail(mailDetails, (err, data) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        console.log("Email sent successfully.")
+                    }
+                })
+
                 req.session.user = user
                 res.status(201).json(user)
             })
@@ -149,12 +157,65 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 })
 
 router.put("/logout", isLoggedIn, (req, res) => {
-   req.session.destroy(err => {
-       if (err) {
-           return res.status(500).json({ errorMessage: err.message })
-       }
-       res.json({ message: "Done" })
-   })
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).json({ errorMessage: err.message })
+        }
+        res.json({ message: "Done" })
+    })
 })
+
+router.put("/verify", (req, res, next) => {
+    const { id, verifyToken, verified } = req.body
+
+    User.findByIdAndUpdate(id, { id, verifyToken, verified }, { new: true })
+        .then(updatedUser => {
+            res.status(200).json({ user: updatedUser })
+        })
+        .catch(err => next(err))
+})
+
+// router.put("/verify", (req, res, next) => {
+//     const { id, verifyToken } = req.body
+
+//     User.findById(id).then()
+// })
+
+// Verification
+
+// router.put("/send-verify-email", (req, res, next) => {
+//     const { receiver, id, verifyToken } = req.body
+// })
+
+// router.put("/contact", (req, res, next) => {
+//     const { sender, receiver, date, message, id, artistId } = req.body
+
+//     // User.findByIdAndUpdate(id, { $push: { contacted: artistId } })
+//     User.findOneAndUpdate({ _id: id }, { $push: { contacted: artistId } }).then(
+//         () => {
+//             User.findOneAndUpdate(
+//                 { _id: artistId },
+//                 { $push: { contactedBy: id } }
+//             ).then(updatedUser => {
+//                 let mailDetails = {
+//                     from: process.env.EMAIL,
+//                     to: receiver,
+//                     subject: "New enquiry on Book a Band",
+//                     text: `Hi, you have a new enquiry from ${sender} for the ${date}. This is the message: ${message}`,
+//                 }
+
+//                 transporter.sendMail(mailDetails, function (err, data) {
+//                     if (err) {
+//                         console.log(err)
+//                     } else {
+//                         console.log("Email sent successfully")
+//                     }
+//                 })
+
+//                 res.status(200).json({ user: updatedUser })
+//             })
+//         }
+//     )
+// })
 
 module.exports = router

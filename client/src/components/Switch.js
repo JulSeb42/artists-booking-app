@@ -7,13 +7,15 @@ import ProtectedRoute from "./utils/ProtectedRoute"
 
 // Pages
 import Home from "../pages/Home"
+import ErrorPage from "../pages/ErrorPage"
 
-// Login
+// Auth
 import Login from "../pages/login/Login"
 import Signup from "../pages/login/Signup"
 import SignUpArtist from "../pages/login/SignUpArtist"
 import ThankYou from "../pages/login/ThankYou"
 import Goodbye from "../pages/login/Goodbye"
+import Verify from "../pages/login/Verify"
 
 // Account
 import MyAccount from "../pages/user/MyAccount"
@@ -30,6 +32,7 @@ import scrollToTop from "./utils/scrollToTop"
 // const API_URL = "http://localhost:5005"
 
 function Switch() {
+    // localStorage.clear()
     const [allUsers, setAllUsers] = useState([])
     const [edited, setEdited] = useState(false)
 
@@ -72,6 +75,17 @@ function Switch() {
                 element={<Goodbye />}
                 preload={scrollToTop()}
             />
+            {allUsers.map(user => (
+                <Route
+                    path={`/verify/${user.verifyToken}/${user._id}`}
+                    element={
+                        <ProtectedRoute redirectTo="/login">
+                            <Verify edited={edited} setEdited={setEdited} />
+                        </ProtectedRoute>
+                    }
+                    key={`${user.verifyToken}/${user._id}`}
+                />
+            ))}
 
             {/* Account */}
             <Route
@@ -118,6 +132,9 @@ function Switch() {
                     preload={scrollToTop()}
                 />
             ))}
+
+            {/* 404 */}
+            <Route path="*" element={<ErrorPage />} preload={scrollToTop()} />
         </Routes>
     )
 }
