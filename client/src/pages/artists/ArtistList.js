@@ -1,16 +1,16 @@
 // Imports
 import React, { useState, useEffect } from "react"
 import axios from "axios"
-import { v4 as uuid } from "uuid"
 
 // Components
 import Page from "../../components/layouts/Page"
 import * as Font from "../../components/styles/Font"
 import { Content } from "../../components/layouts/Container"
-import Card from "../../components/artists/Card"
 import List from "../../components/artists/List"
 import SearchArtists from "../../components/artists/SearchArtists"
+import Pagination from "../../components/artists/Pagination"
 
+// Utils
 import { getMinPrice, getMaxPrice } from "../../components/utils/minMaxPrice"
 
 // const API_URL = "http://localhost:5005"
@@ -101,6 +101,9 @@ function ArtistList() {
         results = results.filter(artist => genre === artist.genre)
     }
 
+    const dataLimit = 10
+    const maxPages = Math.floor(results.length / dataLimit)
+
     return (
         <Page title="Artists" description="" keywords="">
             <SearchArtists
@@ -125,11 +128,11 @@ function ArtistList() {
                     <Font.P>Loading</Font.P>
                 ) : results.length > 0 ? (
                     <List>
-                        {results.map(artist => (
-                            <Card artist={artist} key={uuid()}>
-                                {artist.fullName}
-                            </Card>
-                        ))}
+                        <Pagination
+                            artists={results}
+                            pageLimit={maxPages}
+                            dataLimit={dataLimit}
+                        />
                     </List>
                 ) : (
                     <Font.P>Nothing to show!</Font.P>
