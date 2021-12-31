@@ -6,6 +6,7 @@ import { LinkScroll as Link } from "../utils/LinkScroll"
 // Components
 import * as Variables from "../styles/Variables"
 import Icon from "../ui/Icon"
+import AsyncImage from "../utils/AsyncImages"
 
 // Styles
 const Container = styled(Link)`
@@ -35,7 +36,7 @@ const IconContainer = styled.span`
     background-color: ${Variables.Colors.LightGray};
 `
 
-const Picture = styled.img`
+const Picture = styled(AsyncImage)`
     width: 100%;
     aspect-ratio: 1;
     border-radius: 50%;

@@ -6,6 +6,7 @@ import styled, { css } from "styled-components"
 import * as Variables from "../styles/Variables"
 import * as Font from "../styles/Font"
 import Logo from "../ui/Logo"
+import AsyncImage from "../utils/AsyncImages"
 
 // Styles
 const Container = styled.div`
@@ -34,7 +35,7 @@ const Container = styled.div`
         `}
 `
 
-const Img = styled.img`
+const Img = styled(AsyncImage)`
     width: 100%;
     height: 100vh;
     object-fit: cover;

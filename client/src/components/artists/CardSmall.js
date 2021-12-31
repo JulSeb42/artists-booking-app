@@ -5,6 +5,7 @@ import { LinkScroll as Link } from "../utils/LinkScroll"
 
 // Components
 import * as Variables from "../styles/Variables"
+import AsyncImage from "../utils/AsyncImages"
 
 // Styles
 const Container = styled(Link)`
@@ -33,7 +34,7 @@ const Container = styled(Link)`
     }
 `
 
-const Img = styled.img`
+const Img = styled(AsyncImage)`
     position: absolute;
     top: 0;
     left: 0;
