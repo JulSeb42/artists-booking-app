@@ -64,8 +64,6 @@ const Bubble = styled.div`
 function Container(props) {
     const { user } = useContext(AuthContext)
 
-    console.log()
-
     if (
         props.conversation.messages[props.conversation.messages.length - 1]
             .sender._id !== user._id

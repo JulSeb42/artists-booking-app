@@ -37,7 +37,7 @@ const IconContainer = styled.span`
 `
 
 const Picture = styled(AsyncImage)`
-    width: 100%;
+    width: ${props => `${props.size}px`};
     aspect-ratio: 1;
     border-radius: 50%;
     object-fit: cover;
@@ -46,14 +46,24 @@ const Picture = styled(AsyncImage)`
 function ProfilePicture(props) {
     return props.to ? (
         <Container to={props.to}>
-            <Picture src={props.src} alt={props.alt} {...props} />
+            <Picture
+                src={props.src}
+                alt={props.alt}
+                {...props}
+                size={props.size || "100%"}
+            />
 
             <IconContainer>
                 <Icon name="edit" size={24} color={Variables.Colors.Primary} />
             </IconContainer>
         </Container>
     ) : (
-        <Picture src={props.src} alt={props.alt} {...props} />
+        <Picture
+            src={props.src}
+            alt={props.alt}
+            {...props}
+            size={props.size || "100%"}
+        />
     )
 }
 

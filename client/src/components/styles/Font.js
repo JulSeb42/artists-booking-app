@@ -28,6 +28,17 @@ export const H1 = styled.h1`
                 font-size: 48px;
             }
         `}
+    
+    a {
+        color: ${Variables.Colors.Primary};
+        font-weight: ${Variables.FontWeights.Bold};
+        text-decoration: none;
+        transition: ${Variables.Transitions.Short};
+
+        &:hover {
+            color: ${Variables.Colors.Primary70};
+        }
+    }
 `
 
 export const H2 = styled.h2`

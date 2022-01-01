@@ -104,8 +104,6 @@ function Card({ artist }) {
         }
     }
 
-    // console.log(nextAvailability())
-
     return (
         <Container>
             <Link to={`/artists/${artist._id}`}>

@@ -35,8 +35,6 @@ function MyAccount() {
             .catch(err => console.log(err))
     }, [user._id])
 
-    console.log(conversations)
-
     return !isLoggedIn ? (
         <Navigate to="/login" />
     ) : (
