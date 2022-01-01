@@ -88,11 +88,23 @@ const TextInfo = styled.span`
 `
 
 function Card({ artist }) {
-    const sortDates = arr => {
-        return arr.sort((a, b) => {
+    const nextAvailability = () => {
+        const arr = artist.available.sort((a, b) => {
             return new Date(a) - new Date(b)
-        })[0]
+        })
+
+        const filteredArr = arr.filter(date => {
+            return new Date(date) > new Date(getToday())
+        })
+
+        if (filteredArr.length > 0) {
+            return convertDate(filteredArr[0])
+        } else {
+            return "-"
+        }
     }
+
+    // console.log(nextAvailability())
 
     return (
         <Container>
@@ -128,15 +140,7 @@ function Card({ artist }) {
 
                         <Font.P>
                             <Font.Strong>Next availability:</Font.Strong>{" "}
-                            {/* {new Date(artist.available[0]) >
-                            new Date(getToday())
-                                ? convertDate(artist.available[0])
-                                : "-"} */}
-                            {new Date(
-                                convertDate(sortDates(artist.available))
-                            ) > new Date(getToday())
-                                ? convertDate(sortDates(artist.available))
-                                : "-"}
+                            {nextAvailability()}
                         </Font.P>
 
                         <Font.P>

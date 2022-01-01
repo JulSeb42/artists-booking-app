@@ -10,9 +10,7 @@ import AsyncImage from "../utils/AsyncImages"
 // Styles
 const Container = styled(Link)`
     aspect-ratio: 1;
-    border-radius: 50%;
     position: relative;
-    overflow: hidden;
     width: 100%;
     display: block;
     text-decoration: none;
@@ -21,6 +19,7 @@ const Container = styled(Link)`
     &:before {
         content: "";
         position: absolute;
+        border-radius: 50%;
         top: 0;
         left: 0;
         background-color: rgba(0, 0, 0, 0.5);
@@ -42,6 +41,7 @@ const Img = styled(AsyncImage)`
     height: 100%;
     object-fit: cover;
     z-index: 0;
+    border-radius: 50%;
 `
 
 const Content = styled.p`
@@ -56,11 +56,27 @@ const Content = styled.p`
     height: 100%;
     font-weight: ${Variables.FontWeights.Bold};
     text-align: center;
+    border-radius: 50%;
+`
+
+const Dot = styled.span`
+    --size: ${Variables.Margins.L};
+    width: var(--size);
+    height: var(--size);
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: ${Variables.Colors.Success};
+    display: block;
+    z-index: 10;
+    border-radius: 50%;
 `
 
 function CardSmall(props) {
     return (
         <Container to={props.to}>
+            {props.unread && <Dot />}
+            {/* <Dot /> */}
             <Img src={props.img} alt={props.name} />
             <Content>{props.name}</Content>
         </Container>

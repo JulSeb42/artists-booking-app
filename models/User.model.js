@@ -45,14 +45,22 @@ const userSchema = new Schema(
             },
         ],
 
-        contactedBy: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "User",
-            },
-        ],
+        // contactedBy: [
+        //     {
+        //         type: Schema.Types.ObjectId,
+        //         ref: "User",
+        //     },
+        // ],
 
         visible: Boolean,
+
+        // Messaging service
+        conversations: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Conversation",
+            },
+        ],
     },
     {
         // this second object adds extra properties: `createdAt` and `updatedAt`

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 // Components
 import * as Variables from "../styles/Variables"
 import Loader from "./Loader"
+import Icon from "./Icon"
 
 // Styles
 const Container = styled.button`
@@ -61,26 +62,42 @@ const Container = styled.button`
         cursor: not-allowed;
     }
 
-    ${props => props.loader && css`
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    ${props =>
+        props.loader &&
+        css`
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-        span {
-            margin-left: ${Variables.Margins.XXS};
-            border-top-color: ${Variables.Colors.DarkGray}
-        }
-    `}
+            span {
+                margin-left: ${Variables.Margins.XXS};
+                border-top-color: ${Variables.Colors.DarkGray};
+            }
+        `}
+
+    ${props =>
+        props.back &&
+        css`
+            display: inline-flex;
+            align-items: center;
+            padding: 0;
+
+            span {
+                margin-right: ${Variables.Margins.XXS};
+            }
+        `}
 `
 
 function Button(props) {
-    return props.to ? (
-        <Container to={props.to} as={Link} {...props}>
+    return (
+        <Container to={props.to} as={props.to && Link} {...props}>
+            {props.back && (
+                <Icon name="chevron-left" color="currentColor" size={16} />
+            )}
+
             {props.children}
-        </Container>
-    ) : (
-        <Container {...props}>
-            {props.children} {props.loader && <Loader />}
+
+            {props.loader && <Loader />}
         </Container>
     )
 }

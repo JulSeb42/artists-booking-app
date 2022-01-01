@@ -28,6 +28,8 @@ app.use("/users", users)
 const messages = require("./routes/messages")
 app.use("/messages", messages)
 
+const messaging = require("./routes/messaging")
+app.use("/messaging", messaging)
 
 // Deploy Heroku
 const path = require("path")

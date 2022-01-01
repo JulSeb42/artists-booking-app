@@ -1,7 +1,6 @@
 // Imports
 import React, { useContext, useState, useEffect } from "react"
 import axios from "axios"
-import { v4 as uuid } from "uuid"
 import { Navigate } from "react-router-dom"
 
 // Components
@@ -14,23 +13,29 @@ import Button from "../../components/ui/Button"
 import TextIcon from "../../components/ui/TextIcon"
 import CardSmall, { List } from "../../components/artists/CardSmall"
 
-// const API_URL = "http://localhost:5005"
-
 function MyAccount() {
     const { user, isLoggedIn } = useContext(AuthContext)
 
-    const [contacted, setContacted] = useState([])
+    const [conversations, setConversations] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         axios
-            .get(`/users/user/${user._id}`)
+            .get("/messaging/conversations")
             .then(res => {
-                setContacted(res.data.contacted)
+                setConversations(
+                    res.data.filter(
+                        conversation =>
+                            user._id === conversation.user._id ||
+                            user._id === conversation.artist._id
+                    )
+                )
                 setLoading(false)
             })
             .catch(err => console.log(err))
     }, [user._id])
+
+    console.log(conversations)
 
     return !isLoggedIn ? (
         <Navigate to="/login" />
@@ -69,27 +74,35 @@ function MyAccount() {
                     </Font.P>
                 )}
 
-                {user.role === "user" &&
-                    (loading ? (
-                        <Font.P>Loading</Font.P>
-                    ) : contacted.length > 0 ? (
-                        <>
-                            <Font.H4>Artists you contacted</Font.H4>
+                <Font.H4>Conversations</Font.H4>
 
-                            <List>
-                                {contacted.map(artist => (
-                                    <CardSmall
-                                        to={`/artists/${artist._id}`}
-                                        name={artist.fullName}
-                                        img={artist.imageUrl}
-                                        key={uuid()}
-                                    />
-                                ))}
-                            </List>
-                        </>
-                    ) : (
-                        <Font.P>You didn't contact any artist yet!</Font.P>
-                    ))}
+                {loading ? (
+                    <Font.P>Loading</Font.P>
+                ) : conversations.length === 0 && user.role === "user" ? (
+                    <Font.P>You did not contact any artist yet!</Font.P>
+                ) : conversations.length === 0 && user.role === "artist" ? (
+                    <Font.P>No one contacted you yet.</Font.P>
+                ) : (
+                    <List>
+                        {conversations.map(conversation => (
+                            <CardSmall
+                                to={`/my-account/conversations/${conversation._id}`}
+                                name={
+                                    user._id === conversation.artist._id
+                                        ? conversation.user.fullName
+                                        : conversation.artist.fullName
+                                }
+                                img={
+                                    user._id === conversation.artist._id
+                                        ? conversation.user.imageUrl
+                                        : conversation.artist.imageUrl
+                                }
+                                unread={conversation.read === true ? false : true}
+                                key={conversation._id}
+                            />
+                        ))}
+                    </List>
+                )}
             </Content>
         </Page>
     )

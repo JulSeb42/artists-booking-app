@@ -177,6 +177,7 @@ function Header() {
                         <LinkStyled to="/my-account" onClick={scrollToTop}>
                             My account
                         </LinkStyled>
+
                         <LinkStyled as="button" onClick={logOutUser}>
                             Log out
                         </LinkStyled>
