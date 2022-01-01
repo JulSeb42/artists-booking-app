@@ -46,8 +46,6 @@ function Pagination({ artists, dataLimit, pageLimit }) {
         return new Array(pageLimit).fill().map((_, i) => start + i + 1)
     }
 
-    console.log(getPaginationGroup().length)
-
     return (
         <>
             {getPaginatedData().map((d, i) => (
@@ -63,7 +61,11 @@ function Pagination({ artists, dataLimit, pageLimit }) {
                     />
 
                     {getPaginationGroup().map((item, i) => (
-                        <ButtonPagination onClick={changePage} className={currentPage === item && "active"}>
+                        <ButtonPagination
+                            onClick={changePage}
+                            className={currentPage === item && "active"}
+                            key={i}
+                        >
                             {item}
                         </ButtonPagination>
                     ))}

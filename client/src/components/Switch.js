@@ -21,6 +21,7 @@ import Verify from "../pages/login/Verify"
 import MyAccount from "../pages/user/MyAccount"
 import EditAccount from "../pages/user/EditAccount"
 import EditPassword from "../pages/user/EditPassword"
+import Conversation from "../pages/user/Conversation"
 
 // Artists
 import ArtistList from "../pages/artists/ArtistList"
@@ -34,6 +35,7 @@ import scrollToTop from "./utils/scrollToTop"
 function Switch() {
     // localStorage.clear()
     const [allUsers, setAllUsers] = useState([])
+    const [allConversation, setAllConversation] = useState([])
     const [edited, setEdited] = useState(false)
 
     useEffect(() => {
@@ -42,6 +44,11 @@ function Switch() {
             .then(res => {
                 setAllUsers(res.data)
             })
+            .catch(err => console.log(err))
+
+        axios
+            .get("/messaging/conversations")
+            .then(res => setAllConversation(res.data))
             .catch(err => console.log(err))
     }, [edited])
 
@@ -115,6 +122,18 @@ function Switch() {
                 }
                 preload={scrollToTop()}
             />
+            {allConversation.map(conversation => (
+                <Route
+                    path={`/my-account/conversations/${conversation._id}`}
+                    element={
+                        <ProtectedRoute redirectTo="/login">
+                            <Conversation conversation={conversation} />
+                        </ProtectedRoute>
+                    }
+                    key={conversation._id}
+                    preload={scrollToTop()}
+                />
+            ))}
 
             {/* Artists */}
             <Route
@@ -127,7 +146,6 @@ function Switch() {
                 <Route
                     path={`/artists/${artist._id}`}
                     element={<ArtistDetail artist={artist} />}
-                    artist={artist}
                     key={artist._id}
                     preload={scrollToTop()}
                 />

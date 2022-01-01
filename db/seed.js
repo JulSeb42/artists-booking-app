@@ -359,7 +359,49 @@ const realArtists = [
         visible: true,
         verified: true,
     },
+    {
+        fullName: "Julien artist",
+        email: "b@c.com",
+        password: hash,
+        city: "Berlin",
+        role: "artist",
+        imageUrl:
+            "https://res.cloudinary.com/dyfxmafvr/image/upload/v1640201697/artists-booking-app/p4qeldrfg8vv1uf745fg.jpg",
+        genre: "Techno",
+        bio: bio,
+        price: randomPrice(),
+        available: [
+            randomDate(),
+            randomDate(),
+            randomDate(),
+            randomDate(),
+            randomDate(),
+            randomDate(),
+            randomDate(),
+            randomDate(),
+            randomDate(),
+            randomDate(),
+            randomDate(),
+            randomDate(),
+            randomDate(),
+            randomDate(),
+            randomDate(),
+        ],
+        visible: true,
+        verified: true,
+    },
 ]
+
+const realUser = {
+    fullName: "Julien Sebag",
+    email: "a@b.com",
+    password: hash,
+    city: "Berlin",
+    role: "user",
+    imageUrl:
+        "https://res.cloudinary.com/dyfxmafvr/image/upload/v1640201697/artists-booking-app/p4qeldrfg8vv1uf745fg.jpg",
+    verified: true,
+}
 
 User.insertMany(realArtists)
     .then(artist => {
@@ -373,6 +415,16 @@ User.insertMany(fakeArtists)
     .then(artist => {
         console.log(
             `Success, ${artist.length} artists were added to the database`
+        )
+    })
+    .catch(err => console.log(err))
+
+User.insertMany(realUser)
+    .then(user => {
+        console.log(
+            `Success, ${user.length} ${
+                user.length === 1 ? "user" : "users"
+            } were added to the database`
         )
         mongoose.connection.close()
     })
