@@ -60,6 +60,15 @@ const Button = styled.button`
     top: calc(50% - 16px / 2);
 `
 
+const Validation = styled(Font.Label)`
+    display: flex;
+    align-items: center;
+
+    & > span {
+        margin-right: ${Variables.Margins.XXS};
+    } 
+`
+
 function Password(props) {
     const [isVisible, setIsVisible] = useState(false)
     const isText = isVisible ? "text" : "password"
@@ -97,6 +106,21 @@ function Password(props) {
                     />
                 </Button>
             </InputContainer>
+
+            {props.value.length > 0 && (
+                <Validation>
+                    <Icon
+                        name={props.value.length < 6 ? "close" : "check"}
+                        color={
+                            props.value.length < 6
+                                ? Variables.Colors.Danger
+                                : Variables.Colors.Success
+                        }
+                        size={14}
+                    />
+                    Your password must be at least 6 characters long
+                </Validation>
+            )}
         </Container>
     )
 }
