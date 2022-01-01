@@ -13,8 +13,6 @@ import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 import Password from "../../components/forms/Password"
 
-// const API_URL = "http://localhost:5005"
-
 function Login() {
     // Check if logged in
     const { logInUser, isLoggedIn } = useContext(AuthContext)

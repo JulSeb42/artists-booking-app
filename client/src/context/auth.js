@@ -6,8 +6,6 @@ import localStorageExpires from "../components/utils/localStorageExpires"
 
 const AuthContext = React.createContext()
 
-// const API_URL = "http://localhost:5005"
-
 function AuthProviderWrapper(props) {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [user, setUser] = useState(null)

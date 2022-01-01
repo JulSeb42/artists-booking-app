@@ -7,7 +7,6 @@ import axios from "axios"
 // Components
 import Page from "../../components/layouts/Page"
 import * as Font from "../../components/styles/Font"
-import * as Variables from "../../components/styles/Variables"
 import {
     Aside,
     Content,
@@ -29,8 +28,6 @@ import ButtonSocial from "../../components/ui/ButtonSocial"
 import getToday from "../../components/utils/getToday"
 import convertDate from "../../components/utils/convertDate"
 import getTimeNow from "../../components/utils/getTimeNow"
-
-// const API_URL = "http://localhost:5005"
 
 function ArtistDetail(props) {
     const { isLoggedIn, user, updateUser } = useContext(AuthContext)
@@ -57,41 +54,6 @@ function ArtistDetail(props) {
     const handleDate = e => setDate(e.target.value.toLocaleString())
 
     // Contacted
-    // const [contacted, setContacted] = useState(false)
-
-    // useEffect(() => {
-    //     if (isLoggedIn === true) {
-    //         const hasContacted = props.artist.contactedBy.find(
-    //             foundUser => foundUser === user._id
-    //         )
-
-    //         if (hasContacted !== undefined) {
-    //             setContacted(true)
-    //         }
-    //     }
-    // }, [])
-
-    // const handleSend = e => {
-    //     e.preventDefault()
-
-    //     const requestBody = {
-    //         sender: user.email,
-    //         receiver: props.artist.email,
-    //         date,
-    //         message,
-    //         id: user._id,
-    //         artistId: props.artist._id,
-    //     }
-
-    //     axios
-    //         .put(`/messages/contact`, requestBody)
-    //         .then(() => {
-    //             updateUser(user)
-    //             navigate("/my-account")
-    //             window.location.reload(false)
-    //         })
-    //         .catch(err => setErrorMessage(err.response))
-    // }
 
     const handleSend = e => {
         e.preventDefault()
@@ -123,16 +85,13 @@ function ArtistDetail(props) {
 
     // Hide contact form
     const [hasContacted, setHasContacted] = useState(false)
-    const [conversationId, setConversationId] = useState(undefined)
 
     useEffect(() => {
         if (isLoggedIn) {
             let contacted = user.contacted.find(id => id === props.artist._id)
-            
 
             if (contacted !== undefined) {
                 setHasContacted(true)
-                setConversationId(contacted)
             }
         }
     }, [])
@@ -178,7 +137,7 @@ function ArtistDetail(props) {
                     </Font.P>
                 )}
 
-                {/* {props.artist.youtube.length > 0 && (
+                {props.artist.youtube.length > 0 && (
                     <>
                         <Font.H3>Videos</Font.H3>
 
@@ -186,52 +145,7 @@ function ArtistDetail(props) {
                             <Youtube src={item} key={uuid()} />
                         ))}
                     </>
-                )} */}
-
-                {/* <ItemContainer>
-                    <Font.H3>Contact {props.artist.fullName}</Font.H3>
-
-                    {!isLoggedIn ? (
-                        <Font.P>
-                            Please <Link to="/login">log in</Link> to contact{" "}
-                            {props.artist.fullName}
-                        </Font.P>
-                    ) : isLoggedIn && contacted ? (
-                        <Font.H5 style={{ color: Variables.Colors.Success }}>
-                            You already contacted {props.artist.fullName}!
-                        </Font.H5>
-                    ) : isLoggedIn &&
-                      props.artist._id !== user._id &&
-                      user.verified === true ? (
-                        <Form btnPrimary="Send" onSubmit={handleSend}>
-                            <Input
-                                label="Enquiry for"
-                                type="date"
-                                name="date"
-                                id="date"
-                                min={getToday()}
-                                value={date}
-                                onChange={handleDate}
-                            />
-
-                            <Textarea
-                                label="Your message"
-                                name="message"
-                                id="message"
-                                onChange={handleMessage}
-                            />
-                        </Form>
-                    ) : isLoggedIn &&
-                      props.artist._id !== user._id &&
-                      user.verified === false ? (
-                        <Font.P>
-                            You must verify your email to contact{" "}
-                            {props.artist.fullName}.
-                        </Font.P>
-                    ) : (
-                        <Font.P>You can not contact yourself!</Font.P>
-                    )}
-                </ItemContainer> */}
+                )}
 
                 <ItemContainer>
                     <Font.H3>Contact {props.artist.fullName}</Font.H3>

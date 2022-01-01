@@ -11,8 +11,6 @@ import Form from "../../components/forms/Form"
 import { Aside, Content } from "../../components/layouts/Container"
 import { AuthContext } from "../../context/auth"
 
-// const API_URL = "http://localhost:5005"
-
 function EditPassword() {
     const { user, updateUser } = useContext(AuthContext)
     const navigate = useNavigate()

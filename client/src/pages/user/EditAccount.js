@@ -31,8 +31,7 @@ import service from "../../services/cloudinary"
 import getToday from "../../components/utils/getToday"
 import allCities from "../../components/data/citiesGermany.json"
 
-// const API_URL = "http://localhost:5005"
-
+// Styles
 const Date = styled.li`
     grid-template-columns: auto 1fr auto !important;
 

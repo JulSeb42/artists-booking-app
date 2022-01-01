@@ -10,8 +10,6 @@ import * as Font from "../styles/Font"
 import Button from "../ui/Button"
 import { AuthContext } from "../../context/auth"
 
-// const API_URL = "http://localhost:5005"
-
 // Styles
 const OpenButton = styled(Font.P)`
     cursor: pointer;

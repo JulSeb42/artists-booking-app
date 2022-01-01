@@ -5,7 +5,6 @@ import axios from "axios"
 
 // Components
 import * as Variables from "../styles/Variables"
-// import * as Font from "../styles/Font"
 import Icon from "../ui/Icon"
 import { AuthContext } from "../../context/auth"
 

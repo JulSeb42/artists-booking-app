@@ -18,8 +18,6 @@ import getRandomString from "../../components/utils/getRandomString"
 // Data
 import allCities from "../../components/data/citiesGermany.json"
 
-// const API_URL = "http://localhost:5005"
-
 function SignUpArtist() {
     const { logInUser } = useContext(AuthContext)
     const navigate = useNavigate()

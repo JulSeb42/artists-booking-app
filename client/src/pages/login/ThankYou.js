@@ -1,11 +1,9 @@
 // Imports
 import React, { useContext } from "react"
-// import styled from "styled-components"
 
 // Components
 import Page from "../../components/layouts/Page"
 import * as Font from "../../components/styles/Font"
-// import * as Variables from "../../components/styles/Variables"
 import { Aside, Content } from "../../components/layouts/Container"
 import { AuthContext } from "../../context/auth"
 import { LinkScroll as Link } from "../../components/utils/LinkScroll"

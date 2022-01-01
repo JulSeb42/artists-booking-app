@@ -18,8 +18,6 @@ function Home() {
                 fixed
                 overlay
             >
-                {/* Form */}
-
                 <Button to="/artists" btncolor="primary" large>
                     Browse artists
                 </Button>

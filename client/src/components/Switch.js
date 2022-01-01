@@ -30,8 +30,6 @@ import ArtistDetail from "../pages/artists/ArtistDetail"
 // Utils
 import scrollToTop from "./utils/scrollToTop"
 
-// const API_URL = "http://localhost:5005"
-
 function Switch() {
     // localStorage.clear()
     const [allUsers, setAllUsers] = useState([])
