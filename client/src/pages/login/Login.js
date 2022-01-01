@@ -3,6 +3,7 @@ import React, { useState, useContext } from "react"
 import axios from "axios"
 import { AuthContext } from "../../context/auth"
 import { Navigate, useNavigate } from "react-router-dom"
+import { LinkScroll as Link } from "../../components/utils/LinkScroll"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -71,6 +72,12 @@ function Login() {
                 </Form>
 
                 {errorMessage && <Font.P>{errorMessage}</Font.P>}
+
+                <Font.P>
+                    <Link to="/login/forgot-password">
+                        I forgot my password.
+                    </Link>
+                </Font.P>
             </Content>
         </Page>
     )

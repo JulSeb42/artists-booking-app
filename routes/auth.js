@@ -46,7 +46,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
                 "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter.",
         })
     }
-    
+
     User.findOne({ email }).then(found => {
         if (found) {
             return res
@@ -74,7 +74,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
                     from: process.env.EMAIL,
                     to: email,
                     subject: "Verify your account on Book a Band",
-                    html: `Hello,<br /><br />Thank you for creating your account on Book a Band! <a href="https://artist-booking-app.herokuapp.com/verify/${verifyToken}/${user._id}">Click here to verify your account</a>.`,
+                    html: `Hello,<br /><br />Thank you for creating your account on Book a Band! <a href="${process.env.HOST}/verify/${verifyToken}/${user._id}">Click here to verify your account</a>.`,
                 }
 
                 transporter.sendMail(mailDetails, (err, data) => {
@@ -111,14 +111,14 @@ router.post("/login", isLoggedOut, (req, res, next) => {
             .status(400)
             .json({ errorMessage: "Please provide your email." })
     }
-    
+
     if (password.length < 6) {
         return res.status(400).json({
             errorMessage:
                 "Your password needs to be at least 6 characters long.",
         })
     }
-    
+
     User.findOne({ email })
         .then(user => {
             if (!user) {
@@ -126,7 +126,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
                     .status(400)
                     .json({ errorMessage: "Wrong credentials." })
             }
-            
+
             bcrypt.compare(password, user.password).then(isSamePassword => {
                 if (!isSamePassword) {
                     return res
@@ -160,6 +160,54 @@ router.put("/verify", (req, res, next) => {
             res.status(200).json({ user: updatedUser })
         })
         .catch(err => next(err))
+})
+
+router.put("/forgot", (req, res, next) => {
+    const { receiver, verifyToken, id } = req.body
+
+    let mailDetails = {
+        from: process.env.EMAIL,
+        to: receiver,
+        subject: "Reset your password on Book a Band",
+        html: `Hello,<br /><br />To reset your password, <a href="${process.env.HOST}/forgot-password/${verifyToken}/${id}">click here</a>.`,
+    }
+
+    transporter.sendMail(mailDetails, function (err, data) {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log("Email sent successfully")
+        }
+    })
+
+    res.status(200).json(res.body)
+})
+
+router.put("/reset-password/:token/:id", (req, res, next) => {
+    const { password, id } = req.body
+
+    const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/
+
+    if (!regex.test(password)) {
+        return res.status(400).json({
+            errorMessage:
+                "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter.",
+        })
+    }
+
+    return bcrypt
+        .genSalt(saltRounds)
+        .then(salt => bcrypt.hash(password, salt))
+        .then(hashedPassword => {
+            // Create a user and save it in the database
+            return User.findByIdAndUpdate(req.params.id, {
+                password: hashedPassword,
+            })
+                .then(updatedUser => {
+                    res.status(200).json({ user: updatedUser })
+                })
+                .catch(err => next(err))
+        })
 })
 
 module.exports = router

@@ -33,7 +33,13 @@ function Conversation(props) {
     const { user } = useContext(AuthContext)
 
     return (
-        <Page title="Conversation">
+        <Page
+            title={`Conversation with ${
+                props.conversation.user._id === user._id
+                    ? props.conversation.artist.fullName
+                    : props.conversation.user.fullName
+            }`}
+        >
             <Aside empty />
 
             <Content>

@@ -16,6 +16,9 @@ import SignUpArtist from "../pages/login/SignUpArtist"
 import ThankYou from "../pages/login/ThankYou"
 import Goodbye from "../pages/login/Goodbye"
 import Verify from "../pages/login/Verify"
+import ForgotPassword from "../pages/login/ForgotPassword"
+import ThanksForgot from "../pages/login/ThanksForgot"
+import ResetPassword from "../pages/login/ResetPassword"
 
 // Account
 import MyAccount from "../pages/user/MyAccount"
@@ -89,8 +92,28 @@ function Switch() {
                         </ProtectedRoute>
                     }
                     key={`${user.verifyToken}/${user._id}`}
+                    preload={scrollToTop()}
                 />
             ))}
+
+            {allUsers.map(user => (
+                <Route
+                    path={`/forgot-password/${user.verifyToken}/${user._id}`}
+                    element={<ResetPassword />}
+                    key={`${user.verifyToken}/${user._id}`}
+                    preload={scrollToTop()}
+                />
+            ))}
+            <Route
+                path="/login/forgot-password"
+                element={<ForgotPassword />}
+                preload={scrollToTop()}
+            />
+            <Route
+                path="/login/forgot-password/thank-you"
+                element={<ThanksForgot />}
+                preload={scrollToTop()}
+            />
 
             {/* Account */}
             <Route
