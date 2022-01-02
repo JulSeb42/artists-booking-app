@@ -87,7 +87,7 @@ export const Transitions = {
 const DevicesSizes = {
     MobileS: "320px",
     MobileM: "375px",
-    MobileL: "425px",
+    MobileL: "600px",
     Tablet: "768px",
     Laptop: "1024px",
     LaptopL: "1440px",
