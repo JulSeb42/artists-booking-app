@@ -18,7 +18,6 @@ import { AuthContext } from "../../context/auth"
 import TextIcon from "../../components/ui/TextIcon"
 import Youtube from "../../components/artists/Youtube"
 import Form from "../../components/forms/Form"
-import Input from "../../components/forms/Input"
 import Textarea from "../../components/forms/Textarea"
 import { LinkScroll as Link } from "../../components/utils/LinkScroll"
 import SocialContainer from "../../components/ui/SocialContainer"
@@ -46,12 +45,10 @@ function ArtistDetail(props) {
 
     // Messages
     const [message, setMessage] = useState("")
-    const [date, setDate] = useState(getToday())
 
     const [errorMessage, setErrorMessage] = useState(undefined)
 
     const handleMessage = e => setMessage(e.target.value)
-    const handleDate = e => setDate(e.target.value.toLocaleString())
 
     // Contacted
 
@@ -160,16 +157,6 @@ function ArtistDetail(props) {
                             </Font.P>
                         ) : (
                             <Form btnPrimary="Send" onSubmit={handleSend}>
-                                <Input
-                                    label="Enquiry for"
-                                    type="date"
-                                    name="date"
-                                    id="date"
-                                    min={getToday()}
-                                    value={date}
-                                    onChange={handleDate}
-                                />
-
                                 <Textarea
                                     label="Your message"
                                     name="message"
