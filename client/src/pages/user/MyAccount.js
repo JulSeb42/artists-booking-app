@@ -95,7 +95,9 @@ function MyAccount() {
                                         ? conversation.user.imageUrl
                                         : conversation.artist.imageUrl
                                 }
-                                unread={conversation.read === true ? false : true}
+                                unread={
+                                    conversation.read === true ? false : true
+                                }
                                 key={conversation._id}
                             />
                         ))}

@@ -47,60 +47,64 @@ router.post("/signup", isLoggedOut, (req, res) => {
         })
     }
 
-    User.findOne({ email }).then(found => {
-        if (found) {
-            return res
-                .status(400)
-                .json({ errorMessage: "Email already taken." })
-        }
+    User.findOne({ email })
+        .populate("conversations")
+        .then(found => {
+            if (found) {
+                return res
+                    .status(400)
+                    .json({ errorMessage: "Email already taken." })
+            }
 
-        return bcrypt
-            .genSalt(saltRounds)
-            .then(salt => bcrypt.hash(password, salt))
-            .then(hashedPassword => {
-                return User.create({
-                    fullName,
-                    email,
-                    password: hashedPassword,
-                    role,
-                    city,
-                    imageUrl: randomAvatar(),
-                    verified,
-                    verifyToken,
-                })
-            })
-            .then(user => {
-                let mailDetails = {
-                    from: process.env.EMAIL,
-                    to: email,
-                    subject: "Verify your account on Book a Band",
-                    html: `Hello,<br /><br />Thank you for creating your account on Book a Band! <a href="${process.env.HOST}/verify/${verifyToken}/${user._id}">Click here to verify your account</a>.`,
-                }
-
-                transporter.sendMail(mailDetails, (err, data) => {
-                    if (err) {
-                        console.log(err)
-                    } else {
-                        console.log("Email sent successfully.")
-                    }
-                })
-
-                req.session.user = user
-                res.status(201).json(user)
-            })
-            .catch(error => {
-                if (error instanceof mongoose.Error.ValidationError) {
-                    return res.status(400).json({ errorMessage: error.message })
-                }
-                if (error.code === 11000) {
-                    return res.status(400).json({
-                        errorMessage:
-                            "Username need to be unique. The username you chose is already in use.",
+            return bcrypt
+                .genSalt(saltRounds)
+                .then(salt => bcrypt.hash(password, salt))
+                .then(hashedPassword => {
+                    return User.create({
+                        fullName,
+                        email,
+                        password: hashedPassword,
+                        role,
+                        city,
+                        imageUrl: randomAvatar(),
+                        verified,
+                        verifyToken,
                     })
-                }
-                return res.status(500).json({ errorMessage: error.message })
-            })
-    })
+                })
+                .then(user => {
+                    let mailDetails = {
+                        from: process.env.EMAIL,
+                        to: email,
+                        subject: "Verify your account on Book a Band",
+                        html: `Hello,<br /><br />Thank you for creating your account on Book a Band! <a href="${process.env.HOST}/verify/${verifyToken}/${user._id}">Click here to verify your account</a>.`,
+                    }
+
+                    transporter.sendMail(mailDetails, (err, data) => {
+                        if (err) {
+                            console.log(err)
+                        } else {
+                            console.log("Email sent successfully.")
+                        }
+                    })
+
+                    req.session.user = user
+                    res.status(201).json(user)
+                })
+                .catch(error => {
+                    if (error instanceof mongoose.Error.ValidationError) {
+                        return res
+                            .status(400)
+                            .json({ errorMessage: error.message })
+                    }
+                    if (error.code === 11000) {
+                        return res.status(400).json({
+                            errorMessage:
+                                "Username need to be unique. The username you chose is already in use.",
+                        })
+                    }
+                    return res.status(500).json({ errorMessage: error.message })
+                })
+        })
 })
 
 router.post("/login", isLoggedOut, (req, res, next) => {
@@ -120,6 +124,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     }
 
     User.findOne({ email })
+        .populate("conversations")
         .then(user => {
             if (!user) {
                 return res

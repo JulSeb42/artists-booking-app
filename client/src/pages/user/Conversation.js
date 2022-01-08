@@ -1,6 +1,7 @@
 // Packages
 import React, { useContext } from "react"
 import styled from "styled-components"
+import { Navigate } from "react-router-dom"
 // import axios from "axios"
 
 // Components
@@ -32,7 +33,13 @@ const TitleContainer = styled.span`
 function Conversation(props) {
     const { user } = useContext(AuthContext)
 
-    return (
+    const conditionNavigate =
+        props.conversation.user._id !== user._id ||
+        props.conversation.artist._id !== user._id
+
+    return conditionNavigate ? (
+        <Navigate to="/my-account" />
+    ) : (
         <Page
             title={`Conversation with ${
                 props.conversation.user._id === user._id
