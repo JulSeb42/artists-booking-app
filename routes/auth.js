@@ -168,24 +168,40 @@ router.put("/verify", (req, res, next) => {
 })
 
 router.put("/forgot", (req, res, next) => {
-    const { receiver, verifyToken, id } = req.body
+    const { email, resetToken } = req.body
 
-    let mailDetails = {
-        from: process.env.EMAIL,
-        to: receiver,
-        subject: "Reset your password on Book a Band",
-        html: `Hello,<br /><br />To reset your password, <a href="${process.env.HOST}/forgot-password/${verifyToken}/${id}">click here</a>.`,
-    }
+    User.findOne({ email })
+        .then(found => {
+            if (!found) {
+                res.status(400).json({
+                    message: "This user does not exist.",
+                })
+            } else {
+                User.findOneAndUpdate(
+                    { email },
+                    { resetToken },
+                    { new: true }
+                ).then(foundUser => {
+                    let mailDetails = {
+                        from: process.env.EMAIL,
+                        to: email,
+                        subject: "Reset your password on Book a Band",
+                        html: `Hello,<br /><br />To reset your password, <a href="${process.env.ORIGIN}/reset-password/${resetToken}/${foundUser._id}">click here</a>.`,
+                    }
 
-    transporter.sendMail(mailDetails, function (err, data) {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log("Email sent successfully")
-        }
-    })
+                    transporter.sendMail(mailDetails, function (err, data) {
+                        if (err) {
+                            console.log(err)
+                        } else {
+                            console.log("Email sent successfully")
+                        }
+                    })
 
-    res.status(200).json(res.body)
+                    res.status(200).json(res.body)
+                })
+            }
+        })
+        .catch(err => next(err))
 })
 
 router.put("/reset-password/:token/:id", (req, res, next) => {

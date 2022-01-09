@@ -1,52 +1,50 @@
 // Packages
-import React, { useState, useEffect } from "react"
+import React, { useState, useContext } from "react"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Navigate } from "react-router-dom"
 
 // Components
+import { AuthContext } from "../../context/auth"
 import * as Font from "../../components/styles/Font"
 import Page from "../../components/layouts/Page"
 import { Aside, Content } from "../../components/layouts/Container"
 import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 
-function ForgotPassword(props) {
+// Utils
+import getRandomString from "../../components/utils/getRandomString"
+
+function ForgotPassword() {
+    const { isLoggedIn } = useContext(AuthContext)
     const navigate = useNavigate()
+
     const [email, setEmail] = useState("")
-    const [allUsers, setAllUsers] = useState([])
+    const [errorMessage, setErrorMessage] = useState(undefined)
 
     const handleEmail = e => setEmail(e.target.value)
-
-    useEffect(() => {
-        axios
-            .get("/users/user")
-            .then(res => {
-                setAllUsers(res.data)
-            })
-            .catch(err => console.log(err))
-    }, [])
 
     const handleSubmit = e => {
         e.preventDefault()
 
-        const filteredUser = allUsers.find(user => user.email === email)
-
         const requestBody = {
-            receiver: email,
-            id: filteredUser._id,
-            verifyToken: filteredUser.verifyToken,
+            email,
+            resetToken: getRandomString(20),
         }
 
         axios
             .put("/auth/forgot", requestBody)
             .then(res => {
-                console.log(res)
-                navigate("/login/forgot-password/thank-you")
+                navigate("/login/forgot-password/email-sent")
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                const errorDescription = err.response.data.message
+                setErrorMessage(errorDescription)
+            })
     }
 
-    return (
+    return isLoggedIn ? (
+        <Navigate to="/" />
+    ) : (
         <Page title="I forgot my password">
             <Aside empty />
 
@@ -67,6 +65,8 @@ function ForgotPassword(props) {
                         value={email}
                     />
                 </Form>
+
+                {errorMessage && <Font.P>{errorMessage}</Font.P>}
             </Content>
         </Page>
     )

@@ -36,6 +36,7 @@ const userSchema = new Schema(
         // Verification
         verified: Boolean,
         verifyToken: String,
+        resetToken: String,
 
         // Messages
         contacted: [

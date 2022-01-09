@@ -98,7 +98,7 @@ function Switch() {
 
             {allUsers.map(user => (
                 <Route
-                    path={`/forgot-password/${user.verifyToken}/${user._id}`}
+                    path={`/reset-password/${user.resetToken}/${user._id}`}
                     element={<ResetPassword />}
                     key={`${user.verifyToken}/${user._id}`}
                     preload={scrollToTop()}
@@ -110,7 +110,7 @@ function Switch() {
                 preload={scrollToTop()}
             />
             <Route
-                path="/login/forgot-password/thank-you"
+                path="/login/forgot-password/email-sent"
                 element={<ThanksForgot />}
                 preload={scrollToTop()}
             />
