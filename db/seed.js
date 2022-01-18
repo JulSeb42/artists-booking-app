@@ -423,8 +423,8 @@ User.insertMany(realUser)
     .then(user => {
         console.log(
             `Success, ${user.length} ${
-                user.length === 1 ? "user" : "users"
-            } were added to the database`
+                user.length === 1 ? "user was" : "users were"
+            } added to the database`
         )
         mongoose.connection.close()
     })

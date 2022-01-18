@@ -36,8 +36,9 @@ function Conversation(props) {
     const conditionNavigate =
         props.conversation.user._id !== user._id ||
         props.conversation.artist._id !== user._id
+    console.log(conditionNavigate)
 
-    return conditionNavigate ? (
+    return !conditionNavigate ? (
         <Navigate to="/my-account" />
     ) : (
         <Page
