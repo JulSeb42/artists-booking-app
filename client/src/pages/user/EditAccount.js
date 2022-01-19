@@ -21,11 +21,12 @@ import Input from "../../components/forms/Input"
 import EditPicture from "../../components/forms/EditPicture"
 import { AuthContext } from "../../context/auth"
 import DangerZone from "../../components/forms/DangerZone"
-import Textarea from "../../components/forms/Textarea"
+// import Textarea from "../../components/forms/Textarea"
 import Button from "../../components/ui/Button"
 import { IconMixin } from "../../components/ui/Icon"
 import Toggle from "../../components/forms/Toggle"
 import service from "../../services/cloudinary"
+import MarkdownEditor from "../../components/forms/MarkdownEditor"
 
 // Utils
 import getToday from "../../components/utils/getToday"
@@ -77,7 +78,7 @@ function EditAccount({ edited, setEdited }) {
     const handleGenre = e => setGenre(e.target.value)
     const handlePrice = e =>
         setPrice(e.target.value === null ? 0 : e.target.value)
-    const handleBio = e => setBio(e.target.value)
+    // const handleBio = e => setBio(e.target.value)
     const handleAvailable = e => setAvailable([...available, e.target.value])
     const handleYoutubeLink = e => setYoutubeLink(e.target.value)
     const handleFacebookLink = e => setFacebookLink(e.target.value)
@@ -247,60 +248,54 @@ function EditAccount({ edited, setEdited }) {
                     />
 
                     {user.role === "artist" && (
-                        <Input
-                            label="Genre"
-                            id="genre"
-                            onChange={handleGenre}
-                            value={genre}
-                        />
-                    )}
+                        <>
+                            <Input
+                                label="Genre"
+                                id="genre"
+                                onChange={handleGenre}
+                                value={genre}
+                            />
 
-                    {user.role === "artist" && (
-                        <Input
-                            type="number"
-                            label="Your price"
-                            id="price"
-                            value={price}
-                            onChange={handlePrice}
-                            min="0"
-                            step="10"
-                        />
-                    )}
+                            <Input
+                                type="number"
+                                label="Your price"
+                                id="price"
+                                value={price}
+                                onChange={handlePrice}
+                                min="0"
+                                step="10"
+                            />
 
-                    {user.role === "artist" && (
-                        <Textarea
-                            id="bio"
-                            value={bio}
-                            label="Your bio"
-                            onChange={handleBio}
-                        />
-                    )}
+                            <MarkdownEditor label="Your bio" id="bio" value={bio} onChange={setBio} />
 
-                    {user.role === "artist" && (
-                        <Input
-                            id="youtubeLink"
-                            label="Link to your YouTube page"
-                            onChange={handleYoutubeLink}
-                            value={youtubeLink}
-                        />
-                    )}
+                            {/* <Textarea
+                                id="bio"
+                                value={bio}
+                                label="Your bio"
+                                onChange={handleBio}
+                            /> */}
 
-                    {user.role === "artist" && (
-                        <Input
-                            id="facebookLink"
-                            label="Link to your Facebook page"
-                            onChange={handleFacebookLink}
-                            value={facebookLink}
-                        />
-                    )}
+                            <Input
+                                id="youtubeLink"
+                                label="Link to your YouTube page"
+                                onChange={handleYoutubeLink}
+                                value={youtubeLink}
+                            />
 
-                    {user.role === "artist" && (
-                        <Input
-                            id="instagramLink"
-                            label="Link to your Instagram page"
-                            onChange={handleInstagramLink}
-                            value={instagramLink}
-                        />
+                            <Input
+                                id="facebookLink"
+                                label="Link to your Facebook page"
+                                onChange={handleFacebookLink}
+                                value={facebookLink}
+                            />
+
+                            <Input
+                                id="instagramLink"
+                                label="Link to your Instagram page"
+                                onChange={handleInstagramLink}
+                                value={instagramLink}
+                            />
+                        </>
                     )}
 
                     <Font.P>

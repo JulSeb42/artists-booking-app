@@ -99,8 +99,11 @@ export const Em = styled.em`
     font-style: italic;
 `
 
-export const Label = styled.label`
+export const Small = styled.small`
     font-size: ${Variables.FontSizes.Label};
+`
+
+export const Label = styled.label`
     font-weight: ${props => props.weight || Variables.FontWeights.Regular};
     color: ${props => props.color || Variables.Colors.FontColor};
     font-size: ${props =>

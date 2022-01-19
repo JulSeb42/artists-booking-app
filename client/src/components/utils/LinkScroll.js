@@ -6,7 +6,7 @@ import scrollToTop from "./scrollToTop"
 
 function LinkScroll(props) {
     return (
-        <Link onClick={scrollToTop()} {...props}>
+        <Link {...props}>
             {props.children}
         </Link>
     )

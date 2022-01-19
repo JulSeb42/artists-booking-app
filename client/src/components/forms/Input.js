@@ -4,29 +4,10 @@ import styled, { css } from "styled-components"
 
 // Components
 import * as Variables from "../styles/Variables"
-import * as Font from "../styles/Font"
+import InputContainer from "./InputContainer"
 import ListSuggestions from "./ListSuggestions"
 
 // Styles
-const Container = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 100%;
-    gap: ${Variables.Margins.XXS};
-    position: relative;
-
-    ${props =>
-        props.hidden &&
-        css`
-            display: none;
-        `}
-    
-    ${props => props.cities && css`
-        position: relative;
-        z-index: 10;
-    `}
-`
-
 const InputStyled = styled.input`
     border: 1px solid ${Variables.Colors.LightGray};
     border-radius: ${Variables.Radiuses.S};
@@ -65,18 +46,13 @@ function Input(props) {
     const handleClose = () => setTimeout(setIsOpen(false), 500)
 
     return (
-        <Container hidden={props.hidden} style={props.style} cities={props.cities}>
-            {props.label && (
-                <Font.Label
-                    htmlFor={props.id}
-                    color={Variables.Colors.Primary}
-                    weight={Variables.FontWeights.Bold}
-                    big
-                >
-                    {props.label}
-                </Font.Label>
-            )}
-
+        <InputContainer
+            hidden={props.hidden}
+            style={props.style}
+            cities={props.cities}
+            label={props.label}
+            id={props.id}
+        >
             <InputStyled
                 id={props.id}
                 name={props.name ? props.name : props.id}
@@ -92,7 +68,7 @@ function Input(props) {
                     onMouseDown={props.onMouseDown}
                 />
             )}
-        </Container>
+        </InputContainer>
     )
 }
 

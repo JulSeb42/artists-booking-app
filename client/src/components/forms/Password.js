@@ -1,27 +1,15 @@
 // Packages
 import React, { useState } from "react"
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 
 // Components
 import * as Variables from "../styles/Variables"
 import * as Font from "../styles/Font"
 import Icon from "../ui/Icon"
+import InputContainer from "./InputContainer"
 
 // Styles
 const Container = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 100%;
-    gap: ${Variables.Margins.XXS};
-
-    ${props =>
-        props.hidden &&
-        css`
-            display: none;
-        `}
-`
-
-const InputContainer = styled.div`
     position: relative;
 `
 
@@ -75,19 +63,13 @@ function Password(props) {
     const isIcon = isVisible ? "show" : "show-slash"
 
     return (
-        <Container>
-            {props.label && (
-                <Font.Label
-                    color={Variables.Colors.Primary}
-                    weight={Variables.FontWeights.Bold}
-                    htmlFor={props.id}
-                    big
-                >
-                    {props.label}
-                </Font.Label>
-            )}
-
-            <InputContainer>
+        <InputContainer
+            label={props.label}
+            hidden={props.hidden}
+            style={props.style}
+            id={props.id}
+        >
+            <Container>
                 <Input
                     type={isText}
                     id={props.id}
@@ -105,7 +87,7 @@ function Password(props) {
                         onClick={() => setIsVisible(!isVisible)}
                     />
                 </Button>
-            </InputContainer>
+            </Container>
 
             {props.value.length > 0 && (
                 <Validation>
@@ -121,7 +103,7 @@ function Password(props) {
                     Your password must be at least 6 characters long
                 </Validation>
             )}
-        </Container>
+        </InputContainer>
     )
 }
 

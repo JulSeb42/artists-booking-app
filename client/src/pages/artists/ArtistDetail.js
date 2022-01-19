@@ -22,6 +22,7 @@ import Textarea from "../../components/forms/Textarea"
 import { LinkScroll as Link } from "../../components/utils/LinkScroll"
 import SocialContainer from "../../components/ui/SocialContainer"
 import ButtonSocial from "../../components/ui/ButtonSocial"
+import MarkdownContainer from "../../components/layouts/MarkdownContainer"
 
 // Utils
 import getToday from "../../components/utils/getToday"
@@ -127,7 +128,7 @@ function ArtistDetail(props) {
                 </TextIcon>
 
                 {props.artist.bio !== "" ? (
-                    <Font.P bio>{props.artist.bio}</Font.P>
+                    <MarkdownContainer>{props.artist.bio}</MarkdownContainer>
                 ) : (
                     <Font.P>
                         {props.artist.fullName} did not write a bio yet!

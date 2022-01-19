@@ -1,27 +1,13 @@
 // Packages
 import React from "react"
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 
 // Components
 import * as Variables from "../styles/Variables"
-import * as Font from "../styles/Font"
 import { IconMixin } from "../ui/Icon"
+import InputContainer from "./InputContainer"
 
 // Styles
-const Container = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 100%;
-    gap: ${Variables.Margins.XXS};
-    position: relative;
-
-    ${props =>
-        props.hidden &&
-        css`
-            display: none;
-        `}
-`
-
 const SelectContainer = styled.div`
     position: relative;
     width: 100%;
@@ -70,18 +56,12 @@ const SelectInput = styled.select`
 
 function Select(props) {
     return (
-        <Container>
-            {props.label && (
-                <Font.Label
-                    color={Variables.Colors.Primary}
-                    weight={Variables.FontWeights.Bold}
-                    htmlFor={props.id}
-                    big
-                >
-                    {props.label}
-                </Font.Label>
-            )}
-
+        <InputContainer
+            label={props.label}
+            hidden={props.hidden}
+            style={props.style}
+            id={props.id}
+        >
             <SelectContainer>
                 <SelectInput
                     id={props.id}
@@ -92,7 +72,7 @@ function Select(props) {
                     {props.children}
                 </SelectInput>
             </SelectContainer>
-        </Container>
+        </InputContainer>
     )
 }
 

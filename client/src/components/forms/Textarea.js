@@ -5,15 +5,9 @@ import styled from "styled-components"
 // Components
 import * as Variables from "../styles/Variables"
 import * as Font from "../styles/Font"
+import InputContainer from "./InputContainer"
 
 // Styles
-const Container = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 100%;
-    gap: ${Variables.Margins.XXS};
-`
-
 const Input = styled.textarea`
     border: 1px solid ${Variables.Colors.LightGray};
     border-radius: ${Variables.Radiuses.S};
@@ -38,18 +32,12 @@ const Input = styled.textarea`
 
 function Textarea(props) {
     return (
-        <Container>
-            {props.label && (
-                <Font.Label
-                    color={Variables.Colors.Primary}
-                    weight={Variables.FontWeights.Bold}
-                    htmlFor={props.id}
-                    big
-                >
-                    {props.label}
-                </Font.Label>
-            )}
-
+        <InputContainer
+            label={props.label}
+            hidden={props.hidden}
+            style={props.style}
+            id={props.id}
+        >
             {props.auto ? (
                 <Input
                     as={Font.P}
@@ -71,7 +59,7 @@ function Textarea(props) {
                     {props.value && props.value}
                 </Input>
             )}
-        </Container>
+        </InputContainer>
     )
 }
 
