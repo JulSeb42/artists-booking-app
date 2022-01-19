@@ -2,7 +2,7 @@
     "name": "client",
     "version": "0.1.0",
     "private": true,
-    "proxy" : "http://127.0.0.1:5005",
+    "proxy": "http://127.0.0.1:5005",
     "dependencies": {
         "@testing-library/jest-dom": "^5.16.1",
         "@testing-library/react": "^12.1.2",
@@ -13,6 +13,7 @@
         "react-helmet": "^6.1.0",
         "react-router-dom": "^6.2.1",
         "react-scripts": "5.0.0",
+        "react-scroll-to-bottom": "^4.2.0",
         "react-svg": "^14.1.5",
         "styled-components": "^5.3.3",
         "uuid": "^8.3.2",

@@ -2,6 +2,7 @@
 import React, { useContext } from "react"
 import styled, { css } from "styled-components"
 import axios from "axios"
+import ScrollToBottom from "react-scroll-to-bottom"
 
 // Components
 import * as Variables from "../styles/Variables"
@@ -18,16 +19,19 @@ const Wrapper = styled.div`
     padding: ${Variables.Margins.M};
 `
 
-const List = styled.div`
+const List = styled(ScrollToBottom)`
     height: calc(
         100% - ${Variables.Margins.M} - 3 * ${Variables.FontSizes.Body} *
             ${Variables.LineHeight}
     );
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: ${Variables.Margins.XS};
-    align-content: start;
-    overflow-y: scroll;
+
+    & > div {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: ${Variables.Margins.S};
+        align-content: start;
+        overflow-y: scroll;
+    }
 `
 
 const Bubble = styled.div`
@@ -71,7 +75,7 @@ function Container(props) {
         const requestBody = { id: props.conversation._id, read: true }
         axios.put("/messaging/read", requestBody)
     }
-    
+
     return (
         <Wrapper>
             <List>
