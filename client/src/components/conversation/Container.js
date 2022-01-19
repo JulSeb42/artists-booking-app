@@ -3,6 +3,7 @@ import React, { useContext } from "react"
 import styled, { css } from "styled-components"
 import axios from "axios"
 import ScrollToBottom from "react-scroll-to-bottom"
+import Linkify from "react-linkify"
 
 // Components
 import * as Variables from "../styles/Variables"
@@ -43,6 +44,11 @@ const Bubble = styled.div`
         max-width: 70%;
         padding: ${Variables.Margins.XXS} ${Variables.Margins.XS};
         border-radius: ${Variables.Radiuses.S};
+
+        a {
+            font-weight: ${Variables.FontWeights.Regular};
+            text-decoration: underline;
+        }
     }
 
     ${props =>
@@ -53,6 +59,14 @@ const Bubble = styled.div`
             p {
                 background-color: ${Variables.Colors.Primary};
                 color: ${Variables.Colors.White};
+
+                a {
+                    color: ${Variables.Colors.White};
+
+                    &:hover {
+                        color: ${Variables.Colors.LightGray};
+                    }
+                }
             }
         `}
 
@@ -88,7 +102,26 @@ function Container(props) {
                         }
                         key={message._id}
                     >
-                        <Font.P bio>{message.message}</Font.P>
+                        <Font.P bio>
+                            <Linkify
+                                componentDecorator={(
+                                    decoratedHref,
+                                    decoratedText,
+                                    key
+                                ) => (
+                                    <a
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                        href={decoratedHref}
+                                        key={key}
+                                    >
+                                        {decoratedText}
+                                    </a>
+                                )}
+                            >
+                                {message.message}
+                            </Linkify>{" "}
+                        </Font.P>
                     </Bubble>
                 ))}
             </List>
