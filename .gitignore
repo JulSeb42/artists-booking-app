@@ -1,0 +1,13 @@
+# Dependency directory
+node_modules
+package-lock.json
+
+# Debug log from npm
+npm-debug.log
+
+# Environment Variables should NEVER be published
+.env
+
+# Misc
+.DS_Store
+*/.DS_Store

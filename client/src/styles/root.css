@@ -1,0 +1,22 @@
+:root {
+    /* Overrides page */
+    --color-black: #181818;
+    --color-gray-800: #2f2f2f;
+    --color-gray-500: #767676;
+    --color-gray-300: #c8c8c8;
+    --color-gray-50: #f8f8f8;
+    --color-white: #ffffff;
+
+    --color-primary-500: #142f43;
+    --color-primary-300: #26587e;
+    --color-secondary-500: #ffab4c;
+    --color-secondary-300: #ffcf99;
+    --color-success-500: #23ce6b;
+    --color-success-300: #59e393;
+    --color-danger-500: #ff0000;
+    --color-danger-300: #ff4c4d;
+    --color-danger-50: #ffe5e6;
+
+    --container-template-both-sides: 1fr 200px 600px 200px 1fr;
+    --container-form-both-sides: 1fr 200px 400px 200px 1fr;
+}
