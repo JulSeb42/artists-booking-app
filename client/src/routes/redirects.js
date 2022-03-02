@@ -19,6 +19,10 @@ const redirects = [
         path: "/my-account/conversation",
         to: "/my-account",
     },
+    {
+        path: "/results/all/all/page-1",
+        to: "/all-artists/page-1"
+    },
 ]
 
 export default redirects

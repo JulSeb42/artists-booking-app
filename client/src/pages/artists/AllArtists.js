@@ -146,7 +146,7 @@ const AllArtists = () => {
                 allGenres={allGenres}
             />
 
-            <Main col={3} template="aside-left">
+            <Main template="aside-left">
                 <Font.H1 hidden>All artists</Font.H1>
 
                 <ListArtists

@@ -98,7 +98,7 @@ const ArtistDetail = ({ edited, setEdited }) => {
         <PageLoading />
     ) : (
         <Page title={artist.fullName} template="both-sides">
-            <Aside col={2} justify="center">
+            <Aside template="both-sides" justify="center">
                 <Avatar src={artist.imageUrl} size={150} />
 
                 {isLoggedIn && artist._id === user._id && (
@@ -106,7 +106,7 @@ const ArtistDetail = ({ edited, setEdited }) => {
                 )}
             </Aside>
 
-            <Main col={3}>
+            <Main template="both-sides">
                 <Font.H1>{artist.fullName}</Font.H1>
 
                 <TextIcon icon="map" title="Location">
@@ -182,7 +182,7 @@ const ArtistDetail = ({ edited, setEdited }) => {
                 </Item>
             </Main>
 
-            <Aside col={4}>
+            <Aside template="both-sides" last>
                 <Item>
                     <Font.H4>Availabilities</Font.H4>
 

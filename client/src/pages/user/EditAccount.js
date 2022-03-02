@@ -175,7 +175,7 @@ const EditAccount = ({ edited, setEdited }) => {
     return (
         <Page title={texts.title} template="form-both-sides">
             <WrapperForm onSubmit={handleSubmit}>
-                <Aside col={2} justify="center">
+                <Aside template="both-sides" justify="center">
                     <EditAvatar
                         src={imageUrl}
                         alt={user.fullName}
@@ -210,7 +210,7 @@ const EditAccount = ({ edited, setEdited }) => {
                     </Button>
                 </Aside>
 
-                <Main col={3}>
+                <Main template="both-sides">
                     <Font.H1>{texts.title}</Font.H1>
 
                     <Form as="div">
@@ -313,7 +313,7 @@ const EditAccount = ({ edited, setEdited }) => {
                     />
                 </Main>
 
-                <Aside col={4}>
+                <Aside template="both-sides" last>
                     {user.role === "artist" && (
                         <>
                             <Item>

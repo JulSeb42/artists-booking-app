@@ -36,6 +36,7 @@ const Img = styled(Avatar)`
 
 const Content = styled(Grid)`
     flex-grow: 1;
+    width: 100%;
 `
 
 const InfoContainer = styled(TitleFlex)`
@@ -64,13 +65,13 @@ const ArtistCard = ({ artist, ...props }) => {
     }
 
     const openArtist = () => {
-        navigate(`/artists/${artist.artist._id}`)
+        navigate(`/all-artists/${artist.artist._id}`)
         window.location.reload(false)
     }
 
     return (
         <Container {...props}>
-            <Link to={`/artists/${artist.artist._id}`} onClick={openArtist}>
+            <Link to={`/all-artists/${artist.artist._id}`} onClick={openArtist}>
                 <Img
                     size={120}
                     src={artist.artist.imageUrl}
@@ -82,7 +83,7 @@ const ArtistCard = ({ artist, ...props }) => {
                 <TitleFlex>
                     <Font.H3>
                         <Link
-                            to={`/artists/${artist.artist._id}`}
+                            to={`/all-artists/${artist.artist._id}`}
                             onClick={openArtist}
                         >
                             {artist.artist.fullName}

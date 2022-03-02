@@ -138,7 +138,7 @@ const SearchResults = () => {
                 maxPrice={maxPrice}
             />
 
-            <Main col={3} template="aside-left">
+            <Main template="aside-left">
                 <Font.H1 hidden>Search results</Font.H1>
 
                 <ListArtists

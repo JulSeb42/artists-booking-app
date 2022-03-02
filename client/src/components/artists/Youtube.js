@@ -6,6 +6,7 @@ import styled from "styled-components"
 const Container = styled.iframe`
     width: 100%;
     height: 30vw;
+    min-height: 300px;
 `
 
 const Youtube = props => {

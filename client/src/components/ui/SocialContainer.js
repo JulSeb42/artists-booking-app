@@ -19,6 +19,16 @@ const SocialContainer = styled.div`
                 margin-right: ${Variables.Margins.S};
             }
         `}
+
+    @media ${Variables.Breakpoints.Tablet} {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        a:not(:last-child) {
+            margin-right: ${Variables.Margins.S};
+        }
+    }
 `
 
 export default SocialContainer

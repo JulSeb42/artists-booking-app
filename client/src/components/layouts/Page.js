@@ -1,7 +1,7 @@
 // Packages
 import React from "react"
 import { useLocation } from "react-router-dom"
-import { Helmet, Wrapper, Main, Variables } from "components-react-julseb"
+import { Helmet, Wrapper, Main } from "components-react-julseb"
 import styled from "styled-components"
 
 // Components
@@ -14,7 +14,6 @@ import SiteData from "../data/SiteData"
 // Styles
 const WrapperStyled = styled(Wrapper)`
     min-height: 85vh;
-    gap: ${Variables.Margins.L};
     margin-top: 80px;
 `
 

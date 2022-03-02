@@ -15,6 +15,10 @@ import SiteData from "../data/SiteData"
 const Container = styled(Grid)`
     background-color: ${Variables.Colors.Gray300};
     padding: ${Variables.Margins.L} 5vw;
+
+    @media ${Variables.Breakpoints.Mobile} {
+        grid-template-columns: 1fr;
+    }
 `
 
 const ItemStyled = styled(Grid)`
@@ -40,7 +44,7 @@ const Footer = () => {
     }
 
     return (
-        <Container col={3} align="start">
+        <Container col={3} as="footer" align="start">
             <Item title={SiteData.Name}>
                 <Font.List style={{ gap: Variables.Margins.XXS }}>
                     {SiteData.Cities.map((city, i) => (

@@ -25,6 +25,18 @@ const Container = styled.form`
     & > *:not(:last-child) {
         margin-right: ${Variables.Margins.L};
     }
+
+    @media ${Variables.Breakpoints.Mobile} {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+
+        & > *:not(:last-child) {
+            width: 100%;
+            margin-right: 0;
+            margin-bottom: ${Variables.Margins.L};
+        }
+    }
 `
 
 const SearchContainer = () => {

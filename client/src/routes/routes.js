@@ -152,7 +152,7 @@ const routes = [
         edit: false,
     },
     {
-        path: "/artists/:id",
+        path: "/all-artists/:id",
         element: ArtistDetail,
         protected: false,
         anon: false,

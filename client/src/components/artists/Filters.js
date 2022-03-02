@@ -29,7 +29,7 @@ const Filters = props => {
     } = props
 
     return (
-        <Aside col={2} template="aside-left">
+        <Aside template="aside-left">
             <Grid gap={Variables.Margins.XS}>
                 <Font.H4>Sort by</Font.H4>
 

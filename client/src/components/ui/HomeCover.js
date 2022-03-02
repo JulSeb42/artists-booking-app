@@ -53,7 +53,7 @@ const Title = styled(Font.H1)`
     font-size: 3.5rem;
 
     @media ${Variables.Breakpoints.Mobile} {
-        font-size: 48px;
+        font-size: 32px;
     }
 `
 

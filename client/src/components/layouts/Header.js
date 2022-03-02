@@ -123,7 +123,9 @@ const Header = () => {
             <Nav className={open}>
                 <LinkNav
                     to="/all-artists/page-1"
-                    className={location.match(/^\/artists.*$/gim) && "active"}
+                    className={
+                        location.match(/^\/all-artists.*$/gim) && "active"
+                    }
                     onClick={openArtists}
                 >
                     All artists

@@ -9,8 +9,6 @@ import {
     Aside,
     Avatar,
     Button,
-    Grid,
-    Variables,
 } from "components-react-julseb"
 
 // API
@@ -21,6 +19,7 @@ import { AuthContext } from "../../context/auth"
 import Page from "../../components/layouts/Page"
 import TextIcon from "../../components/ui/TextIcon"
 import CardConversation from "../../components/user/CardConversation"
+import ListConversation from "../../components/user/ListConversation"
 
 const MyAccount = () => {
     // Context
@@ -63,12 +62,7 @@ const MyAccount = () => {
         <PageLoading />
     ) : (
         <Page title={populatedUser.fullName} template="aside-left">
-            <Aside
-                col={2}
-                template="aside-left"
-                align="center"
-                justify="center"
-            >
+            <Aside template="aside-left" align="center" justify="center">
                 <Avatar
                     src={populatedUser.imageUrl}
                     alt={populatedUser.fullName}
@@ -79,13 +73,13 @@ const MyAccount = () => {
                 <Button to="/my-account/edit">Edit your account</Button>
 
                 {populatedUser.role === "artist" && (
-                    <Button to={`/artists/${populatedUser._id}`}>
+                    <Button to={`/all-artists/${populatedUser._id}`}>
                         Check your page
                     </Button>
                 )}
             </Aside>
 
-            <Main col={3} template="aside-left">
+            <Main template="aside-left">
                 <Font.H1>{texts.title}</Font.H1>
 
                 <TextIcon icon="map" title="Location">
@@ -106,7 +100,7 @@ const MyAccount = () => {
                 <Font.H2>Conversations</Font.H2>
 
                 {populatedUser.conversations.length > 0 ? (
-                    <Grid col={6} gap={Variables.Margins.M}>
+                    <ListConversation>
                         {conversations.map(conversation => (
                             <CardConversation
                                 to={`/my-account/conversation/${conversation._id}`}
@@ -124,7 +118,7 @@ const MyAccount = () => {
                                 key={conversation._id}
                             />
                         ))}
-                    </Grid>
+                    </ListConversation>
                 ) : (
                     <Font.P>You don't have any conversation yet.</Font.P>
                 )}
