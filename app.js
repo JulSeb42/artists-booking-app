@@ -17,7 +17,23 @@ require("./config")(app)
 // 👇 Start handling routes here
 // Contrary to the views version, all routes are controlled from the routes/index.js
 const allRoutes = require("./routes")
-app.use("/", allRoutes)
+app.use("/api", allRoutes)
+
+// Auth
+const auth = require("./routes/auth")
+app.use("/auth", auth)
+
+// Picture uploader
+const uploader = require("./routes/uploader")
+app.use("/uploader", uploader)
+
+// Users
+const users = require("./routes/users")
+app.use("/users", users)
+
+// Conversations
+const messaging = require("./routes/messaging")
+app.use("/messaging", messaging)
 
 // Deploy Heroku
 const path = require("path")
