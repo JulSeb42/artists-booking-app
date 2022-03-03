@@ -51,14 +51,13 @@ const ArtistDetail = ({ edited, setEdited }) => {
 
     useEffect(() => {
         if (isLoggedIn) {
-            let contacted = user.contacted.find(
-                id => id === artist._id
-            )
+            let contacted = user.contacted.find(id => id === artist._id)
 
             if (contacted !== undefined) {
                 setHasContacted(true)
             }
         }
+        // eslint-disable-next-line
     }, [isLoggedIn, artist._id])
     
     // Messages
