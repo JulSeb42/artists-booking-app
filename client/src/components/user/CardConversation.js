@@ -2,7 +2,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { Avatar, Variables, Font } from "components-react-julseb"
+import { Avatar, Variables, Font, Badge } from "components-react-julseb"
 
 // Styles
 const Container = styled(Link)`
@@ -39,17 +39,11 @@ const Img = styled(Avatar)`
     z-index: 0;
 `
 
-const Dot = styled.span`
-    --size: ${Variables.Margins.L};
-    width: var(--size);
-    height: var(--size);
+const Dot = styled(Badge)`
     position: absolute;
     bottom: 0;
     right: 0;
-    background-color: ${Variables.Colors.Success500};
-    display: block;
     z-index: 10;
-    border-radius: 50%;
 `
 
 const Content = styled(Font.P)`
@@ -72,7 +66,7 @@ const CardConversation = props => {
         <Container to={props.to}>
             <Img src={props.src} alt={props.name} />
 
-            {!props.read && <Dot />}
+            {!props.read && <Dot size={24} color="success" />}
 
             <Content>{props.name}</Content>
         </Container>
