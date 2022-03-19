@@ -5,7 +5,7 @@ import { Modal, ButtonIcon } from "components-react-julseb"
 // Components
 import SearchContainer from "./SearchContainer"
 
-const GlobalSearch = props => {
+const GlobalSearch = () => {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -17,11 +17,8 @@ const GlobalSearch = props => {
                 onClick={() => setIsOpen(true)}
             />
 
-            <Modal
-                className={isOpen ? "open" : ""}
-                close={() => setIsOpen(false)}
-            >
-                <SearchContainer />
+            <Modal open={isOpen} close={() => setIsOpen(false)}>
+                <SearchContainer setIsOpen={setIsOpen} isOpen={isOpen} />
             </Modal>
         </>
     )

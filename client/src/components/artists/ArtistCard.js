@@ -9,9 +9,8 @@ import {
     Variables,
     TitleFlex,
     Grid,
-    getToday,
-    convertDate,
 } from "components-react-julseb"
+import { getToday, convertDate, convertPrice } from "js-utils-julseb"
 
 // Components
 import TextIcon from "../ui/TextIcon"
@@ -20,7 +19,7 @@ import TextIcon from "../ui/TextIcon"
 const Container = styled.div`
     display: grid;
     grid-template-columns: 120px 1fr;
-    gap: ${Variables.Margins.M};
+    gap: ${Variables.Spacers.M};
 
     @media ${Variables.Breakpoints.Tablet} {
         display: flex;
@@ -31,7 +30,7 @@ const Container = styled.div`
 `
 
 const Img = styled(Avatar)`
-    margin-right: ${Variables.Margins.S};
+    margin-right: ${Variables.Spacers.S};
 `
 
 const Content = styled(Grid)`
@@ -65,39 +64,39 @@ const ArtistCard = ({ artist, ...props }) => {
     }
 
     const openArtist = () => {
-        navigate(`/all-artists/${artist.artist._id}`)
+        navigate(`/artists/${artist._id}`)
         window.location.reload(false)
     }
 
     return (
         <Container {...props}>
-            <Link to={`/all-artists/${artist.artist._id}`} onClick={openArtist}>
+            <Link to={`/artists/${artist._id}`} onClick={openArtist}>
                 <Img
                     size={120}
-                    src={artist.artist.imageUrl}
-                    alt={artist.artist.fullName}
+                    src={artist.imageUrl}
+                    alt={artist.fullName}
                 />
             </Link>
 
-            <Content gap={Variables.Margins.M}>
+            <Content gap={Variables.Spacers.M}>
                 <TitleFlex>
                     <Font.H3>
                         <Link
-                            to={`/all-artists/${artist.artist._id}`}
+                            to={`/artists/${artist._id}`}
                             onClick={openArtist}
                         >
-                            {artist.artist.fullName}
+                            {artist.fullName}
                         </Link>
                     </Font.H3>
 
-                    <TextIcon icon="map">{artist.artist.city}</TextIcon>
+                    <TextIcon icon="map">{artist.city}</TextIcon>
                 </TitleFlex>
 
                 <InfoContainer>
-                    <Info gap={Variables.Margins.XS}>
+                    <Info gap={Variables.Spacers.XS}>
                         <Font.P>
                             <Font.Strong>Genre: </Font.Strong>
-                            {artist.artist.genre}
+                            {artist.genre}
                         </Font.P>
 
                         <Font.P>
@@ -107,7 +106,7 @@ const ArtistCard = ({ artist, ...props }) => {
 
                         <Font.P>
                             <Font.Strong>Price: </Font.Strong>
-                            {artist.artist.price} €
+                            {convertPrice(artist.price, "EUR")}
                         </Font.P>
                     </Info>
 

@@ -1,25 +1,29 @@
 // Packages
 import React from "react"
 import ReactDOM from "react-dom"
-import { BrowserRouter as Router } from "react-router-dom"
+import { BrowserRouter } from "react-router-dom"
+
+// API
+import { AuthProviderWrapper } from "./context/auth"
+
+// Components
+import App from "./App"
 
 // Tests
 import reportWebVitals from "./tests/reportWebVitals"
-
-// Components
-import { AuthProviderWrapper } from "./context/auth"
-import App from "./App"
 
 // Styles
 import "components-react-julseb/dist/components/index.css"
 import "./styles/root.css"
 
 ReactDOM.render(
-    <AuthProviderWrapper>
-        <Router>
-            <App />
-        </Router>
-    </AuthProviderWrapper>,
+    <React.StrictMode>
+        <BrowserRouter>
+            <AuthProviderWrapper>
+                <App />
+            </AuthProviderWrapper>
+        </BrowserRouter>
+    </React.StrictMode>,
     document.getElementById("root")
 )
 

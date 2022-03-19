@@ -1,11 +1,11 @@
 // Packages
 import React, { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, createSearchParams } from "react-router-dom"
 import styled from "styled-components"
-import { Input, slugify, Button, Variables } from "components-react-julseb"
+import { Input, Button, Variables } from "components-react-julseb"
 
 // API
-import {getUsers} from "../../api/getUsers"
+import userService from "../../api/user.service"
 
 // Styles
 const Container = styled.form`
@@ -14,7 +14,7 @@ const Container = styled.form`
     align-items: flex-end;
     justify-content: center;
     background-color: ${Variables.Colors.White};
-    padding: ${Variables.Margins.M};
+    padding: ${Variables.Spacers.M};
     border-radius: ${Variables.Radiuses.M};
     width: 80%;
 
@@ -23,7 +23,7 @@ const Container = styled.form`
     }
 
     & > *:not(:last-child) {
-        margin-right: ${Variables.Margins.L};
+        margin-right: ${Variables.Spacers.L};
     }
 
     @media ${Variables.Breakpoints.Mobile} {
@@ -34,30 +34,33 @@ const Container = styled.form`
         & > *:not(:last-child) {
             width: 100%;
             margin-right: 0;
-            margin-bottom: ${Variables.Margins.L};
+            margin-bottom: ${Variables.Spacers.L};
         }
     }
 `
 
-const SearchContainer = () => {
+const SearchContainer = ({ isOpen, setIsOpen }) => {
     const navigate = useNavigate()
 
     const [allCities, setAllCities] = useState([])
     const [allGenres, setAllGenres] = useState([])
 
     useEffect(() => {
-        getUsers().then(res => {
-            setAllCities(
-                [...new Set(res.map(artist => artist.city))]
-                    .filter(city => city !== undefined)
-                    .sort()
-            )
-            setAllGenres(
-                [...new Set(res.map(artist => artist.genre))]
-                    .filter(genre => genre !== undefined)
-                    .sort()
-            )
-        })
+        userService
+            .allArtists()
+            .then(res => {
+                setAllCities(
+                    [...new Set(res.data.map(artist => artist.city))]
+                        .filter(city => city !== undefined)
+                        .sort()
+                )
+                setAllGenres(
+                    [...new Set(res.data.map(artist => artist.genre))]
+                        .filter(genre => genre !== undefined)
+                        .sort()
+                )
+            })
+            .catch(err => console.log(err))
     }, [])
 
     const [city, setCity] = useState("all")
@@ -69,7 +72,18 @@ const SearchContainer = () => {
     const handleSubmit = e => {
         e.preventDefault()
 
-        navigate(`/results/${city}/${genre}/page-1`)
+        city === "all" && genre === "all"
+            ? navigate("/artists")
+            : navigate({
+                  pathname: "/artists",
+                  search: createSearchParams({
+                      city: city,
+                      genre: genre,
+                      page: 1,
+                  }).toString(),
+            })
+        
+        setIsOpen(false)
     }
 
     return (
@@ -84,7 +98,7 @@ const SearchContainer = () => {
                 <option value="all">All</option>
 
                 {allCities.map((city, i) => (
-                    <option value={slugify(city)} key={i}>
+                    <option value={city} key={i}>
                         {city}
                     </option>
                 ))}
@@ -100,7 +114,7 @@ const SearchContainer = () => {
                 <option value="all">All</option>
 
                 {allGenres.map((genre, i) => (
-                    <option value={slugify(genre)} key={i}>
+                    <option value={genre} key={i}>
                         {genre}
                     </option>
                 ))}

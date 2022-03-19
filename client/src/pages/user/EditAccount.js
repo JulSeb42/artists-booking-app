@@ -1,7 +1,6 @@
 // Packages
 import React, { useContext, useState, useEffect } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import axios from "axios"
 import {
     Font,
     Form,
@@ -10,27 +9,30 @@ import {
     Main,
     Aside,
     Button,
-    CheckInput,
+    InputCheck,
     Autocomplete,
-    getToday,
 } from "components-react-julseb"
+import { getToday } from "js-utils-julseb"
+import axios from "axios"
 
 // API
+import { AuthContext } from "../../context/auth"
+import userService from "../../api/user.service"
 import service from "../../api/cloudinary.service"
 
 // Components
-import { AuthContext } from "../../context/auth"
-import WrapperForm from "../../components/layouts/WrapperForm"
 import Page from "../../components/layouts/Page"
+import WrapperForm from "../../components/layouts/WrapperForm"
 import DangerZone from "../../components/DangerZone"
 import EditAvatar from "../../components/user/EditAvatar"
 import Item from "../../components/layouts/Item"
 import DeleteAvailability from "../../components/user/DeleteAvailability"
 
 const EditAccount = ({ edited, setEdited }) => {
-    // Consts
-    const { user, updateUser, logoutUser } = useContext(AuthContext)
+    const { user, setUser, setToken, logoutUser } = useContext(AuthContext)
     const navigate = useNavigate()
+
+    const title = "Edit your account"
 
     // Get all cities
     const [allCities, setAllCities] = useState([])
@@ -38,32 +40,29 @@ const EditAccount = ({ edited, setEdited }) => {
 
     useEffect(() => {
         axios
-            .get("/citiesGermany.json")
-            .then(res => setAllCities(res.data.map(city => city.name)))
+            .get(
+                "https://raw.githubusercontent.com/JulSeb42/js-utils/master/src/allCities.json"
+            )
+            .then(res =>
+                setAllCities(
+                    res.data
+                        .filter(city => city.country === "Germany")
+                        .map(city => city.name)
+                        .sort()
+                )
+            )
             .catch(err => console.log(err))
     }, [])
 
-    // Texts
-    const texts = {
-        title: "Edit your account",
-        saveBtn: "Save changes",
-        linkPassword: "Edit your password.",
-
-        // Delete
-        textbtnopen: "Delete your account",
-        textalert: "Are you sure you want to delete your account?",
-        textbtndelete: "Yes, delete my account",
-    }
-
     // Form items
+    const [fullName, setFullName] = useState(user.fullName)
     const [imageUrl, setImageUrl] = useState(user.imageUrl)
     const [visible, setVisible] = useState(user.visible)
-    const [isLoading, setIsLoading] = useState(false)
-    const [fullName, setFullName] = useState(user.fullName)
+    const [isLoading, setIsLoading] = useState(user.isLoading)
     const [city, setCity] = useState(user.city)
-    const [genre, setGenre] = useState(user.genre || "")
-    const [price, setPrice] = useState(user.price || 0)
-    const [bio, setBio] = useState(user.bio || "")
+    const [genre, setGenre] = useState(user.genre || "")
+    const [price, setPrice] = useState(user.price || "")
+    const [bio, setBio] = useState(user.bio || "")
     const [youtubeLink, setYoutubeLink] = useState(user.youtubeLink)
     const [facebookLink, setFacebookLink] = useState(user.facebookLink)
     const [instagramLink, setInstagramLink] = useState(user.instagramLink)
@@ -129,7 +128,7 @@ const EditAccount = ({ edited, setEdited }) => {
         }
     }
 
-    // Form submit
+    // Submit form
     const handleSubmit = e => {
         e.preventDefault()
 
@@ -147,13 +146,13 @@ const EditAccount = ({ edited, setEdited }) => {
             visible,
         }
 
-        axios
-            .put(`/users/edit/${user._id}`, requestBody)
+        userService
+            .editAccount(user._id, requestBody)
             .then(res => {
-                const { user } = res.data
-                updateUser(user)
+                setUser(res.data.user)
+                setToken(res.data.authToken)
                 setEdited(!edited)
-                navigate("/my-account")
+                navigate(-1)
             })
             .catch(err => {
                 const errorDescription = err.response.data.message
@@ -162,9 +161,11 @@ const EditAccount = ({ edited, setEdited }) => {
     }
 
     // Delete account
-    const handleDelete = () => {
-        axios
-            .delete(`/users/delete-user/${user._id}`)
+    const handleDelete = e => {
+        e.preventDefault()
+
+        userService
+            .deleteAccount(user._id)
             .then(() => {
                 logoutUser()
                 navigate("/goodbye")
@@ -173,7 +174,7 @@ const EditAccount = ({ edited, setEdited }) => {
     }
 
     return (
-        <Page title={texts.title} template="form-both-sides">
+        <Page title={title} template="form-both-sides">
             <WrapperForm onSubmit={handleSubmit}>
                 <Aside template="both-sides" justify="center">
                     <EditAvatar
@@ -184,7 +185,7 @@ const EditAccount = ({ edited, setEdited }) => {
                     />
 
                     {user.role === "artist" && (
-                        <CheckInput
+                        <InputCheck
                             label="Visible"
                             id="visible"
                             type="checkbox"
@@ -205,32 +206,26 @@ const EditAccount = ({ edited, setEdited }) => {
                         Save changes
                     </Button>
 
-                    <Button to="/my-account" btnstyle="text">
+                    <Button to="/my-account" btnStyle="text">
                         Cancel
                     </Button>
                 </Aside>
 
                 <Main template="both-sides">
-                    <Font.H1>{texts.title}</Font.H1>
+                    <Font.H1>{title}</Font.H1>
 
                     <Form as="div">
                         <Input
-                            label={
-                                user.role === "user"
-                                    ? "Your full name"
-                                    : "Your displayed name"
-                            }
+                            label="Full name"
                             id="fullName"
                             onChange={handleFullName}
                             value={fullName}
                         />
 
                         <Input
-                            label="Your email"
-                            type="email"
-                            id="email"
+                            label="Email"
+                            helperBottom="You can not edit your email"
                             value={user.email}
-                            helperBottom="You can not edit your email."
                             disabled
                         />
 
@@ -294,22 +289,20 @@ const EditAccount = ({ edited, setEdited }) => {
                     </Form>
 
                     {errorMessage && (
-                        <Alert color="danger" as={Font.P}>
-                            {errorMessage}
-                        </Alert>
+                        <Alert color="danger">{errorMessage}</Alert>
                     )}
 
                     <Font.P>
                         <Link to="/my-account/edit-password">
-                            {texts.linkPassword}
+                            Edit your password.
                         </Link>
                     </Font.P>
 
                     <DangerZone
+                        textBtnOpen="Delete account"
+                        text="Are you sure you want to delete your account?"
+                        textBtnPrimary="Yes, delete my account"
                         onClickPrimary={handleDelete}
-                        textbtnopen={texts.textbtnopen}
-                        text={texts.textalert}
-                        textbtndelete={texts.textbtndelete}
                     />
                 </Main>
 

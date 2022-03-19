@@ -8,13 +8,14 @@ const Container = styled.div`
     display: flex;
     align-items: center;
 
-    & > span {
-        margin-right: ${Variables.Margins.XS}
+    & > div {
+        margin-right: ${Variables.Spacers.XS};
     }
 `
 
 const TitleAvatar = props => {
     const { user, conversation } = props
+
     return (
         <Container>
             <Avatar

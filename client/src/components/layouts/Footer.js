@@ -1,20 +1,21 @@
 // Packages
 import React from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, createSearchParams } from "react-router-dom"
 import styled from "styled-components"
-import { Grid, Font, Variables, slugify } from "components-react-julseb"
+import { Grid, Font, Variables } from "components-react-julseb"
+import { slugify } from "js-utils-julseb"
 
 // Components
 import ButtonSocial from "../ui/ButtonSocial"
 import SocialContainer from "../ui/SocialContainer"
 
 // Data
-import SiteData from "../data/SiteData"
+import siteData from "../../data/siteData"
 
 // Styles
 const Container = styled(Grid)`
     background-color: ${Variables.Colors.Gray300};
-    padding: ${Variables.Margins.L} 5vw;
+    padding: ${Variables.Spacers.L} 5vw;
 
     @media ${Variables.Breakpoints.Mobile} {
         grid-template-columns: 1fr;
@@ -30,7 +31,7 @@ const Footer = () => {
 
     const Item = props => {
         return (
-            <ItemStyled gap={Variables.Margins.XS} align="start">
+            <ItemStyled gap={Variables.Spacers.XS} align="start">
                 <Font.H4>{props.title}</Font.H4>
 
                 {props.children}
@@ -39,21 +40,28 @@ const Footer = () => {
     }
 
     const goTo = city => {
-        navigate(`/results/${slugify(city)}/all/page-1`)
+        navigate({
+            pathname: "/artists",
+            search: createSearchParams({
+                city: city,
+                genre: "all",
+                page: 1,
+            }).toString(),
+        })
         window.location.reload(false)
     }
 
     return (
         <Container col={3} as="footer" align="start">
-            <Item title={SiteData.Name}>
-                <Font.List style={{ gap: Variables.Margins.XXS }}>
-                    {SiteData.Cities.map((city, i) => (
+            <Item title={siteData.name}>
+                <Font.List style={{ gap: Variables.Spacers.XXS }}>
+                    {siteData.cities.map((city, i) => (
                         <li key={i}>
                             <Link
                                 to={`/results/${slugify(city)}/all/page-1`}
                                 onClick={() => goTo(city)}
                             >
-                                {SiteData.Name} in {city}
+                                {siteData.name} in {city}
                             </Link>
                         </li>
                     ))}
@@ -62,7 +70,7 @@ const Footer = () => {
 
             <Item title="Find us on social networks!">
                 <SocialContainer footer>
-                    {SiteData.Social.map((item, i) => (
+                    {siteData.social.map((item, i) => (
                         <ButtonSocial to="#" type={item} key={i} />
                     ))}
                 </SocialContainer>

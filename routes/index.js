@@ -1,25 +1,27 @@
 const router = require("express").Router()
 
+// Middleware
+const { isAuthenticated } = require("../middleware/jwt.middleware")
+
 router.get("/", (req, res, next) => {
     res.json("All good in here")
 })
 
 // You put the next routes here 👇
 // example: router.use("/auth", authRoutes)
-// // Auth
-// const auth = require("./auth")
-// router.use("/auth", auth)
+const auth = require("./auth")
+router.use("/auth", auth)
 
-// // Picture uploader
-// const uploader = require("./uploader")
-// router.use("/uploader", uploader)
+const users = require("./users")
+router.use("/users", users)
 
-// // Users
-// const users = require("./users")
-// router.use("/users", users)
+const uploader = require("./uploader")
+router.use("/uploader", uploader)
 
-// // Conversations
-// const messaging = require("./messaging")
-// router.use("/messaging", messaging)
+const search = require("./search")
+router.use("/search", search)
+
+const messaging = require("./messaging")
+router.use("/messaging", messaging)
 
 module.exports = router

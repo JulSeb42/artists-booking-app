@@ -1,10 +1,7 @@
 // Packages
 import React from "react"
 import styled from "styled-components"
-import { Variables } from "components-react-julseb"
-
-// Components
-import IconMixin from "../ui/IconMixin"
+import { Variables, IconMixin } from "components-react-julseb"
 
 // Styles
 const Container = styled.li`

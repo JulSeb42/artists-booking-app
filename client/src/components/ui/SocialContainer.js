@@ -6,7 +6,7 @@ import { Variables } from "components-react-julseb"
 const SocialContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: ${Variables.Margins.S};
+    gap: ${Variables.Spacers.S};
 
     ${props =>
         props.footer &&
@@ -16,7 +16,7 @@ const SocialContainer = styled.div`
             justify-content: flex-start;
 
             a:first-child {
-                margin-right: ${Variables.Margins.S};
+                margin-right: ${Variables.Spacers.S};
             }
         `}
 
@@ -26,7 +26,7 @@ const SocialContainer = styled.div`
         justify-content: flex-start;
 
         a:not(:last-child) {
-            margin-right: ${Variables.Margins.S};
+            margin-right: ${Variables.Spacers.S};
         }
     }
 `

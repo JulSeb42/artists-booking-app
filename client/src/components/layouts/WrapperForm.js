@@ -7,6 +7,7 @@ import { Wrapper } from "components-react-julseb"
 const Container = styled(Wrapper)`
     min-height: 85vh;
     margin-top: 80px;
+    grid-template-columns: var(--container-form-both-sides);
 `
 
 const WrapperForm = ({ children, ...props }) => {

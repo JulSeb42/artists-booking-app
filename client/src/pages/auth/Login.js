@@ -1,29 +1,24 @@
 // Packages
-import React, { useContext, useState } from "react"
-import axios from "axios"
-import { useNavigate, Link } from "react-router-dom"
+import React, { useState, useContext } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { Font, Form, Input, Alert } from "components-react-julseb"
 
-// Components
+// API
 import { AuthContext } from "../../context/auth"
+import authService from "../../api/auth.service"
+
+// Components
 import Page from "../../components/layouts/Page"
 import NavAuth from "../../components/auth/NavAuth"
 
 const Login = () => {
-    // Consts
     const { loginUser } = useContext(AuthContext)
     const navigate = useNavigate()
-
-    // Texts
-    const texts = {
-        title: "Login",
-        textForgot: "I forgot my password.",
-    }
 
     // Form items
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [errorMessage, setErrorMessage] = useState(undefined)
+    const [errorMessage, setErrorMessage] = useState("")
 
     // Form handles
     const handleEmail = e => setEmail(e.target.value)
@@ -35,12 +30,12 @@ const Login = () => {
 
         const requestBody = { email, password }
 
-        axios
-            .post("/auth/login", requestBody)
+        authService
+            .login(requestBody)
             .then(res => {
-                loginUser(res.data)
-                navigate(-1)
+                loginUser(res.data.authToken)
             })
+            .then(() => navigate(-1))
             .catch(err => {
                 const errorDescription = err.response.data.message
                 setErrorMessage(errorDescription)
@@ -48,16 +43,16 @@ const Login = () => {
     }
 
     return (
-        <Page title={texts.title} template="form">
+        <Page title="Login" template="form">
             <NavAuth />
 
-            <Font.H1>{texts.title}</Font.H1>
+            <Font.H1>Log in</Font.H1>
 
-            <Form onSubmit={handleSubmit} btnprimary="Log in">
+            <Form btnPrimary="Login" onSubmit={handleSubmit}>
                 <Input
                     label="Email"
-                    type="email"
                     id="email"
+                    type="email"
                     onChange={handleEmail}
                     value={email}
                 />
@@ -65,22 +60,22 @@ const Login = () => {
                 <Input
                     label="Password"
                     id="password"
+                    password
+                    iconPassword
                     onChange={handlePassword}
                     value={password}
-                    password
-                    iconpassword
                 />
             </Form>
 
-            <Font.P>
-                <Link to="/login/forgot-password">{texts.textForgot}</Link>
-            </Font.P>
-
             {errorMessage && (
-                <Alert color="danger" as={Font.P}>
+                <Alert as={Font.P} color="danger">
                     {errorMessage}
                 </Alert>
             )}
+
+            <Font.P>
+                <Link to="/login/forgot-password">I forgot my password.</Link>
+            </Font.P>
         </Page>
     )
 }

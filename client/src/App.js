@@ -2,9 +2,11 @@
 import React, { useState } from "react"
 import { Routes, Route, Navigate } from "react-router-dom"
 
-// Components
+// Routes
 import routes from "./routes/routes"
 import redirects from "./routes/redirects"
+
+// Utils
 import ProtectedRoutes from "./routes/ProtectedRoutes"
 import AnonRoutes from "./routes/AnonRoutes"
 

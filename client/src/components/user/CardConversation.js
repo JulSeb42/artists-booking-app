@@ -49,7 +49,7 @@ const Dot = styled(Badge)`
 const Content = styled(Font.P)`
     position: relative;
     z-index: 2;
-    padding: ${Variables.Margins.XS};
+    padding: ${Variables.Spacers.XS};
     color: ${Variables.Colors.White};
     display: flex;
     align-items: center;

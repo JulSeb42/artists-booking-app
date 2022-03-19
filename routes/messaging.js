@@ -1,9 +1,13 @@
 // Packages
 const router = require("express").Router()
+const jwt = require("jsonwebtoken")
 
 // Models
 const User = require("../models/User.model")
 const Conversation = require("../models/Conversation.model")
+
+// Utils
+const jwtConfig = require("../utils/jwtConfig")
 
 // Get all conversations
 router.get("/conversations", (req, res, next) => {
@@ -41,6 +45,43 @@ router.get("/conversation/:id", (req, res, next) => {
         .catch(err => next(err))
 })
 
+// Get user's conversations
+router.get("/user-conversation/:id/:role", (req, res, next) => {
+    const role = req.params.role
+
+    if (role === "user") {
+        Conversation.find({ user: req.params.id })
+            .populate("artist")
+            .populate("user")
+            .populate({
+                path: "messages",
+                populate: {
+                    path: "sender",
+                    model: "User",
+                },
+            })
+            .then(conversationsFromDb =>
+                res.status(200).json(conversationsFromDb)
+            )
+            .catch(err => next(err))
+    } else {
+        Conversation.find({ artist: req.params.id })
+            .populate("artist")
+            .populate("user")
+            .populate({
+                path: "messages",
+                populate: {
+                    path: "sender",
+                    model: "User",
+                },
+            })
+            .then(conversationsFromDb =>
+                res.status(200).json(conversationsFromDb)
+            )
+            .catch(err => next(err))
+    }
+})
+
 // Start conversation
 router.post("/new-conversation", (req, res, next) => {
     const { artist, user, message, createdDay, createdTime } = req.body
@@ -69,11 +110,28 @@ router.post("/new-conversation", (req, res, next) => {
                     },
                 }
             ).then(updatedUser => {
-                User.findOneAndUpdate(
-                    { _id: artist },
-                    { $push: { conversations: createdConversation } }
-                ).then(() => {
-                    res.status(200).json({ user: updatedUser })
+                User.findByIdAndUpdate(
+                    artist,
+                    {
+                        $push: {
+                            conversations: createdConversation,
+                        },
+                    },
+                    { new: true }
+                ).then(updatedArtist => {
+                    // Payload
+                    const payload = { user: updatedUser }
+
+                    const authToken = jwt.sign(
+                        payload,
+                        process.env.TOKEN_SECRET,
+                        jwtConfig
+                    )
+
+                    res.status(201).json({
+                        user: updatedUser,
+                        authToken: authToken,
+                    })
                 })
             })
         })

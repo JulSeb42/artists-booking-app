@@ -1,26 +1,23 @@
 // Packages
-import React, { useContext, useState, useEffect } from "react"
-import axios from "axios"
-import { useNavigate, Link } from "react-router-dom"
+import React, { useState, useContext, useEffect } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { Font, Form, Input, Alert, Autocomplete } from "components-react-julseb"
 import {
-    Font,
-    Form,
-    Input,
-    Alert,
     getRandomString,
-    Autocomplete,
-} from "components-react-julseb"
+    passwordRegex,
+    getRandomAvatar,
+} from "js-utils-julseb"
+
+// API
+import { AuthContext } from "../../context/auth"
+import authService from "../../api/auth.service"
+import citiesService from "../../api/cities.service"
 
 // Components
-import { AuthContext } from "../../context/auth"
 import Page from "../../components/layouts/Page"
 import NavAuth from "../../components/auth/NavAuth"
 
-// Utils
-import randomAvatar from "../../components/utils/randomAvatar"
-
 const SignupArtist = () => {
-    // Consts
     const { loginUser } = useContext(AuthContext)
     const navigate = useNavigate()
 
@@ -29,39 +26,26 @@ const SignupArtist = () => {
     const [filteredCities, setFilteredCities] = useState("")
 
     useEffect(() => {
-        axios
-            .get("/citiesGermany.json")
-            .then(res => setAllCities(res.data.map(city => city.name)))
+        citiesService()
+            .then(res => setAllCities(res))
             .catch(err => console.log(err))
     }, [])
-
-    // Texts
-    const texts = {
-        title: "Create an account",
-        btnForm: "Create your account",
-        textAlready: "You already have an account?",
-        textLinkLogin: "Login",
-    }
 
     // Form items
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [location, setLocation] = useState("")
-    const [errorMessage, setErrorMessage] = useState(undefined)
-
-    // Password validation
     const [validation, setValidation] = useState("not-passed")
-    const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/
+    const [errorMessage, setErrorMessage] = useState(undefined)
 
     // Form handles
     const handleFullName = e => setFullName(e.target.value)
     const handleEmail = e => setEmail(e.target.value)
-
     const handlePassword = e => {
         setPassword(e.target.value)
 
-        if (regex.test(e.target.value)) {
+        if (passwordRegex.test(e.target.value)) {
             setValidation("passed")
         } else {
             setValidation("not-passed")
@@ -91,15 +75,15 @@ const SignupArtist = () => {
             password,
             verifyToken: getRandomString(20),
             city: location,
-            imageUrl: randomAvatar(),
+            imageUrl: getRandomAvatar(),
             role: "artist",
         }
 
-        axios
-            .post("/auth/signup", requestBody)
+        authService
+            .signup(requestBody)
             .then(res => {
+                loginUser(res.data.authToken)
                 navigate("/thank-you")
-                loginUser(res.data)
             })
             .catch(err => {
                 const errorDescription = err.response.data.message
@@ -108,17 +92,17 @@ const SignupArtist = () => {
     }
 
     return (
-        <Page title={texts.title} template="form">
+        <Page title="Signup as an artist" template="form">
             <NavAuth />
 
-            <Font.H1>{texts.title}</Font.H1>
+            <Font.H1>Create an account</Font.H1>
 
             <Font.P>
                 If you're a user wanting to book artists,{" "}
-                <Link to="/signup">register here instead!</Link>
+                <Link to="/signup/user">register here instead!</Link>
             </Font.P>
 
-            <Form onSubmit={handleSubmit} btnprimary={texts.btnForm}>
+            <Form btnPrimary="Create your account" onSubmit={handleSubmit}>
                 <Input
                     label="Displayed name"
                     id="fullName"
@@ -128,8 +112,8 @@ const SignupArtist = () => {
 
                 <Input
                     label="Email"
-                    type="email"
                     id="email"
+                    type="email"
                     onChange={handleEmail}
                     value={email}
                 />
@@ -137,10 +121,10 @@ const SignupArtist = () => {
                 <Input
                     label="Password"
                     id="password"
+                    password
+                    iconPassword
                     onChange={handlePassword}
                     value={password}
-                    password
-                    iconpassword
                     validationText="Password must be at least 6 characters long and must contain at least one number, one lowercase and one uppercase letter."
                     validation={validation}
                 />
@@ -156,7 +140,7 @@ const SignupArtist = () => {
             </Form>
 
             {errorMessage && (
-                <Alert color="danger" as={Font.P}>
+                <Alert as={Font.P} color="danger">
                     {errorMessage}
                 </Alert>
             )}

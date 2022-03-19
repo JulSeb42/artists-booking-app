@@ -1,5 +1,6 @@
 // Packages
 import React from "react"
+import { useNavigate } from "react-router-dom"
 import {
     Aside,
     Input,
@@ -7,13 +8,17 @@ import {
     Font,
     Variables,
     Button,
+    InputCheck,
+    Flexbox,
 } from "components-react-julseb"
 
-// Components
-import { SelectorList, Selector } from "../ui/Selector"
-
 const Filters = props => {
-    const handleReset = () => window.location.reload(false)
+    const navigate = useNavigate()
+
+    const handleReset = () => {
+        navigate("/artists")
+        window.location.reload(false)
+    }
 
     const {
         sortByDate,
@@ -30,31 +35,35 @@ const Filters = props => {
 
     return (
         <Aside template="aside-left">
-            <Grid gap={Variables.Margins.XS}>
+            <Grid gap={Variables.Spacers.XS}>
                 <Font.H4>Sort by</Font.H4>
 
-                <SelectorList>
-                    <Selector
+                <Flexbox gap={Variables.Spacers.XS} direction="row">
+                    <InputCheck
                         label="Price"
-                        name="sort"
                         id="sortPrice"
+                        name="sort"
+                        type="radio"
                         onChange={sortByPrice}
+                        selector
                     />
 
-                    <Selector
+                    <InputCheck
                         label="Availabilities"
-                        name="sort"
                         id="sortAvailable"
+                        name="sort"
+                        type="radio"
                         onChange={sortByDate}
+                        selector
                     />
-                </SelectorList>
+                </Flexbox>
             </Grid>
 
             {minPrice && (
-                <Grid gap={Variables.Margins.XS}>
+                <Grid gap={Variables.Spacers.XS}>
                     <Font.H4>Filters</Font.H4>
 
-                    <Grid col={2} gap={Variables.Margins.XS}>
+                    <Grid col={2} gap={Variables.Spacers.XS}>
                         <Input
                             label="Min price"
                             type="number"

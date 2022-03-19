@@ -1,58 +1,43 @@
 // Packages
 import React, { useState } from "react"
-import styled from "styled-components"
 import {
-    Font,
-    ButtonsContainer,
     Button,
-    Alert
+    Modal,
+    Alert,
+    ButtonsContainer,
+    Font,
 } from "components-react-julseb"
 
-// Styles
-const Container = styled(Alert)`
-    display: none;
-
-    &.active {
-        display: grid
-    }
-`
-
-const DangerZone = (props) => {
+const DangerZone = props => {
     const [isOpen, setIsOpen] = useState(false)
-    const visible = isOpen ? "none" : "block"
-
     return (
         <>
             <Button
-                onClick={() => setIsOpen(!isOpen)}
-                style={{ display: visible }}
                 color="danger"
                 justify="start"
+                onClick={() => setIsOpen(true)}
             >
-                {props.textbtnopen}
+                {props.textBtnOpen}
             </Button>
 
-            <Container
-                color="danger"
-                className={isOpen ? "active" : ""}
-                {...props}
-            >
-                <Font.P>{props.text}</Font.P>
+            <Modal open={isOpen}>
+                <Alert color="danger">
+                    <Font.P>{props.text}</Font.P>
 
-                <ButtonsContainer>
-                    <Button onClick={props.onClickPrimary} color="danger">
-                        {props.textbtndelete}
-                    </Button>
+                    <ButtonsContainer>
+                        <Button color="danger" onClick={props.onClickPrimary}>
+                            {props.textBtnPrimary}
+                        </Button>
 
-                    <Button
-                        type="button"
-                        onClick={() => setIsOpen(!isOpen)}
-                        btnstyle="text"
-                    >
-                        {props.textbtncancel || "No, cancel"}
-                    </Button>
-                </ButtonsContainer>
-            </Container>
+                        <Button
+                            btnStyle="text"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            No, cancel
+                        </Button>
+                    </ButtonsContainer>
+                </Alert>
+            </Modal>
         </>
     )
 }

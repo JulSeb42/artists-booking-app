@@ -1,105 +1,75 @@
 // Packages
 import React, { useContext, useState, useEffect } from "react"
-import axios from "axios"
-import {
-    Font,
-    getFirstName,
-    PageLoading,
-    Main,
-    Aside,
-    Avatar,
-    Button,
-} from "components-react-julseb"
+import { Font, Main, Aside, Avatar, Button } from "components-react-julseb"
+import { getFirstName } from "js-utils-julseb"
 
 // API
-import getPopulatedUser from "../../context/populatedUser"
+import { AuthContext } from "../../context/auth"
+import messagingService from "../../api/messaging.service"
 
 // Components
-import { AuthContext } from "../../context/auth"
 import Page from "../../components/layouts/Page"
 import TextIcon from "../../components/ui/TextIcon"
-import CardConversation from "../../components/user/CardConversation"
 import ListConversation from "../../components/user/ListConversation"
+import CardConversation from "../../components/user/CardConversation"
 
 const MyAccount = () => {
-    // Context
     const { user } = useContext(AuthContext)
 
-    // Texts
-    const texts = {
-        title: `Hello ${
-            user.role === "artist" ? user.fullName : getFirstName(user.fullName)
-        }`,
-        accountNotVerified: "Your account is not verified.",
-        editAccount: "Edit your account.",
-    }
-
-    // Get populatedUser
-    const [populatedUser, setPopulatedUser] = useState()
     const [conversations, setConversations] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        getPopulatedUser(user._id)
-            .then(res => {
-                setPopulatedUser(res)
-
-                axios.get("/messaging/conversations").then(res => {
-                    setConversations(
-                        res.data.filter(
-                            conversation =>
-                                user._id === conversation.user._id ||
-                                user._id === conversation.artist._id
-                        )
-                    )
-                    setIsLoading(false)
-                })
-            })
+        messagingService
+            .userConversations(user._id, user.role)
+            .then(res => setConversations(res.data))
             .catch(err => console.log(err))
-    }, [user._id])
+    }, [user._id, user.role])
 
-    return isLoading ? (
-        <PageLoading />
-    ) : (
-        <Page title={populatedUser.fullName} template="aside-left">
+    console.log(conversations)
+
+    return (
+        <Page title={user.fullName} template="aside-left">
             <Aside template="aside-left" align="center" justify="center">
                 <Avatar
-                    src={populatedUser.imageUrl}
-                    alt={populatedUser.fullName}
+                    src={user.imageUrl}
+                    alt={user.fullName}
                     size={150}
                     align="center"
                 />
 
                 <Button to="/my-account/edit">Edit your account</Button>
 
-                {populatedUser.role === "artist" && (
-                    <Button to={`/all-artists/${populatedUser._id}`}>
-                        Check your page
-                    </Button>
+                {user.role === "artist" && (
+                    <Button to={`/artists/${user._id}`}>Check your page</Button>
                 )}
             </Aside>
 
             <Main template="aside-left">
-                <Font.H1>{texts.title}</Font.H1>
+                <Font.H1>
+                    Hello{" "}
+                    {user.role === "user"
+                        ? getFirstName(user.fullName)
+                        : user.fullName}
+                </Font.H1>
 
-                <TextIcon icon="map" title="Location">
-                    {populatedUser.city}
-                </TextIcon>
-
-                {!populatedUser.verified && (
-                    <Font.P>{texts.accountNotVerified}</Font.P>
+                {!user.verified && (
+                    <Font.P>Your account is not verified.</Font.P>
                 )}
 
-                {populatedUser.role === "artist" && (
+                <TextIcon icon="map" title="Location">
+                    {user.city}
+                </TextIcon>
+
+                {user.role === "artist" && (
                     <Font.P>
                         Your profile is{" "}
-                        {populatedUser.visible ? "visible!" : "not visible."}
+                        {user.visible ? "visible!" : "not visible."}
                     </Font.P>
                 )}
 
                 <Font.H2>Conversations</Font.H2>
 
-                {populatedUser.conversations.length > 0 ? (
+                {conversations.length > 0 ? (
                     <ListConversation>
                         {conversations.map(conversation => (
                             <CardConversation

@@ -1,6 +1,6 @@
 // Packages
-import React, { useState, useEffect, useContext } from "react"
-import axios from "axios"
+import React, { useState, useContext, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import {
     PageLoading,
     MessagesContainer,
@@ -8,44 +8,42 @@ import {
     ListMessages,
     Message,
     MessageInput,
-    Hr,
-    getToday,
-    getTimeNow,
-    convertDateShort,
 } from "components-react-julseb"
+import { getToday, getTimeNow, convertDateShort } from "js-utils-julseb"
 
 // API
 import { AuthContext } from "../../context/auth"
-import { getConversationId } from "../../api/getUsers"
+import messagingService from "../../api/messaging.service"
 
 // Components
 import Page from "../../components/layouts/Page"
 import TitleAvatar from "../../components/user/TitleAvatar"
 
-const Conversation = () => {
+const Conversation = props => {
     const { user } = useContext(AuthContext)
+    const { id } = useParams()
 
     // Get conversation
-    const id = window.location.href.split("/")[5]
     const [conversation, setConversation] = useState()
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        getConversationId(id)
+        messagingService
+            .conversation(id)
             .then(res => {
-                setConversation(res)
+                setConversation(res.data)
                 setIsLoading(false)
             })
             .catch(err => console.log(err))
-    }, [id, user._id])
+    }, [id])
 
-    // Set conversation as read
+    // Set read
     if (
         !isLoading &&
         conversation.messages[conversation.messages.length - 1].sender._id !==
             user._id
     ) {
-        axios.put(`/messaging/read/${id}`)
+        messagingService.read(id)
     }
 
     // Send message
@@ -63,70 +61,68 @@ const Conversation = () => {
             createdTime: getTimeNow(),
         }
 
-        axios
-            .put("/messaging/new-message", requestBody)
-            .then(() => {
-                window.location.reload(false)
-            })
+        messagingService
+            .newMessage(requestBody)
+            .then(() => window.location.reload(false))
             .catch(err => console.log(err))
     }
 
-    return isLoading ? (
-        <PageLoading />
-    ) : (
+    return (
         <Page
-            title={`Conversation with ${
-                user._id === conversation.user._id
-                    ? conversation.artist.fullName
-                    : conversation.user.fullName
-            }`}
+            title={
+                isLoading
+                    ? "Conversation"
+                    : `Conversation with ${
+                          user._id === conversation.user._id
+                              ? conversation.artist.fullName
+                              : conversation.user.fullName
+                      }`
+            }
         >
-            <TitleAvatar user={user} conversation={conversation} />
+            {isLoading ? (
+                <PageLoading />
+            ) : (
+                <>
+                    <TitleAvatar user={user} conversation={conversation} />
 
-            <MessagesContainer>
-                {conversation.messages.length > 0 ? (
-                    <ListMessages>
-                        {conversation.messages.map(message => (
-                            <Message
-                                type={
-                                    message.sender._id === user._id
-                                        ? "sent"
-                                        : "received"
-                                }
-                                key={message._id}
-                                date={
-                                    new Date(
-                                        message.createdDay
-                                    ).toLocaleDateString("en-US") !==
-                                        new Date().toLocaleDateString(
-                                            "en-US"
-                                        ) &&
-                                    convertDateShort(message.createdDay)
-                                }
-                                time={message.createdTime}
-                            >
-                                {console.log(
-                                    new Date(
-                                        message.createdDay
-                                    ).toLocaleDateString("en-US"),
-                                    new Date().toLocaleDateString("en-US")
-                                )}
-                                {message.message}
-                            </Message>
-                        ))}
-                    </ListMessages>
-                ) : (
-                    <EmptyContainer>No message yet</EmptyContainer>
-                )}
+                    <MessagesContainer>
+                        {conversation.messages.length > 0 ? (
+                            <ListMessages>
+                                {conversation.messages.map(message => (
+                                    <Message
+                                        type={
+                                            message.sender._id === user._id
+                                                ? "sent"
+                                                : "received"
+                                        }
+                                        key={message._id}
+                                        date={
+                                            new Date(
+                                                message.createdDay
+                                            ).toLocaleDateString("en-US") !==
+                                                new Date().toLocaleDateString(
+                                                    "en-US"
+                                                ) &&
+                                            convertDateShort(message.createdDay)
+                                        }
+                                        time={message.createdTime}
+                                    >
+                                        {message.message}
+                                    </Message>
+                                ))}
+                            </ListMessages>
+                        ) : (
+                            <EmptyContainer>No message yet</EmptyContainer>
+                        )}
 
-                <Hr />
-
-                <MessageInput
-                    placeholder="Type your message"
-                    onChange={handleMessage}
-                    onSubmit={handleSubmit}
-                />
-            </MessagesContainer>
+                        <MessageInput
+                            placeholder="Type your message"
+                            onChange={handleMessage}
+                            onSubmit={handleSubmit}
+                        />
+                    </MessagesContainer>
+                </>
+            )}
         </Page>
     )
 }

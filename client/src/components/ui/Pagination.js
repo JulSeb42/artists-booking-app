@@ -1,6 +1,10 @@
 // Packages
 import React from "react"
-import { useNavigate } from "react-router-dom"
+import {
+    useNavigate,
+    createSearchParams,
+    useSearchParams,
+} from "react-router-dom"
 import {
     Pagination as Container,
     PaginationButton,
@@ -11,44 +15,78 @@ const Pagination = ({
     setCurrentPage,
     totalPages,
     pageLimit,
+    city,
+    genre,
     ...props
 }) => {
     // Consts
     const navigate = useNavigate()
+    const [query] = useSearchParams()
+    const cityParam = query.get("city")
+    const genreParam = query.get("genre")
 
     // Pagination
     const nextPage = () => {
         setCurrentPage(currentPage + 1)
-        navigate(
-            props.search
-                ? `/results/${props.city}/${props.genre}/page-${
-                      currentPage + 1
-                  }`
-                : `/all-artists/page${currentPage + 1}`
-        )
+
+        cityParam || genreParam
+            ? navigate({
+                  pathname: "",
+                  search: createSearchParams({
+                      genre: genreParam,
+                      city: cityParam,
+                      page: currentPage + 1,
+                  }).toString(),
+              })
+            : navigate({
+                  pathname: "",
+                  search: createSearchParams({
+                      page: currentPage + 1,
+                  }).toString(),
+              })
         window.scrollTo(0, 0)
     }
 
     const prevPage = () => {
         setCurrentPage(currentPage - 1)
-        navigate(
-            props.search
-                ? `/results/${props.city}/${props.genre}/page-${
-                      currentPage - 1
-                  }`
-                : `/all-artists/page${currentPage - 1}`
-        )
+
+        cityParam || genreParam
+            ? navigate({
+                  pathname: "",
+                  search: createSearchParams({
+                      genre: genreParam,
+                      city: cityParam,
+                      page: currentPage - 1,
+                  }).toString(),
+              })
+            : navigate({
+                  pathname: "",
+                  search: createSearchParams({
+                      page: currentPage - 1,
+                  }).toString(),
+              })
+
         window.scrollTo(0, 0)
     }
 
     const changePage = e => {
         const pageNumber = Number(e.target.textContent)
         setCurrentPage(pageNumber)
-        navigate(
-            props.search
-                ? `/results/${props.city}/${props.genre}/page-${pageNumber}`
-                : `/all-artists/page${pageNumber}`
-        )
+        cityParam || genreParam
+            ? navigate({
+                  pathname: "",
+                  search: createSearchParams({
+                      genre: genreParam,
+                      city: cityParam,
+                      page: pageNumber,
+                  }).toString(),
+              })
+            : navigate({
+                  pathname: "",
+                  search: createSearchParams({
+                      page: pageNumber,
+                  }).toString(),
+              })
         window.scrollTo(0, 0)
     }
 
@@ -64,14 +102,14 @@ const Pagination = ({
         <Container>
             <PaginationButton
                 onClick={prevPage}
-                icon="previous"
-                disabled={currentPage === 1 && true}
+                prev
+                disabled={parseInt(currentPage) === 1 && true}
             />
 
             {getPaginationGroup()[0] !== 1 && (
                 <>
                     <PaginationButton number={1} onClick={changePage} />
-                    <PaginationButton icon="more" />
+                    <PaginationButton more />
                 </>
             )}
 
@@ -80,14 +118,14 @@ const Pagination = ({
                     number={item}
                     key={item}
                     onClick={changePage}
-                    className={currentPage === item && "active"}
+                    active={parseInt(currentPage) === item && true}
                 />
             ))}
 
             {getPaginationGroup()[getPaginationGroup().length - 1] !==
                 totalPages && (
                 <>
-                    <PaginationButton icon="more" />
+                    <PaginationButton more />
 
                     <PaginationButton
                         number={totalPages}
@@ -98,8 +136,8 @@ const Pagination = ({
 
             <PaginationButton
                 onClick={nextPage}
-                icon="next"
-                disabled={currentPage === totalPages && true}
+                next
+                disabled={parseInt(currentPage) === totalPages && true}
             />
         </Container>
     )

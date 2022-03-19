@@ -6,7 +6,7 @@ import { Variables } from "components-react-julseb"
 const ListConversation = styled.div`
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: ${Variables.Margins.M};
+    gap: ${Variables.Spacers.M};
 
     @media ${Variables.Breakpoints.Tablet} {
         grid-template-columns: repeat(3, 1fr);

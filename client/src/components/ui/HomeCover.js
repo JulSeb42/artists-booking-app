@@ -13,14 +13,12 @@ const Container = styled.div`
     position: relative;
     width: 100vw;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: ${Variables.Margins.XXL} 5vw;
+    padding: ${Variables.Spacers.XXL} 5vw;
+    overflow-y: scroll;
 
     &:before {
         content: "";
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -31,7 +29,7 @@ const Container = styled.div`
 `
 
 const Img = styled(Image)`
-    position: absolute;
+    position: fixed;
     z-index: 0;
     top: 0;
     left: 0;
@@ -44,8 +42,6 @@ const Content = styled(Grid)`
     z-index: 1;
     text-align: center;
     width: 100%;
-    height: 100%;
-    align-content: center;
     justify-items: center;
 `
 
@@ -60,16 +56,14 @@ const Title = styled(Font.H1)`
 const HomeCover = () => {
     return (
         <Container>
-            <Img src="/images/cover-home.jpg" />
+            <Img src="/images/cover-home.jpg" fit="cover" />
 
-            <Content gap={Variables.Margins.L}>
-                <Logo size={120} />
+            <Content gap={Variables.Spacers.L}>
+                <Logo size={120} white />
 
                 <Title>Book an artist / a band for your next event!</Title>
 
                 <SearchContainer />
-
-                {/* <LargeButton to="/all-artists/page-1">Browse artists</LargeButton> */}
             </Content>
         </Container>
     )

@@ -1,28 +1,24 @@
 // Packages
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import axios from "axios"
 import {
     Font,
     Form,
     Input,
     Alert,
-    getRandomString,
 } from "components-react-julseb"
+import { getRandomString } from "js-utils-julseb"
+
+// API
+import authService from "../../api/auth.service"
 
 // Components
 import Page from "../../components/layouts/Page"
 
 const ForgotPassword = () => {
-    // Consts
     const navigate = useNavigate()
 
-    // Texts
-    const texts = {
-        title: "I forgot my password",
-        body: "Please enter your email address, we will send you a link to reset your password.",
-        btnSend: "Send",
-    }
+    const title = "I forgot my password"
 
     // Form items
     const [email, setEmail] = useState("")
@@ -35,15 +31,11 @@ const ForgotPassword = () => {
     const handleSubmit = e => {
         e.preventDefault()
 
-        const requestBody = {
-            email,
-            resetToken: getRandomString(20),
-        }
+        const requestBody = { email, resetToken: getRandomString(20) }
 
-        axios
-            .post("/auth/forgot", requestBody)
-            .then(res => {
-                console.log(res)
+        authService
+            .forgotPassword(requestBody)
+            .then(() => {
                 navigate("/login/forgot-password/email-sent")
             })
             .catch(err => {
@@ -53,23 +45,26 @@ const ForgotPassword = () => {
     }
 
     return (
-        <Page title={texts.title} template="form">
-            <Font.H1>{texts.title}</Font.H1>
+        <Page title={title} template="form">
+            <Font.H1>{title}</Font.H1>
 
-            <Font.P>{texts.body}</Font.P>
+            <Font.P>
+                Please enter your email address, we will send you a link to
+                reset your password.
+            </Font.P>
 
-            <Form btnprimary={texts.btnSend} onSubmit={handleSubmit}>
+            <Form btnPrimary="Send" btnCancel="/login" onSubmit={handleSubmit}>
                 <Input
                     label="Email"
-                    type="email"
                     id="email"
+                    type="email"
                     onChange={handleEmail}
                     value={email}
                 />
             </Form>
 
             {errorMessage && (
-                <Alert color="danger" as={Font.P}>
+                <Alert as={Font.P} color="danger">
                     {errorMessage}
                 </Alert>
             )}

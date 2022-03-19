@@ -1,45 +1,48 @@
 // Packages
 import React, { useState } from "react"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Font, Form, Input, Alert } from "components-react-julseb"
+import { passwordRegex } from "js-utils-julseb"
+
+// API
+import authService from "../../api/auth.service"
 
 // Components
 import Page from "../../components/layouts/Page"
 
 const ResetPassword = () => {
-    // Consts
     const navigate = useNavigate()
 
-    // Texts
-    const texts = {
-        title: "Reset your password",
-        btnForm: "Send",
-    }
-
-    // Get token and user id
-    const data = window.location.href.split("/")
-    const token = data[4]
-    const id = data[5]
+    const title = "Reset your password"
 
     // Form items
     const [password, setPassword] = useState("")
+    const [validation, setValidation] = useState("not-passed")
     const [errorMessage, setErrorMessage] = useState(undefined)
 
     // Form handles
-    const handlePassword = e => setPassword(e.target.value)
+    const handlePassword = e => {
+        setPassword(e.target.value)
+
+        if (passwordRegex.test(e.target.value)) {
+            setValidation("passed")
+        } else {
+            setValidation("not-passed")
+        }
+    }
+
+    // Get token and ID from url
+    const { token, id } = useParams()
 
     // Submit form
     const handleSubmit = e => {
         e.preventDefault()
 
-        const requestBody = { id, password }
+        const requestBody = { password, resetToken: token, id }
 
-        axios
-            .put(`/auth/reset-password/${token}/${id}`, requestBody)
-            .then(() => {
-                navigate("/login")
-            })
+        authService
+            .resetPassword(requestBody)
+            .then(() => navigate("/login"))
             .catch(err => {
                 const errorDescription = err.response.data.message
                 setErrorMessage(errorDescription)
@@ -47,22 +50,24 @@ const ResetPassword = () => {
     }
 
     return (
-        <Page title={texts.title} template="form">
-            <Font.H1>{texts.title}</Font.H1>
+        <Page title={title} template="form">
+            <Font.H1>{title}</Font.H1>
 
-            <Form btnprimary={texts.btnForm} onSubmit={handleSubmit}>
+            <Form btnPrimary="Reset your password" onSubmit={handleSubmit}>
                 <Input
                     label="New password"
                     id="password"
+                    password
+                    iconPassword
                     onChange={handlePassword}
                     value={password}
-                    password
-                    iconpassword
+                    validationText="Password must be at least 6 characters long and must contain at least one number, one lowercase and one uppercase letter."
+                    validation={validation}
                 />
             </Form>
 
             {errorMessage && (
-                <Alert color="danger" as={Font.P}>
+                <Alert as={Font.P} color="danger">
                     {errorMessage}
                 </Alert>
             )}

@@ -14,7 +14,7 @@ const NavAuth = () => {
     const location = useLocation().pathname
 
     return (
-        <Container gap={Variables.Margins.S} col={2}>
+        <Container gap={Variables.Spacers.S} col={2}>
             <ButtonNavAuth
                 to="/login"
                 className={location === "/login" && "active"}

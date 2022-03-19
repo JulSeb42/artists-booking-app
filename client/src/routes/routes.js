@@ -1,17 +1,17 @@
-// All Pages
-import Home from "../pages/Home"
+// Import routes
+import Homepage from "../pages/Homepage"
 import NotFound from "../pages/NotFound"
 
 // Auth
 import Signup from "../pages/auth/Signup"
 import SignupArtist from "../pages/auth/SignupArtist"
-import Login from "../pages/auth/Login"
 import ThankYou from "../pages/auth/ThankYou"
+import Login from "../pages/auth/Login"
+import Verify from "../pages/auth/Verify"
 import ForgotPassword from "../pages/auth/ForgotPassword"
 import ForgotSent from "../pages/auth/ForgotSent"
 import ResetPassword from "../pages/auth/ResetPassword"
 import Goodbye from "../pages/auth/Goodbye"
-import Verify from "../pages/auth/Verify"
 
 // User
 import MyAccount from "../pages/user/MyAccount"
@@ -20,15 +20,14 @@ import EditPassword from "../pages/user/EditPassword"
 import Conversation from "../pages/user/Conversation"
 
 // Artists
-import AllArtists from "../pages/artists/AllArtists"
-import SearchResults from "../pages/artists/SearchResults"
+import ArtistsList from "../pages/artists/ArtistsList"
 import ArtistDetail from "../pages/artists/ArtistDetail"
 
+// All routes
 const routes = [
-    // All pages
     {
         path: "/",
-        element: Home,
+        element: Homepage,
         protected: false,
         anon: false,
         edit: false,
@@ -57,17 +56,24 @@ const routes = [
         edit: false,
     },
     {
-        path: "/login",
-        element: Login,
-        protected: false,
-        anon: true,
-        edit: false,
-    },
-    {
         path: "/thank-you",
         element: ThankYou,
         protected: false,
         anon: false,
+        edit: false,
+    },
+    {
+        path: "/verify/:token/:id",
+        element: Verify,
+        protected: false,
+        anon: false,
+        edit: true,
+    },
+    {
+        path: "/login",
+        element: Login,
+        protected: false,
+        anon: true,
         edit: false,
     },
     {
@@ -88,22 +94,15 @@ const routes = [
         path: "/reset-password/:token/:id",
         element: ResetPassword,
         protected: false,
-        anon: false,
+        anon: true,
         edit: false,
     },
     {
         path: "/goodbye",
         element: Goodbye,
         protected: false,
-        anon: true,
+        anon: false,
         edit: false,
-    },
-    {
-        path: "/verify/:token/:id",
-        element: Verify,
-        protected: true,
-        anon: true,
-        edit: true,
     },
 
     // User
@@ -138,21 +137,14 @@ const routes = [
 
     // Artists
     {
-        path: "/all-artists/page-:pageNumber",
-        element: AllArtists,
+        path: "/artists",
+        element: ArtistsList,
         protected: false,
         anon: false,
         edit: false,
     },
     {
-        path: "/results/:city/:genre/page-:pageNumber",
-        element: SearchResults,
-        protected: false,
-        anon: false,
-        edit: false,
-    },
-    {
-        path: "/all-artists/:id",
+        path: "/artists/:id",
         element: ArtistDetail,
         protected: false,
         anon: false,

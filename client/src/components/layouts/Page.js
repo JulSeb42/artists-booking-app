@@ -9,7 +9,7 @@ import Header from "./Header"
 import Footer from "./Footer"
 
 // Data
-import SiteData from "../data/SiteData"
+import siteData from "../../data/siteData"
 
 // Styles
 const WrapperStyled = styled(Wrapper)`
@@ -23,15 +23,15 @@ const Page = props => {
     return (
         <>
             <Helmet
-                title={`${props.title} | ${SiteData.Name}`}
+                title={`${props.title} | ${siteData.name}`}
                 description={props.description}
                 keywords={props.keywords}
-                siteName={SiteData.Name}
-                favicon={SiteData.Favicon}
-                author={SiteData.Author}
-                type={SiteData.Type}
-                cover={props.cover || SiteData.Cover}
-                language={SiteData.Language}
+                siteName={siteData.name}
+                favicon={siteData.favicon}
+                author={siteData.author}
+                type={siteData.type}
+                cover={props.cover || siteData.cover}
+                language={siteData.language}
             />
 
             {location !== "/" && <Header />}

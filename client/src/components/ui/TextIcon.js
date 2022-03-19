@@ -9,7 +9,7 @@ const Container = styled.span`
     align-items: center;
 
     & > span {
-        margin-right: ${Variables.Margins.XXS};
+        margin-right: ${Variables.Spacers.XXS};
     }
 `
 

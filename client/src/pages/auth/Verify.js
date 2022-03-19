@@ -1,47 +1,82 @@
 // Packages
-import React, { useContext } from "react"
-import axios from "axios"
-import { Link } from "react-router-dom"
-import { Font } from "components-react-julseb"
+import React, { useContext, useState } from "react"
+import { Link, useParams } from "react-router-dom"
+import { Font, PageLoading } from "components-react-julseb"
+
+// API
+import { AuthContext } from "../../context/auth"
+import authService from "../../api/auth.service"
 
 // Components
 import Page from "../../components/layouts/Page"
-import { AuthContext } from "../../context/auth"
 
 const Verify = ({ edited, setEdited }) => {
     // Context
-    const { user, updateUser } = useContext(AuthContext)
+    const { user, isLoggedIn, setUser, setToken } = useContext(AuthContext)
 
-    // Texts
-    const texts = {
-        title: "Your account is verified!",
-        text: "You can now access all the functionalities on our website.",
-        link: "Go to your account.",
-    }
+    const [isLoading, setIsLoading] = useState(true)
+    const [verified, setVerified] = useState(false)
+    
+    const { token, id } = useParams()
 
-    // Verify user
-    const requestBody = {
-        id: user._id,
-        verifyToken: user.verifyToken,
-        verified: true,
-    }
+    setTimeout(() => {
+        if (
+            isLoggedIn &&
+            user._id === id &&
+            user.verifyToken === token
+        ) {
+            authService
+                .verify({ id: id })
+                .then(res => {
+                    setUser(res.data.user)
+                    setToken(res.data.authToken)
+                    setVerified(true)
+                    setEdited(!edited)
+                })
+                .catch(err => console.log(err))
+        }
 
-    axios
-        .put("/auth/verify", requestBody)
-        .then(res => {
-            const { user } = res.data
-            updateUser(user)
-            setEdited(!edited)
-        })
-        .catch(err => console.log(err))
+        setIsLoading(false)
+    }, 1000)
 
     return (
-        <Page title={texts.title}>
-            <Font.H1>{texts.title}</Font.H1>
+        <Page title="Verify your account">
+            {isLoading ? (
+                <PageLoading />
+            ) : (
+                <>
+                    {!isLoggedIn ? (
+                        <>
+                            <Font.H1>You are not logged in</Font.H1>
 
-            <Font.P>
-                {texts.text} <Link to="/my-account">{texts.link}</Link>
-            </Font.P>
+                            <Font.P>
+                                Please log in to verify your account.
+                            </Font.P>
+                        </>
+                    ) : verified ? (
+                        <>
+                            <Font.H1>Your account is verified!</Font.H1>
+
+                            <Font.P>
+                                You can now access all the functionalities on
+                                our website.{" "}
+                                <Link to="/my-account">
+                                    Go to your account.
+                                </Link>
+                            </Font.P>
+                        </>
+                    ) : (
+                        <>
+                            <Font.H1>Verification failed</Font.H1>
+
+                            <Font.P>
+                                Your account could not be verified, please try
+                                again later.
+                            </Font.P>
+                        </>
+                    )}
+                </>
+            )}
         </Page>
     )
 }

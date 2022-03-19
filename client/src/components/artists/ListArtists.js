@@ -18,7 +18,7 @@ const Container = styled(Grid)`
             display: block;
             background-color: ${Variables.Colors.Gray300};
             grid-column: span 2;
-            margin: ${Variables.Margins.M} 0;
+            margin: ${Variables.Spacers.M} 0;
         }
     }
 `
@@ -31,9 +31,9 @@ const ListArtists = props => {
     ) : props.allArtists.length === 0 ? (
         <Font.P>No artist yet.</Font.P>
     ) : (
-        <Container col={1}>
+        <Container>
             {props.data.map(artist => (
-                <ArtistCard artist={artist} key={artist.artist._id} />
+                <ArtistCard artist={artist} key={artist._id} />
             ))}
         </Container>
     )
